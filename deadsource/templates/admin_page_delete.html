@@ -1,0 +1,21 @@
+{% load staticfiles %}
+<html>
+  <head>
+
+  </head>
+
+  <body>
+    <h1>Admin Page</h1>
+
+    <a href="{% url 'page-admin-download-all' %}">Download all</a>
+    <p><a href="{% url 'delete-all' %}">Empty</a></p>
+
+
+
+
+
+    {% csrf_token %}
+    {{ form.as_p }}
+
+  </body>
+</html>

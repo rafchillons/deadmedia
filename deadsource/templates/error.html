@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width" />
+    <title>WEBM</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <a class="error404" href="{% url 'home' %}">
+        <div class="shocked-nigga">
+            <span class="title">Error 404</span>
+        </div>
+    </a>
+</body>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/tippy.min.js' %}"></script>
+<script src="{% static 'js/jquery.jrumble.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+    console.log("123");
+        $('.shocked-nigga').jrumble({
+            x: 1,
+            y: 1,
+            rotation: 2,
+            opacity: true
+        });
+        $('.shocked-nigga').trigger('startRumble');
+    });
+</script>
+</html>

@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<html>
+  <head>
+
+  </head>
+
+  <body>
+    <h1>Videos</h1>
+{% csrf_token %}
+    <p>Count of videos: {{count}}</p>
+
+    <a href="{% url 'home'%}">Knopka</a>
+    <p><a href="{% url 'page-admin' %}">Admin</a></p>
+
+    <ul>
+      {% for video in videos %}
+        <li class="contact">
+          <p>{{video.title}}({{video.id}})</p>
+        </li>
+      {% empty %}
+        <p>No videos</p>
+      {% endfor %}
+
+    </ul>
+
+
+  </body>
+</html>

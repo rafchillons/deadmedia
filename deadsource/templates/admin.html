@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width" />
+    <title>WEBM</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="admin-header">
+            <div class="logo">
+                <img src="{% static 'img/lunch1.png' %}" height="140px" width="140px">
+            </div>
+            <span class="title">ControlPanel 9000</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="system">
+            <div class="row delete-download-empty">
+                <div class="col-md-4 col-md-offset-4">
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="input-group input-group-sm" id="delete">
+                                <input name="storage_name" type="text" class="form-control" placeholder="File link" aria-label="Delete id">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-9">Files</td>
+                                <td class="col-md-3 text-center"><span class="badge badge-pill">{{videos_count}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>The size of all files</td>
+                                <td class="text-center">{{videos_weight}}<i>{{videos_weight_type}}</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-8">Delete script</td>
+                                <td class="col-md-2 text-center">
+                                    {% if bot_remover.is_working %}
+                                    <span class="badge badge-pill badge-fine">Running</span>
+                                    {% else %}
+                                        {% if bot_remover.last_thread.is_alive %}
+                                            <span class="badge badge-pill badge-warning">Stopping</span>
+                                        {% else %}
+                                            <span class="badge badge-pill badge-error">Switched off</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td class="col-md-2">
+                                    {% if bot_remover.is_working %}
+                                    <a href="{% url 'page-admin-remove-stop-bot' %}"><button type="button" class="btn btn-danger btn-xs" id="script-delete-off">Off</button></a>
+                                    {% else %}
+                                        {% if bot_remover.last_thread.is_alive %}
+                                            <a href="{% url 'page-admin-new' %}"><button type="button" class="btn btn-xs" id="script-delete-stopping">...</button></a>
+                                        {% else %}
+                                            <a href="{% url 'page-admin-remove-start-bot' %}"><button type="button" class="btn btn-info btn-xs" id="script=delete-on">On</button></a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Download script</td>
+
+                                <td class="text-center">
+                                    {% if bot_downloader.is_working %}
+                                    <span class="badge badge-pill badge-fine">Running</span>
+                                    {% else %}
+                                        {% if bot_downloader.last_thread.is_alive %}
+                                            <span class="badge badge-pill badge-warning">Stopping</span>
+                                        {% else %}
+                                            <span class="badge badge-pill badge-error">Switched off</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bot_downloader.is_working %}
+                                    <a href="{% url 'page-admin-download-stop-bot' %}"><button type="button" class="btn btn-danger btn-xs" id="script-download-off">Off</button></a>
+                                    {% else %}
+                                        {% if bot_downloader.last_thread.is_alive %}
+                                            <a href="#"><button type="button" class="btn btn-xs" id="script-download-stopping">...</button></a>
+                                        {% else %}
+                                            <a href="{% url 'page-admin-download-start-bot' %}"><button type="button" class="btn btn-info btn-xs" id="script=download-on">On</button></a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="admin-sign-out">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    <footer class="footer">
+        <div class="container">
+            <span class="copyright">Copyright &copy; 2017 webm.fun. All rights reserved.</span>
+        </div>
+    </footer>
+</body>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/functions.js' %}"></script>
+<script src="{% static 'js/tippy.min.js' %}"></script>
+</html>

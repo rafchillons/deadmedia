@@ -1,0 +1,52 @@
+{% load staticfiles %}
+<html>
+  <head>
+
+  </head>
+
+  <body>
+      <h1>Admin Page</h1>
+
+      <a href="{% url 'page-admin-download-all' %}">Download all</a>
+      <p><a href="{% url 'delete-all' %}">Empty</a></p>
+
+
+      <form method="POST">
+          <p><b>Delete video by url:</b></p>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type='submit'>Add</button>
+      </form>
+
+        <p><b>Bot downloader:</b><br \>
+            Status:
+            {% if bot_downloader.is_working %}
+                Running
+            {% else %}
+                {% if bot_downloader.last_thread.is_alive %}
+                    Finishing
+                {% else %}
+                    Stopped
+                {% endif %}
+            {% endif %}
+
+        <p><a href="{% url 'page-admin-download-start-bot' %}"><button>Start downloader bot</button></a></p>
+        <p><a href="{% url 'page-admin-download-stop-bot' %}"><button>Stop downloader bot</button></a></p>
+
+          <p><b>Bot remover:</b><br \>
+            Status:
+            {% if bot_remover.is_working %}
+                Running
+            {% else %}
+                {% if bot_remover.last_thread.is_alive %}
+                    Finishing
+                {% else %}
+                    Stopped
+                {% endif %}
+            {% endif %}
+
+        <p><a href="{% url 'page-admin-remove-start-bot' %}"><button>Start remover bot</button></a></p>
+        <p><a href="{% url 'page-admin-remove-stop-bot' %}"><button>Stop remover bot</button></a></p>
+
+  </body>
+</html>
