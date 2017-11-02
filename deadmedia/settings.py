@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     '37.187.116.151',
     'deadmedia.ru',
     '127.0.0.1',
+    u'localhost',
 ]
 
 
