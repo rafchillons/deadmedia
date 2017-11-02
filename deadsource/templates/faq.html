@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width" />
     <title>WEBM</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <body>
     <div class="container">
         <div class="category">
@@ -45,17 +45,15 @@
     <div class="container">
     </div>
 
+    <a href="#" class="admin-sign-out">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a>
     <footer class="footer">
         <div class="container">
             <span class="copyright">Copyright &copy; 2017 deadmedia.us All rights reserved.</span>
         </div>
     </footer>
 </body>
-<script src="../static/js/jquery.min.js"></script>
-<script src="../static/js/jquery.waypoints.min.js"></script>
-<script src="../static/js/infinite.min.js"></script>
-<script src="../static/js/style.js"></script>
-<script src="../static/js/bootstrap.min.js"></script>
-<script src="../static/js/fullscreen.js"></script>
-<script src="../static/js/tippy.min.js"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/functions.js' %}"></script>
+<script src="{% static 'js/tippy.min.js' %}"></script>
 </html>
