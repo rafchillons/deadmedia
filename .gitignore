@@ -1,6 +1,0 @@
-.gitignore
-.idea
-*
-!storage/*
-.DS_Store
-*/.DS_Store
