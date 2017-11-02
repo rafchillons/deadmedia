@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^page/admin/remove/stopbot$', views.stop_removing_bot, name='page-admin-remove-stop-bot'),
 
     url(r'^newadmin$', views.new_admin, name='page-admin-new'),
-    url(r'^error404$', views.new_error, name='error404-page'),
+    url(r'^error404$', views.handler404, name='error404-page'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
