@@ -21,8 +21,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^1$', views.main_page, name='main-page'),
-    url(r'^faq$', views.show_faq, name='site-faq'),
+
+    url(r'^$', views.show_home, name='webm-page'),
+    url(r'^adult$', views.show_adult, name='adult-page'),
+    url(r'^faq$', views.show_faq, name='faq-page'),
+    url(r'^hot$', views.show_hot, name='hot-page'),
+    url(r'^mp4$', views.show_mp4, name='mp4-page'),
+
+
     url(r'^maksim$', views.show_maksim_page, name='page-maksim'),
     url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
     url(r'^delete/$', views.delete_all_videos, name='delete-all'),
@@ -33,9 +39,9 @@ urlpatterns = [
     url(r'^page/admin/remove/stopbot$', views.stop_removing_bot, name='page-admin-remove-stop-bot'),
 
     url(r'^newadmin$', views.new_admin, name='page-admin-new'),
-    url(r'^newerror$', views.new_error, name='page-error'),
+    url(r'^error404$', views.new_error, name='error404-page'),
 
-    url(r'^$', views.home, name='home'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'webms.views.handler404'

@@ -36,8 +36,36 @@ def main_page(request):
                   })
 
 
+def show_home(request):
+    numbers_list = zip(
+        *[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date'))] * 4)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(numbers_list, 3)
+
+    try:
+        numbers = paginator.page(page)
+    except PageNotAnInteger:
+        numbers = paginator.page(1)
+    except EmptyPage:
+        numbers = paginator.page(paginator.num_pages)
+    return render(request, 'webm_page.html', {'numbers': numbers})
+
+
+def show_adult(request):
+    return render(request, 'adult_page.html')
+
+
+def show_hot(request):
+    return render(request, 'hot_page.html')
+
+
 def show_faq(request):
-    return render(request, 'faq.html')
+    return render(request, 'faq_page.html')
+
+
+def show_mp4(request):
+    return render(request, 'mp4_page.html')
 
 
 @login_required
@@ -86,7 +114,7 @@ def show_maksim_page2(request, page):
 @login_required
 def delete_all_videos(request):
     delete_all_videos_by_added_date()
-    return redirect('main-page')
+    return redirect('page-admin-new')
 
 
 @login_required
@@ -104,21 +132,7 @@ def show_maksim_page(request):
     return render(request, 'index.html', {'numbers': rows_of_videos})
 
 
-def home(request):
-    numbers_list = zip(
-        *[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date'))] * 4)
 
-    page = request.GET.get('page', 1)
-    paginator = Paginator(numbers_list, 3)
-
-    import time
-    try:
-        numbers = paginator.page(page)
-    except PageNotAnInteger:
-        numbers = paginator.page(1)
-    except EmptyPage:
-        numbers = paginator.page(paginator.num_pages)
-    return render(request, 'home.html', {'numbers': numbers})
 
 """
 def home(request):
@@ -132,7 +146,7 @@ def home(request):
         numbers = paginator.page(1)
     except EmptyPage:
         numbers = paginator.page(paginator.num_pages)
-    return render(request, 'home.html', {'numbers': numbers})
+    return render(request, 'webm_page.html', {'numbers': numbers})
 """
 
 @login_required
@@ -174,7 +188,7 @@ def new_admin(request):
 
 @login_required
 def new_error(request):
-    return render(request, 'error.html')
+    return render(request, 'error404_page.html')
 
 
 @login_required
@@ -188,8 +202,6 @@ def new_admin(request):
     all_videos_weight = 0
     for video in all_videos_in_db:
         all_videos_weight += int(video.video_size)
-
-    print
 
     videos_weight = {}
     if all_videos_weight > 999999999:
@@ -229,4 +241,4 @@ def new_admin(request):
 
 
 def handler404(request):
-    return render(request, 'error.html')
+    return render(request, 'error404_page.html')

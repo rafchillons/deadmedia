@@ -12,8 +12,8 @@
     <div class="container">
         <div class="category">
             <div class="category-title">
-                <span class="title">24FAQ</span>
-                <span class="title-sub">webm</span>
+                <span class="title">24</span>
+                <span class="title-sub">hot</span>
             </div>
         </div>
     </div>
@@ -27,11 +27,11 @@
             <i class="fa fa-bars" aria-hidden="true" id="menu-trigger-btn"></i>
         </a>
         <ul>
-            <li><a href="#"><i class="fa fa-bolt" aria-hidden="true"></i>Hot</a></li>
-            <li><a href="#"><i class="fa fa-smile-o" aria-hidden="true"></i>Adult</a></li>
-            <li><a href="#" class="active"><i class="fa fa-wheelchair-alt" aria-hidden="true"></i>Webm</a></li>
-            <li><a href="#"><i class="fa fa-mobile" aria-hidden="true"></i>Mp4</a></li>
-            <li><a href="{% url 'site-faq' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
+            <li><a href="{% url 'hot-page' %}"><i class="fa fa-bolt" aria-hidden="true"></i>Hot</a></li>
+            <li><a href="{% url 'adult-page' %}"><i class="fa fa-smile-o" aria-hidden="true"></i>Adult</a></li>
+            <li><a href="{% url 'webm-page' %}" class="active"><i class="fa fa-wheelchair-alt" aria-hidden="true"></i>Webm</a></li>
+            <li><a href="{% url 'mp4-page' %}"><i class="fa fa-mobile" aria-hidden="true"></i>Mp4</a></li>
+            <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
             <!--admin sign out-->
             <li class="admin-sign-out-mobile"><a href="#">Sign out</a></li>
             <!--admin logout ending-->
