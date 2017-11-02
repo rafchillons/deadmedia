@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^1$', views.main_page, name='main-page'),
-    url(r'^deadfuck$', views.show_faq, name='site-faq'),
+    url(r'^faq$', views.show_faq, name='site-faq'),
     url(r'^maksim$', views.show_maksim_page, name='page-maksim'),
     url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
     url(r'^delete/$', views.delete_all_videos, name='delete-all'),
