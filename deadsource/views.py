@@ -36,6 +36,10 @@ def main_page(request):
                   })
 
 
+def show_faq(request):
+    return render(request, 'faq.html')
+
+
 @login_required
 def show_admin_page(request):
     bot_downloader = ThreadDownloader()
