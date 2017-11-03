@@ -268,4 +268,4 @@ def handler404(request):
 
 def logout_view(request):
     logout(request)
-    redirect('webm-page')
+    return redirect('webm-page')
