@@ -16,6 +16,7 @@ from django.views.generic import (
     DetailView,
 )
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from deadmedia.settings import MEDIA_ROOT
 import forms as my_forms
@@ -263,3 +264,8 @@ def new_admin(request):
 
 def handler404(request):
     return render(request, 'error404_page.html')
+
+
+def logout_view(request):
+    logout(request)
+    redirect('webm-page')

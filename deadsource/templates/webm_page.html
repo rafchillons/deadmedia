@@ -18,7 +18,7 @@
     </div>
     <!--admin sign out-->
     {% if is_authenticated %}
-        <a href="#" class="admin-sign-out">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+        <a href="{% url 'logout' %}" class="admin-sign-out">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a>
     {% endif %}
     <!--admin logout ending-->
     <!--    menu-->
@@ -35,7 +35,7 @@
             <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
             <!--admin sign out-->
             {% if is_authenticated %}
-                <li class="admin-sign-out-mobile"><a href="#">Sign out</a></li>
+                <li class="admin-sign-out-mobile"><a href="{% url 'logout' %}">Sign out</a></li>
             {% endif %}
             <!--admin logout ending-->
         </ul>
