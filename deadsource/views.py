@@ -36,7 +36,7 @@ def main_page(request):
                   })
 
 
-def show_home(request):
+def show_webm(request):
     numbers_list = zip(
         *[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date'))] * 4)
 
@@ -49,23 +49,44 @@ def show_home(request):
         numbers = paginator.page(1)
     except EmptyPage:
         numbers = paginator.page(paginator.num_pages)
-    return render(request, 'webm_page.html', {'numbers': numbers})
+    return render(request,
+                  'webm_page.html',
+                  {
+                      'numbers': numbers,
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
 
 
 def show_adult(request):
-    return render(request, 'adult_page.html')
+    return render(request,
+                  'adult_page.html',
+                  {
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
 
 
 def show_hot(request):
-    return render(request, 'hot_page.html')
+    return render(request,
+                  'hot_page.html',
+                  {
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
 
 
 def show_faq(request):
-    return render(request, 'faq_page.html')
+    return render(request,
+                  'faq_page.html',
+                  {
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
 
 
 def show_mp4(request):
-    return render(request, 'mp4_page.html')
+    return render(request,
+                  'mp4_page.html',
+                  {
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
 
 
 @login_required
