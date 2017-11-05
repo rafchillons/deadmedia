@@ -1,31 +1,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from os.path import abspath, dirname, join
-from django.core.urlresolvers import reverse
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Video
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from forms import VideoDeleteForm
-from utils.bot_module import ThreadDownloader, VideoRemover
-from utils.video_handler_module import download_and_save_all_new_videos, delete_all_videos_by_added_date
-from django.views.generic import (
-    ListView,
-    CreateView,
-    UpdateView,
-    DeleteView,
-    DetailView,
-)
-from django.contrib.auth.decorators import login_required
+import requests
+from functools import wraps
 from django.contrib.auth import logout
-
-from deadmedia.settings import MEDIA_ROOT
-import forms as my_forms
-import json
-import urllib
-import urllib2
-from urllib2 import Request, urlopen
-from os import remove
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect, get_object_or_404
+import deadmedia.settings
+from .forms import VideoDeleteForm, AuthenticationCaptchaForm
+from .models import Video
+from .utils.bot_module import ThreadDownloader, VideoRemover
+from .utils.video_handler_module import download_and_save_all_new_videos, delete_all_videos_by_added_date
+from django.http import *
+from django.shortcuts import render_to_response,redirect
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LoginView
+from captcha.fields import ReCaptchaField
+from django.conf import settings
+from django.contrib import messages
 
 def main_page(request):
     videos = Video.objects.all().order_by('added_date')
@@ -269,3 +264,41 @@ def handler404(request):
 def logout_view(request):
     logout(request)
     return redirect('webm-page')
+
+
+def check_recaptcha(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        request.recaptcha_is_valid = None
+        if request.method == 'POST':
+            recaptcha_response = request.POST.get('g-recaptcha-response')
+            data = {
+                'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                'response': recaptcha_response
+            }
+            r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+            result = r.json()
+            if result['success']:
+                request.recaptcha_is_valid = True
+            else:
+                request.recaptcha_is_valid = False
+                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+
+@check_recaptcha
+def login_view(request):
+    logout(request)
+
+    username = password = ''
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if request.recaptcha_is_valid and user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('webm-page')
+
+    return render(request, 'sign.html')

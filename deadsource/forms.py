@@ -1,7 +1,8 @@
 from django import forms
 from .models import Video
-import httplib
-import utils.video_handler_module
+from django.contrib.auth.forms import AuthenticationForm
+from captcha.fields import ReCaptchaField
+from deadmedia import settings
 
 
 class VideoDeleteForm(forms.ModelForm):
@@ -23,6 +24,16 @@ class VideoDeleteForm(forms.ModelForm):
             return video_id
         except Exception as e:
             raise forms.ValidationError('Wrong url({})!'.format(e))
+
+
+class AuthenticationCaptchaForm(forms.Form):
+    captcha = ReCaptchaField(
+        public_key=settings.RECAPTCHA_PUBLIC_KEY,
+        private_key=settings.RECAPTCHA_PRIVATE_KEY,
+    )
+
+
+
 
 """
     def clean_downloaded_url(self):

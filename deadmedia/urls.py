@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^mp4$', views.show_mp4, name='mp4-page'),
 
     url(r'^logout$', views.logout_view, name='logout'),
+    url(r'^login$', views.login_view, name='login-page'),
 
     url(r'^maksim$', views.show_maksim_page, name='page-maksim'),
     url(r'^page/admin/$', views.show_admin_page, name='page-admin'),

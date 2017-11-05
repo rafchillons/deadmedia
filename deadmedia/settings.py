@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #'mod_wsgi.server',
     'deadsource',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/storage/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage')
+
+RECAPTCHA_PUBLIC_KEY = '6LdsEDcUAAAAALXj0Pevj6wg8vFDMCWQZ54FqlUa'
+RECAPTCHA_PRIVATE_KEY = '6LdsEDcUAAAAAKbOXsvJ7vO2az8QhKH__9nKPPlY'
