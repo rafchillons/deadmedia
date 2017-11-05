@@ -292,13 +292,15 @@ def login_view(request):
     logout(request)
 
     username = password = ''
-    if request.method == 'POST':
+    if request.method == 'POST' and request.recaptcha_is_valid:
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-        if request.recaptcha_is_valid and user is not None:
+        if user is not None:
             if user.is_active:
                 login(request, user)
                 return redirect('webm-page')
+        else:
+            messages.error(request, 'Invalid username or password. Please try again.')
 
-    return render(request, 'sign.html')
+    return render(request, 'sign.html', {'messages': messages.get_messages(request)})
