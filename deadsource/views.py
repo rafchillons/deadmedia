@@ -213,7 +213,7 @@ def new_admin(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
 
-    all_videos_in_db = reversed(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED))
+    all_videos_in_db = list(reversed(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)))
     all_videos_count = all_videos_in_db.__len__()
 
     all_videos_weight = 0
@@ -299,7 +299,7 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect('webm-page')
+                return redirect('page-admin-new')
 
         messages.error(request, 'Invalid username or password. Please try again.')
 
