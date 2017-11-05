@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^$', views.show_webm, name='webm-page'),
-    #url(r'^adult$', views.show_adult, name='adult-page'),
+    url(r'^adult$', views.show_adult, name='adult-page'),
     url(r'^faq$', views.show_faq, name='faq-page'),
     url(r'^hot$', views.show_hot, name='hot-page'),
     url(r'^mp4$', views.show_mp4, name='mp4-page'),
