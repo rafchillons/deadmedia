@@ -300,7 +300,7 @@ def login_view(request):
             if user.is_active:
                 login(request, user)
                 return redirect('webm-page')
-        else:
-            messages.error(request, 'Invalid username or password. Please try again.')
+
+        messages.error(request, 'Invalid username or password. Please try again.')
 
     return render(request, 'sign.html', {'messages': messages.get_messages(request)})
