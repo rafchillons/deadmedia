@@ -213,7 +213,7 @@ def new_admin(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
 
-    all_videos_in_db = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)
+    all_videos_in_db = reversed(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED))
     all_videos_count = all_videos_in_db.__len__()
 
     all_videos_weight = 0
