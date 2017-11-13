@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-
-{% load static %}
+<!DOCTYPE html> {% load static %}
 <html>
+
 <head lang="en">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width" />
     <title>WEBM</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
 <body>
     <div class="container">
         <div class="category">
@@ -17,11 +18,6 @@
             </div>
         </div>
     </div>
-    <!--admin sign out-->
-    {% if is_authenticated %}
-        <a href="{% url 'logout' %}" class="admin-sign-out">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a>
-    {% endif %}
-    <!--admin logout ending-->
     <!--    menu-->
     <nav class="menu">
         <a href="#" class="menu-trigger clearfix">
@@ -36,7 +32,7 @@
             <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
             <!--admin sign out-->
             {% if is_authenticated %}
-                <li class="admin-sign-out-mobile"><a href="{% url 'logout' %}">Sign out</a></li>
+            <li class="admin-sign-out-mobile"><a href="{% url 'logout' %}">Sign out</a></li>
             {% endif %}
             <!--admin logout ending-->
         </ul>
@@ -51,6 +47,15 @@
     <div class="container">
     </div>
 
+    <!--admin special menu -->
+    {% if is_authenticated %}
+    <ul class="admin-special-menu clearfix">
+        <li><a href="/">Home</a></li>
+        <li><a href="/newadmin">ControlPanel</a></li>
+        <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+    </ul>
+    {% endif %}
+    <!--admin special menu ending-->
     <footer class="footer">
         <div class="container">
             <span class="copyright">Copyright &copy; 2017 deadmedia.us All rights reserved.</span>
@@ -58,7 +63,11 @@
     </footer>
 </body>
 <script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
 <script src="{% static 'js/style.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/fullscreen.js' %}"></script>
 <script src="{% static 'js/tippy.min.js' %}"></script>
+
 </html>
