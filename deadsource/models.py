@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 
+import threading
+import json
+
 
 class Video(models.Model):
     title = models.CharField(max_length=200, default='Default title')
@@ -28,6 +31,10 @@ class Video(models.Model):
     video_size_str = models.CharField(max_length=200, default='0')
     video_duration_str = models.CharField(max_length=200, default='0')
 
+    is_adult = models.BooleanField(max_length=1, default=False)
+    is_music = models.BooleanField(max_length=1, default=False)
+    is_hot = models.BooleanField(max_length=1, default=False)
+
     STATUS_NOTSET = 'Video status not set'
     STATUS_DOWNLOADING = 'Video is downloading'
     STATUS_DOWNLOADED = 'Video is downloaded'
@@ -35,13 +42,15 @@ class Video(models.Model):
     VIDEO_STATUS = (
         (STATUS_DOWNLOADING, 'Downloading'),
         (STATUS_DOWNLOADED, 'Downloaded'),
-        (STATUS_NOTSET, 'Notset')
+        (STATUS_NOTSET, 'Notset'),
     )
+
 
     video_status = models.CharField(max_length=200, choices=VIDEO_STATUS, default=STATUS_NOTSET)
 
     def __str__(self):
         return self.title
+
 
     """
     created_date = models.DateTimeField(
@@ -105,4 +114,73 @@ class Video(models.Model):
     def publish(self):
         self.published_date = timezone.now()
         self.save()
+
+
 """
+
+
+class BotTask(models.Model):
+    added_date = models.DateTimeField(default=timezone.now)
+
+    BOT_STATUS_WORKING = 'Bot is working'
+    BOT_STATUS_FINISHING = 'Bot is finishing'
+    BOT_STATUS_STOPPED = 'Bot is stopped'
+
+    BOT_STATUS = (
+        (BOT_STATUS_WORKING, 'Working'),
+        (BOT_STATUS_FINISHING, 'Finishing'),
+        (BOT_STATUS_STOPPED, 'Stopped')
+    )
+
+    bot_status = models.CharField(max_length=200, choices=BOT_STATUS, default=BOT_STATUS_STOPPED)
+
+    BOT_TASK_DOWNLOAD_2CH_WEBM = 'Download webms from 2ch'
+    BOT_TASK_REMOVE_WEBM = 'Remove webms'
+
+    BOT_TASK = (
+        (BOT_TASK_DOWNLOAD_2CH_WEBM, 'Download'),
+        (BOT_TASK_REMOVE_WEBM, 'Remove'),
+    )
+
+    bot_task = models.CharField(max_length=200, choices=BOT_TASK, default=BOT_TASK_DOWNLOAD_2CH_WEBM)
+
+    task_data = models.BinaryField(default='{}')
+
+    def start_bot(self):
+        from .utils.bot_module import BotIsBusy, bot_task_1, TaskThread
+        if filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
+            raise BotIsBusy('Bot (id={}) is working already!'.format(self.id))
+
+        data = json.loads(str(self.task_data))
+        thread = TaskThread('Bot({})'.format(self.id), bot_task_1, data)
+        thread.start()
+        self.bot_status = self.BOT_STATUS_WORKING
+        self.save()
+
+    def stop_bot(self):
+        for thread in [x for x in threading.enumerate() if x.getName() == 'Bot({})'.format(self.id)]:
+            thread.stop()
+
+    def get_status(self):
+        from .utils.bot_module import TaskThread
+        if not filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
+            return TaskThread.STATUS_STOPPED
+
+        return list(filter(lambda x: x.getName() == 'Bot({})'.format(self.id),
+                           threading.enumerate()))[0].get_status()
+
+    def get_process_status(self):
+        from .utils.bot_module import TaskThread
+        if not filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
+            return TaskThread.PROCESS_STATUS_RESTING
+
+        return list(filter(lambda x: x.getName() == 'Bot({})'.format(self.id),
+                           threading.enumerate()))[0].get_process_status()
+
+    def pause_on(self):
+        for thread in [x for x in threading.enumerate() if x.getName() == 'Bot({})'.format(self.id)]:
+            thread.pause_on()
+
+    def pause_off(self):
+        for thread in [x for x in threading.enumerate() if x.getName() == 'Bot({})'.format(self.id)]:
+            thread.pause_off()

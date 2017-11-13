@@ -48,9 +48,9 @@
 
 
     <div class="infinite-container container">
-        {% for videos in numbers %}
+        {% for videos_row in videos %}
         <div class="infinite-item row images">
-            {% for video in videos %}
+            {% for video in videos_row %}
             <div class="col-md-6 col-lg-3 image" id="test">
                 <figure>
                     <div id="{{video.id}}" class="image-link" onclick="expand(1488, '/storage/{{video.storage_name}}', {{video.video_width}}, {{video.video_height}}, 0)">
@@ -70,8 +70,8 @@
         </div>
         {% endfor %}
     </div>
-    {% if numbers.has_next %}
-        <a class="infinite-more-link" href="?page={{ numbers.next_page_number }}"></a>
+    {% if videos.has_next %}
+        <a class="infinite-more-link" href="?page={{ videos.next_page_number }}"></a>
     {% endif %}
     <div class="loading">
         <div class="loading-image">

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for bot in bots %}
+    <p>-------------------------------------------
+        <p>Id: {{bot.db_object.id}}</p>
+        <p>Status: {{bot.db_object.get_status}}</p>
+        <p>Process status: {{bot.db_object.get_process_status}}</p>
+        <p>Task: {{bot.db_object.bot_task}}</p>
+
+
+        <p>With words: {{bot.data_dict.with_words}}</p>
+        <p>Without words: {{bot.data_dict.without_words}}</p>
+        <p>Interval: {{bot.data_dict.interval}}</p>
+
+        <p>Is max iter: {{bot.data_dict.is_max_iter}}</p>
+        <p>Iters to do: {{bot.data_dict.iters_to_do}}</p>
+
+        <p>Is max time: {{bot.data_dict.is_max_time}}</p>
+        <p>Working time: {{bot.data_dict.working_time}}</p>
+
+        <p>Is music: {{bot.data_dict.is_music}}</p>
+        <p>Is adult: {{bot.data_dict.is_adult}}</p>
+        <p>Max video count: {{bot.data_dict.max_videos_count}}</p>
+
+        <p> <a href="{% url 'start-bot-id' bot.db_object.id %}">Start bot</a> </p>
+        <p> <a href="{% url 'stop-bot-id' bot.db_object.id %}">Stop bot</a> </p>
+        <p> <a href="{% url 'delete-bot-id' bot.db_object.id %}">Delete bot</a> </p>
+        <p> <a href="{% url 'pause-on-bot-id' bot.db_object.id %}">Pause on</a> </p>
+        <p> <a href="{% url 'pause-off-bot-id' bot.db_object.id %}">Pause off</a> </p>
+
+    </p>--------------------------------------------
+
+    {% endfor %}
+
+
+</body>
+</html>

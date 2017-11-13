@@ -6,7 +6,6 @@ import urllib2
 import threading
 import time
 from datetime import datetime
-from deadsource.models import Video
 from deadmedia.settings import MEDIA_ROOT
 from os.path import (
     join,

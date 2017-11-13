@@ -8,7 +8,6 @@ import threading
 import time
 import logging
 from datetime import datetime
-from deadsource.models import Video
 from deadmedia.settings import MEDIA_ROOT
 from os.path import (
     join,
@@ -16,7 +15,6 @@ from os.path import (
 
 
 CATALOG_URL = 'https://2ch.hk/b/catalog.json'
-
 
 
 def find_all_webs_from_files(all_files):
@@ -35,7 +33,7 @@ def find_all_webs_from_files(all_files):
         elem['thumbnail_source'] = 'https://2ch.hk{}'.format(elem['thumbnail'])
 
     logging.debug("Finding webms inf files: complete.")
-    return result[:20]
+    return result
 
 
 def find_threads_by_word_in_comments(with_words=(), without_words=()):

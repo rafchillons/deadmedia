@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <p>{{form.bot_task}}</p>
+        {% for error in  form.bot_task.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Find threads with words: <input name="with_words" type="text"></p>
+        {% for error in  form.with_words.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Ignore threads with words: <input name="without_words" type="text"></p>
+        {% for error in  form.without_words.errors %}
+            <h1>error</h1>
+        {% endfor %}
+        <p>Set adult category: <input name="is_adult" type="checkbox"></p>
+        {% for error in  form.is_adult.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Set music category: <input name="is_music" type="checkbox"></p>
+        {% for error in  form.is_music.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Interval between iters: <input name="interval" type="number" value="0"></p>
+        {% for error in  form.interval.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Set working duration: <input name="is_max_time" type="checkbox"></p>
+        {% for error in  form.is_max_time.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Working duration: <input name="working_time" type="number" value="1"></p>
+        {% for error in  form.working_time.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Set max iter: <input name="is_max_iter" type="checkbox"></p>
+        {% for error in  form.is_max_iter.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Max iters count: <input name="iters_to_do" type="number" value="1"></p>
+        {% for error in  form.iters_to_do.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Count of videos per iter: <input name="max_videos_count" type="number"></p>
+        {% for error in  form.max_videos_count.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+
+
+        <button class="btn btn-sm btn-default btn-block" type="submit">Create bot</button>
+    </form>
+</body>
+</html>

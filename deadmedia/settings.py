@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #'mod_wsgi.server',
     'deadsource',
-    'captcha',
 ]
 
 MIDDLEWARE = [

@@ -31,6 +31,16 @@ urlpatterns = [
     url(r'^logout$', views.logout_view, name='logout'),
     url(r'^login$', views.login_view, name='login-page'),
 
+    url(r'^create$', views.create_bot_view, name='create-bot'),
+    url(r'^start$', views.bot_start_view, name='start-bot'),
+    url(r'^status$', views.bot_status_view, name='status-bot'),
+
+    url(r'^bot/(?P<pk>[0-9]+)/start/$', views.bot_start_id, name='start-bot-id'),
+    url(r'^bot/(?P<pk>[0-9]+)/stop/$', views.bot_stop_id, name='stop-bot-id'),
+    url(r'^bot/(?P<pk>[0-9]+)/delete/$', views.bot_delete_id, name='delete-bot-id'),
+    url(r'^bot/(?P<pk>[0-9]+)/pause/on/$', views.bot_pause_on, name='pause-on-bot-id'),
+    url(r'^bot/(?P<pk>[0-9]+)/pause/off/$', views.bot_pause_off, name='pause-off-bot-id'),
+
     url(r'^maksim$', views.show_maksim_page, name='page-maksim'),
     url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
     url(r'^delete/$', views.delete_all_videos, name='delete-all'),
