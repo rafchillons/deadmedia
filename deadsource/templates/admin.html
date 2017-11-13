@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 {% load static %}
+
 <head lang="en">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,8 +29,8 @@
                         {% csrf_token %}
 
                         <div class="input-group input-group-sm" id="delete">
-                                <input name="storage_name" type="text" class="form-control" placeholder="File link" aria-label="Delete id">
-                                <span class="input-group-btn">
+                            <input name="storage_name" type="text" class="form-control" placeholder="File link" aria-label="Delete id">
+                            <span class="input-group-btn">
                                     <button type="submit" class="btn btn-default" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                 </span>
                         </div>
@@ -55,7 +56,13 @@
             </div>
         </div>
     </div>
-    <a href="#" class="admin-sign-out">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    <!--admin special menu -->
+    <ul class="admin-special-menu clearfix">
+        <li><a href="/">Home</a></li>
+        <li><a href="/newadmin">ControlPanel</a></li>
+        <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+    </ul>
+    <!--admin special menu ending-->
     <footer class="footer">
         <div class="container">
             <span class="copyright">Copyright &copy; 2017 deadmedia.us All rights reserved.</span>
@@ -66,4 +73,5 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/functions.js' %}"></script>
 <script src="{% static 'js/tippy.min.js' %}"></script>
+
 </html>
