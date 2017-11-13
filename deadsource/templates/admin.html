@@ -53,66 +53,6 @@
                     </table>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-8">Delete script</td>
-                                <td class="col-md-2 text-center">
-                                    {% if bot_remover.is_working %}
-                                    <span class="badge badge-pill badge-fine">Running</span>
-                                    {% else %}
-                                        {% if bot_remover.last_thread.is_alive %}
-                                            <span class="badge badge-pill badge-warning">Stopping</span>
-                                        {% else %}
-                                            <span class="badge badge-pill badge-error">Switched off</span>
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
-                                <td class="col-md-2 text-center">
-                                    {% if bot_remover.is_working %}
-                                    <a href="{% url 'page-admin-remove-stop-bot' %}"><button type="button" class="btn btn-danger btn-xs" id="script-delete-off">Off</button></a>
-                                    {% else %}
-                                        {% if bot_remover.last_thread.is_alive %}
-                                            <a href="{% url 'page-admin-new' %}"><button type="button" class="btn btn-xs" id="script-delete-stopping">...</button></a>
-                                        {% else %}
-                                            <a href="{% url 'page-admin-remove-start-bot' %}"><button type="button" class="btn btn-info btn-xs" id="script=delete-on">On</button></a>
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>Download script</td>
-
-                                <td class="text-center">
-                                    {% if bot_downloader.is_working %}
-                                    <span class="badge badge-pill badge-fine">Running</span>
-                                    {% else %}
-                                        {% if bot_downloader.last_thread.is_alive %}
-                                            <span class="badge badge-pill badge-warning">Stopping</span>
-                                        {% else %}
-                                            <span class="badge badge-pill badge-error">Switched off</span>
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
-                                <td class="text-center">
-                                    {% if bot_downloader.is_working %}
-                                    <a href="{% url 'page-admin-download-stop-bot' %}"><button type="button" class="btn btn-danger btn-xs" id="script-download-off">Off</button></a>
-                                    {% else %}
-                                        {% if bot_downloader.last_thread.is_alive %}
-                                            <a href="#"><button type="button" class="btn btn-xs" id="script-download-stopping">...</button></a>
-                                        {% else %}
-                                            <a href="{% url 'page-admin-download-start-bot' %}"><button type="button" class="btn btn-info btn-xs" id="script=download-on">On</button></a>
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
     <a href="#" class="admin-sign-out">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a>
