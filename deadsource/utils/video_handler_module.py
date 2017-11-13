@@ -18,12 +18,12 @@ from os.path import (
 )
 from os import remove
 
-
 def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
                                            without_words=(),
                                            max_videos_count=None,
                                            is_music=False,
-                                           is_adult=False):  # this function is not for release
+                                           is_adult=False,
+                                           exit_event=threading.Event()):  # this function is not for release
     logging.debug("Downloading and saving all videos from 2ch.")
 
     founded_threads = parse_2ch_module.find_threads_by_word_in_comments(with_words=with_words,
@@ -34,11 +34,15 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
     webms_description = parse_2ch_module.find_all_webs_from_files(founded_files_description)
     webms_description = _get_videos_from_list_not_in_db(webms_description)
 
-    if max_videos_count:
+    if max_videos_count and max_videos_count < webms_description.__len__():
         webms_description = webms_description[:max_videos_count]
 
     for webm_description in webms_description:
         try:
+            if exit_event.isSet():
+                logging.warning('Downloading and saving all videos from 2ch: exit event.')
+                break
+
             webm_description['is_music'] = is_music
             webm_description['is_adult'] = is_adult
 
