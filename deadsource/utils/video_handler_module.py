@@ -157,6 +157,15 @@ def delete_video_by_source_link(video_source_link):
     logging.debug('Removing video: complete.')
 
 
+def delete_video_by_db_object(db_object):
+    logging.debug('Removing video {}'.format(db_object))
+
+    _remove_video_from_storage(db_object)
+    _remove_video_from_db(db_object)
+
+    logging.debug('Removing video: complete.')
+
+
 def _remove_video_from_db(video):
     logging.debug("Removing video from db({}).".format(video))
 
@@ -172,7 +181,7 @@ def _remove_video_from_storage(video):
         remove(video.storage_path)
     except OSError as e:
         if e.errno == 2:
-            logging.warning('Fail to remove: {}'.format(e))
+            logging.error('Fail to remove: {}'.format(e))
         else:
             raise
 
@@ -180,7 +189,7 @@ def _remove_video_from_storage(video):
         remove(video.preview_storage_path)
     except OSError as e:
         if e.errno == 2:
-            logging.warning('Fail to remove: {}'.format(e))
+            logging.error('Fail to remove: {}'.format(e))
         else:
             raise
 
