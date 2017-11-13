@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-import json
-from functools import wraps
-
 import requests
-from django.conf import settings
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from functools import wraps
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import redirect
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import render, redirect, get_object_or_404
+import deadmedia.settings
 from .forms import VideoDeleteForm, BotTaskForm
 from .models import Video, BotTask
 from .utils.bot_module import ThreadDownloader, VideoRemover
 from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date
+from django.http import *
+from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LoginView
+from django.conf import settings
+from django.contrib import messages
+import json
 
 
 def main_page(request):
@@ -30,9 +34,9 @@ def main_page(request):
 
 
 def show_webm(request):
-    list_of_grouped_videos = zip(*[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
+    list_of_grouped_videos = zip(*[iter(reversed(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
                                                                    is_adult=False,
-                                                                   is_music=False).order_by('added_date'))] * 4)
+                                                                   is_music=False).order_by('added_date')))] * 4)
 
     page = request.GET.get('page', 1)
     paginator = Paginator(list_of_grouped_videos, 3)
