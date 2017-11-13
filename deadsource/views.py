@@ -11,7 +11,7 @@ import deadmedia.settings
 from .forms import VideoDeleteForm, BotTaskForm
 from .models import Video, BotTask
 from .utils.bot_module import ThreadDownloader, VideoRemover
-from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date
+from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date, delete_video_by_db_object
 from django.http import *
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -225,7 +225,7 @@ def new_error(request):
     return render(request, 'error404_page.html')
 
 
-@login_required
+#@login_required
 def new_admin(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
@@ -256,7 +256,7 @@ def new_admin(request):
 
         if form.is_valid():
             video = get_object_or_404(Video, pk=int(form.cleaned_data['storage_name']))
-            video.delete()
+            delete_video_by_db_object(video)
             return redirect('page-admin-new')
 
     else:
@@ -412,3 +412,8 @@ def bot_pause_on(request, pk):
     bot.pause_on()
     return redirect('status-bot')
 
+
+def delete_video_id_view(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    delete_video_by_db_object(video)
+    return redirect('webm-page')
