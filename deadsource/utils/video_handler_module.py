@@ -18,11 +18,14 @@ from os.path import (
 )
 from os import remove
 
+
 def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
                                            without_words=(),
                                            max_videos_count=None,
-                                           is_music=False,
                                            is_adult=False,
+                                           is_webm=False,
+                                           is_hot=False,
+                                           is_mp4=False,
                                            exit_event=threading.Event()):  # this function is not for release
     logging.debug("Downloading and saving all videos from 2ch.")
 
@@ -43,8 +46,10 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
                 logging.warning('Downloading and saving all videos from 2ch: exit event.')
                 break
 
-            webm_description['is_music'] = is_music
             webm_description['is_adult'] = is_adult
+            webm_description['is_webm'] = is_webm
+            webm_description['is_hot'] = is_hot
+            webm_description['is_mp4'] = is_mp4
 
             _download_and_save_webm_video_and_preview(webm_description)
         except urllib2.HTTPError as e:
@@ -107,7 +112,9 @@ def _save_video_info_to_database(video,
     video.preview_storage_path = storage_path_preview
     video.preview_storage_name = basename(storage_path_preview)
     video.is_adult = description_json['is_adult']
-    video.is_music = description_json['is_music']
+    video.is_webm = description_json['is_webm']
+    video.is_mp4 = description_json['is_mp4']
+    video.is_hot = description_json['is_hot']
     video.video_status = video.STATUS_DOWNLOADED
     video.save()
 
@@ -135,14 +142,32 @@ def _get_videos_from_db_not_in_list(videos_description_json):
     return result
 
 
-def delete_all_videos_by_added_date(added_date=0):
+def delete_all_videos_by_added_date(ignore_time=None,
+                                    max_videos_count=None,
+                                    is_adult=False,
+                                    is_webm=False,
+                                    is_hot=False,
+                                    is_mp4=False,
+                                    exit_event=threading.Event()):
     logging.debug("Removing all videos by added date.")
 
     current_date = datetime.now()
-    videos_to_delete = [video for video in Video.objects.all() if
-                        (current_date - video.added_date.replace(tzinfo=None)).seconds > added_date]
+
+    videos_to_delete = [video for video in Video.objects.all().order_by('-added_date')
+                        if (current_date - video.added_date.replace(tzinfo=None)).seconds > ignore_time \
+                        and video.is_mp4 == is_mp4 \
+                        and video.is_hot == is_hot \
+                        and video.is_webm == is_webm \
+                        and video.is_adult == is_adult]
+
+    if max_videos_count and max_videos_count < videos_to_delete.__len__():
+        videos_to_delete = videos_to_delete[:max_videos_count]
 
     for video_to_delete in videos_to_delete:
+        if exit_event.isSet():
+            logging.warning('Removing all videos by added date: exit event.')
+            break
+
         _remove_video_from_storage(video_to_delete)
         _remove_video_from_db(video_to_delete)
 
@@ -198,5 +223,3 @@ def _remove_video_from_storage(video):
             raise
 
     logging.debug("Removing video from media: complete.")
-
-

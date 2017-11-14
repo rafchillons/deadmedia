@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+    <p><a href="{% url 'create-bot' %}">create download bot</a> <a href="{% url 'create-bot-remover' %}">create remove bot</a></p>
+
+
     {% for bot in bots %}
     <p>-------------------------------------------
         <p>Id: {{bot.db_object.id}}</p>
@@ -12,7 +15,7 @@
         <p>Process status: {{bot.db_object.get_process_status}}</p>
         <p>Task: {{bot.db_object.bot_task}}</p>
 
-
+        <p>Save time: {{bot.data_dict.ignore_time}}</p>
         <p>With words: {{bot.data_dict.with_words}}</p>
         <p>Without words: {{bot.data_dict.without_words}}</p>
         <p>Interval: {{bot.data_dict.interval}}</p>
@@ -25,6 +28,10 @@
 
         <p>Is music: {{bot.data_dict.is_music}}</p>
         <p>Is adult: {{bot.data_dict.is_adult}}</p>
+        <p>Is music: {{bot.data_dict.is_webm}}</p>
+        <p>Is adult: {{bot.data_dict.is_hot}}</p>
+        <p>Is adult: {{bot.data_dict.is_mp4}}</p>
+
         <p>Max video count: {{bot.data_dict.max_videos_count}}</p>
 
         <p> <a href="{% url 'start-bot-id' bot.db_object.id %}">Start bot</a> </p>

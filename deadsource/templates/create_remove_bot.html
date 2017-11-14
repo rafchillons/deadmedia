@@ -6,18 +6,11 @@
 </head>
 <body>
     <form method="post">
+        <p>REMOVE BOT</p>
         {% csrf_token %}
-        <p>{{form.bot_task}}</p>
-        {% for error in  form.bot_task.errors %}
+        <p>Set ignore_time: <input name="ignore_time" type="number"></p>
+        {% for error in  form.ignore_time.errors %}
             <h1>{{error}}</h1>
-        {% endfor %}
-        <p>Find threads with words: <input name="with_words" type="text"></p>
-        {% for error in  form.with_words.errors %}
-            <h1>{{error}}</h1>
-        {% endfor %}
-        <p>Ignore threads with words: <input name="without_words" type="text"></p>
-        {% for error in  form.without_words.errors %}
-            <h1>error</h1>
         {% endfor %}
         <p>Set adult category: <input name="is_adult" type="checkbox"></p>
         {% for error in  form.is_adult.errors %}

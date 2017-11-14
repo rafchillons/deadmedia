@@ -23,17 +23,21 @@ urlpatterns = [
     #url(r'^admin/', admin.site.urls),
 
     url(r'^$', views.show_webm, name='webm-page'),
-    url(r'^adult$', views.show_adult, name='adult-page'),
-    url(r'^faq$', views.show_faq, name='faq-page'),
-    url(r'^hot$', views.show_hot, name='hot-page'),
-    url(r'^mp4$', views.show_mp4, name='mp4-page'),
+    url(r'^adult/$', views.show_adult, name='adult-page'),
+    url(r'^faq/$', views.show_faq, name='faq-page'),
+    url(r'^hot/$', views.show_hot, name='hot-page'),
+    url(r'^mp4/$', views.show_mp4, name='mp4-page'),
+    url(r'^all/$', views.show_all, name='all-page'),
 
-    url(r'^logout$', views.logout_view, name='logout'),
-    url(r'^login$', views.login_view, name='login-page'),
+    url(r'^logout/$', views.logout_view, name='logout'),
+    url(r'^login/$', views.login_view, name='login-page'),
+    url(r'^accounts/login/$', views.login_view, name='login-page'),
 
-    url(r'^create$', views.create_bot_view, name='create-bot'),
-    url(r'^start$', views.bot_start_view, name='start-bot'),
-    url(r'^status$', views.bot_status_view, name='status-bot'),
+
+    url(r'^create/$', views.create_bot_view, name='create-bot'),
+    url(r'^status/$', views.bot_status_view, name='status-bot'),
+
+    url(r'^bot/create/remover$', views.create_bot_remover_view, name='create-bot-remover'),
 
     url(r'^bot/(?P<pk>[0-9]+)/start/$', views.bot_start_id, name='start-bot-id'),
     url(r'^bot/(?P<pk>[0-9]+)/stop/$', views.bot_stop_id, name='stop-bot-id'),
@@ -43,14 +47,8 @@ urlpatterns = [
 
     url(r'^video/(?P<pk>[0-9]+)/delete/$', views.delete_video_id_view, name='video-delete-id'),
 
-    url(r'^maksim$', views.show_maksim_page, name='page-maksim'),
     url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
     url(r'^delete/$', views.delete_all_videos, name='delete-all'),
-    url(r'^page/admin/download/all$', views.download_all_videos_from_2ch, name='page-admin-download-all'),
-    url(r'^page/admin/download/startbot$', views.start_downloading_bot, name='page-admin-download-start-bot'),
-    url(r'^page/admin/download/stopbot$', views.stop_downloading_bot, name='page-admin-download-stop-bot'),
-    url(r'^page/admin/remove/startbot$', views.start_removing_bot, name='page-admin-remove-start-bot'),
-    url(r'^page/admin/remove/stopbot$', views.stop_removing_bot, name='page-admin-remove-stop-bot'),
 
     url(r'^newadmin$', views.new_admin, name='page-admin-new'),
     url(r'^error404$', views.handler404, name='error404-page'),
