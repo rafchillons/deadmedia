@@ -56,11 +56,19 @@
                         <figcaption class="file-attr">
                             <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i>0</span>
                             <span class="file-name">{{video.title}}</span>
-                            <div class="file-admin-panel">
-                                <!--admin delete video button-->
+                            <div class="file-admin-panel clearfix">
+                                <!--admin special video buttons-->
                                 {% if is_authenticated %}
-                                <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a> {% endif %}
-                                <!--admin delete video button ending-->
+                                <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
+                                <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a>
+                                <div class="file-admin-information">
+                                    <span><i>download time:</i> 00:00:00</span>
+                                    <span><i>resolution:</i> 000x000</span>
+                                    <span><i>database id:</i> 000000000</span>
+                                    <span><i>thread number:</i> 000000000</span>
+                                </div>
+                                {% endif %}
+                                <!--admin special video buttons-->
                             </div>
                             <div class="file-info">
                                 <span class="file-size">({{video.video_size_str}}, {{video.video_duration_str}})</span>
@@ -98,9 +106,20 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+            onBeforePageLoad: function() {
+                $('.loading').show();
+            },
+            onAfterPageLoad: function($items) {
+                $('.loading').hide();
+            }
+        });
+
+    </script>
     <script src="{% static 'js/style.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/fullscreen.js' %}"></script>
-    <script src="{% static 'js/tippy.min.js' %}"></script>
 
 </html>
