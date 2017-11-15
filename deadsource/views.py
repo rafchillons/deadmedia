@@ -90,8 +90,7 @@ def show_hot(request):
 
     page = request.GET.get('page', 1)
     paginator = Paginator(list_of_grouped_videos, 3)
-    print(json.dumps(str(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,is_hot=True).order_by('-added_date')[0].description_json)))
-
+    
     try:
         videos = paginator.page(page)
     except PageNotAnInteger:
