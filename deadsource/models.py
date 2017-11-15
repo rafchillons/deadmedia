@@ -34,6 +34,14 @@ class Video(models.Model):
     is_adult = models.BooleanField(max_length=1, default=False)
     is_music = models.BooleanField(max_length=1, default=False)
     is_hot = models.BooleanField(max_length=1, default=False)
+    is_webm = models.BooleanField(max_length=1, default=False)
+    is_mp4 = models.BooleanField(max_length=1, default=False)
+
+    is_deleted = models.BooleanField(max_length=1, default=False)
+
+    is_source_object_deleted = models.BooleanField(max_length=1, default=False)
+    is_source_thread_deleted = models.BooleanField(max_length=1, default=False)
+
 
     STATUS_NOTSET = 'Video status not set'
     STATUS_DOWNLOADING = 'Video is downloading'
@@ -45,8 +53,8 @@ class Video(models.Model):
         (STATUS_NOTSET, 'Notset'),
     )
 
-
     video_status = models.CharField(max_length=200, choices=VIDEO_STATUS, default=STATUS_NOTSET)
+
 
     def __str__(self):
         return self.title
@@ -147,12 +155,18 @@ class BotTask(models.Model):
     task_data = models.BinaryField(default='{}')
 
     def start_bot(self):
-        from .utils.bot_module import BotIsBusy, bot_task_1, TaskThread
+        from .utils.bot_module import BotIsBusy, bot_task_1, bot_task_2, TaskThread
         if filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
             raise BotIsBusy('Bot (id={}) is working already!'.format(self.id))
 
         data = json.loads(str(self.task_data))
-        thread = TaskThread('Bot({})'.format(self.id), bot_task_1, data)
+        task = None
+        if self.bot_task == self.BOT_TASK_DOWNLOAD_2CH_WEBM:
+            task = bot_task_1
+        elif self.bot_task == self.BOT_TASK_REMOVE_WEBM:
+            task = bot_task_2
+
+        thread = TaskThread('Bot({})'.format(self.id), task, data)
         thread.start()
         self.bot_status = self.BOT_STATUS_WORKING
         self.save()
@@ -162,16 +176,16 @@ class BotTask(models.Model):
             thread.stop()
 
     def get_status(self):
-        from .utils.bot_module import TaskThread
         if not filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
+            from .utils.bot_module import TaskThread
             return TaskThread.STATUS_STOPPED
 
         return list(filter(lambda x: x.getName() == 'Bot({})'.format(self.id),
                            threading.enumerate()))[0].get_status()
 
     def get_process_status(self):
-        from .utils.bot_module import TaskThread
         if not filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
+            from .utils.bot_module import TaskThread
             return TaskThread.PROCESS_STATUS_RESTING
 
         return list(filter(lambda x: x.getName() == 'Bot({})'.format(self.id),

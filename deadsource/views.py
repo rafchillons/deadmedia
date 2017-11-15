@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import requests
+from requests.exceptions import ConnectionError
 from functools import wraps
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -8,10 +9,14 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 import deadmedia.settings
-from .forms import VideoDeleteForm, BotTaskForm
+from .forms import VideoDeleteForm, BotTaskForm, BotTaskRemoveForm
 from .models import Video, BotTask
-from .utils.bot_module import ThreadDownloader, VideoRemover
-from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date, delete_video_by_db_object
+from .utils.bot_module import (
+    ThreadDownloader,
+    VideoRemover,
+)
+from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date, \
+    delete_video_by_db_object
 from django.http import *
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -20,6 +25,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView
 from django.conf import settings
 from django.contrib import messages
+import logging
 import json
 
 
@@ -34,9 +40,9 @@ def main_page(request):
 
 
 def show_webm(request):
-    list_of_grouped_videos = zip(*[iter(reversed(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
-                                                                   is_adult=False,
-                                                                   is_music=False).order_by('added_date')))] * 4)
+    list_of_grouped_videos = zip(*[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
+                                                                   is_webm=True).order_by(
+        '-added_date'))] * 4)
 
     page = request.GET.get('page', 1)
     paginator = Paginator(list_of_grouped_videos, 3)
@@ -58,8 +64,8 @@ def show_webm(request):
 
 def show_adult(request):
     list_of_grouped_videos = zip(*[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
-                                                                   is_adult=True,
-                                                                   is_music=False).order_by('added_date'))] * 4)
+                                                                   is_adult=True).order_by(
+        '-added_date'))] * 4)
 
     page = request.GET.get('page', 1)
     paginator = Paginator(list_of_grouped_videos, 3)
@@ -70,7 +76,6 @@ def show_adult(request):
         videos = paginator.page(1)
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
-
     return render(request,
                   'adult_page.html',
                   {
@@ -80,9 +85,46 @@ def show_adult(request):
 
 
 def show_hot(request):
+    list_of_grouped_videos = zip(*[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
+                                                                   is_hot=True).order_by('-added_date'))] * 4)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(list_of_grouped_videos, 3)
+    print(json.dumps(str(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,is_hot=True).order_by('-added_date')[0].description_json)))
+
+    try:
+        videos = paginator.page(page)
+    except PageNotAnInteger:
+        videos = paginator.page(1)
+    except EmptyPage:
+        videos = paginator.page(paginator.num_pages)
     return render(request,
                   'hot_page.html',
                   {
+                      'videos': videos,
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
+
+
+def show_mp4(request):
+    list_of_grouped_videos = zip(
+        *[iter(
+            Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
+                                       is_mp4=True).order_by('-added_date'))] * 4)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(list_of_grouped_videos, 3)
+
+    try:
+        videos = paginator.page(page)
+    except PageNotAnInteger:
+        videos = paginator.page(1)
+    except EmptyPage:
+        videos = paginator.page(paginator.num_pages)
+    return render(request,
+                  'mp4_page.html',
+                  {
+                      'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
                   })
 
@@ -95,11 +137,14 @@ def show_faq(request):
                   })
 
 
-def show_mp4(request):
+@login_required
+def show_all(request):
+    videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date')
+
     return render(request,
-                  'mp4_page.html',
+                  'all_page.html',
                   {
-                      'is_authenticated': request.user.is_authenticated(),
+                      'videos': videos,
                   })
 
 
@@ -129,89 +174,8 @@ def show_admin_page(request):
 
 
 @login_required
-def download_all_videos_from_2ch(request):
-    download_and_save_all_new_videos_2ch_b()
-    return redirect('main-page')
-
-
-def show_maksim_page2(request, page):
-    videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date')
-
-    rows_of_videos = zip(*[iter(videos)] * 4)
-
-    return render(request,
-                  'index.html',
-                  {
-                      'rows_of_videos': rows_of_videos,
-                  })
-
-
-@login_required
 def delete_all_videos(request):
     delete_all_videos_by_added_date()
-    return redirect('page-admin-new')
-
-
-@login_required
-def show_maksim_page(request):
-    all_videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date')
-    groups_of_videos = zip(*[iter(all_videos)] * 4)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(groups_of_videos, 3)
-    try:
-        rows_of_videos = paginator.page(page)
-    except PageNotAnInteger:
-        rows_of_videos = paginator.page(1)
-    except EmptyPage:
-        rows_of_videos = paginator.page(paginator.num_pages)
-    return render(request, 'index.html', {'numbers': rows_of_videos})
-
-
-"""
-def home(request):
-    numbers_list = zip(
-        *[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date'))] * 4)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(numbers_list, 3)
-    try:
-        numbers = paginator.page(page)
-    except PageNotAnInteger:
-        numbers = paginator.page(1)
-    except EmptyPage:
-        numbers = paginator.page(paginator.num_pages)
-    return render(request, 'webm_page.html', {'numbers': numbers})
-"""
-
-
-@login_required
-def start_downloading_bot(request):
-    bot = ThreadDownloader()
-    bot.start()
-
-    return redirect('page-admin-new')
-
-
-@login_required
-def stop_downloading_bot(request):
-    bot = ThreadDownloader()
-    bot.stop()
-
-    return redirect('page-admin-new')
-
-
-@login_required
-def start_removing_bot(request):
-    bot = VideoRemover()
-    bot.start()
-
-    return redirect('page-admin-new')
-
-
-@login_required
-def stop_removing_bot(request):
-    bot = VideoRemover()
-    bot.stop()
-
     return redirect('page-admin-new')
 
 
@@ -220,12 +184,11 @@ def new_admin(request):
     return render(request, 'admin.html')
 
 
-@login_required
 def new_error(request):
     return render(request, 'error404_page.html')
 
 
-#@login_required
+@login_required
 def new_admin(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
@@ -293,13 +256,24 @@ def check_recaptcha(view_func):
                 'secret': settings.RECAPTCHA_PRIVATE_KEY,
                 'response': recaptcha_response
             }
-            r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-            result = r.json()
-            if result['success']:
-                request.recaptcha_is_valid = True
-            else:
+            try:
+                r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+                result = r.json()
+
+                if result['success']:
+                    request.recaptcha_is_valid = True
+                else:
+                    request.recaptcha_is_valid = False
+                    messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+
+            except ConnectionError as e:
                 request.recaptcha_is_valid = False
-                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+                messages.error(request, 'Can not check reCAPTCHA (connection error). Please try again.')
+            except Exception as e:
+                logging.error('check_recaptcha():{}'.format(e))
+                request.recaptcha_is_valid = False
+                messages.error(request, 'Unknown reCAPTCHA error. Please try again.')
+
         return view_func(request, *args, **kwargs)
 
     return _wrapped_view
@@ -324,26 +298,47 @@ def login_view(request):
     return render(request, 'sign.html', {'messages': messages.get_messages(request)})
 
 
+@login_required
 def create_bot_view(request):
     if request.method == 'POST':
         form = BotTaskForm(request.POST)
 
         if form.is_valid():
-            print(form.cleaned_data)
-            bot = form.save()
-            bot.bot_status = bot.BOT_STATUS_STOPPED
+            bot = BotTask
+
+            bot.bot_task = BotTask.BOT_TASK_DOWNLOAD_2CH_WEBM
             bot.task_data = json.dumps(form.cleaned_data)
+
             bot.save()
             return redirect('webm-page')
 
     else:
         form = BotTaskForm()
 
-    print(form.is_valid())
-
     return render(request, 'create_bot.html', {'form': form, 'messages': messages.get_messages(request)})
 
 
+@login_required
+def create_bot_remover_view(request):
+    if request.method == 'POST':
+        form = BotTaskRemoveForm(request.POST)
+
+        if form.is_valid():
+            bot = BotTask()
+
+            bot.bot_task = BotTask.BOT_TASK_REMOVE_WEBM
+            bot.task_data = json.dumps(form.cleaned_data)
+
+            bot.save()
+            return redirect('webm-page')
+
+    else:
+        form = BotTaskForm()
+
+    return render(request, 'create_remove_bot.html', {'form': form, 'messages': messages.get_messages(request)})
+
+
+@login_required
 def bot_status_view(request):
     bots = BotTask.objects.all()
 
@@ -357,62 +352,42 @@ def bot_status_view(request):
     return render(request, 'botstatus.html', {'bots': bots_list})
 
 
-def bot_start_view(request):
-    bot = BotTask()
-
-    data = {
-        'is_max_time': False,
-        'is_max_iter': False,
-        'interval': 10,
-        'iters_to_do': 1,
-        'working_time': 0,
-        'with_words': ('fap', u'фап'),  # (u'вебм', 'webm'),
-        'without_words': (u'музыкальный',),  # 'fap'),
-        'max_videos_count': None,
-        'is_music': False,
-        'is_adult': True,
-    }
-
-    bot.task_data = json.dumps(data)
-    bot.bot_status = bot.BOT_STATUS_STOPPED
-    bot.bot_task = bot.BOT_TASK_DOWNLOAD_2CH_WEBM
-    bot.save()
-
-    bot.start_bot()
-
-    return redirect('create-bot')
-
-
+@login_required
 def bot_delete_id(request, pk):
     bot = get_object_or_404(BotTask, pk=pk)
     bot.delete()
     return redirect('status-bot')
 
 
+@login_required
 def bot_start_id(request, pk):
     bot = get_object_or_404(BotTask, pk=pk)
     bot.start_bot()
     return redirect('status-bot')
 
 
+@login_required
 def bot_stop_id(request, pk):
     bot = get_object_or_404(BotTask, pk=pk)
     bot.stop_bot()
     return redirect('status-bot')
 
 
+@login_required
 def bot_pause_off(request, pk):
     bot = get_object_or_404(BotTask, pk=pk)
     bot.pause_off()
     return redirect('status-bot')
 
 
+@login_required
 def bot_pause_on(request, pk):
     bot = get_object_or_404(BotTask, pk=pk)
     bot.pause_on()
     return redirect('status-bot')
 
 
+@login_required
 def delete_video_id_view(request, pk):
     video = get_object_or_404(Video, pk=pk)
     delete_video_by_db_object(video)

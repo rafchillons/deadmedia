@@ -6,7 +6,7 @@ from datetime import datetime
 import logging
 from .video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date
 from deadsource.models import BotTask
-
+import json
 
 class ThreadDownloader(object):
     class __ThreadDownloader(threading.Thread):
@@ -136,7 +136,7 @@ class VideoRemover(object):
                 self.iters_done += 1
 
                 try:
-                    delete_all_videos_by_added_date(added_date=60 * 60 * 48)
+                    delete_all_videos_by_added_date(ignore_time=60 * 60 * 48)
                 except Exception as e:
                     logging.critical('Bot(remover): Error on {} iter: {}.'.format(self.iters_done, e))
 
@@ -239,6 +239,9 @@ def bot_task_1(stop_event=threading.Event(),
                max_videos_count=None,
                is_music=False,
                is_adult=False,
+               is_webm=False,
+               is_hot=False,
+               is_mp4=False,
                **kwargs):
     logging.debug('Task(download):started!')
 
@@ -265,7 +268,11 @@ def bot_task_1(stop_event=threading.Event(),
                                                    without_words=without_words,
                                                    max_videos_count=max_videos_count,
                                                    is_music=is_music,
-                                                   is_adult=is_adult)
+                                                   is_adult=is_adult,
+                                                   is_webm=is_webm,
+                                                   is_hot=is_hot,
+                                                   is_mp4=is_mp4,
+                                                   exit_event=stop_event)
 
         except Exception as e:
             logging.critical('Task(download): Error: {}.'.format(e))
@@ -296,6 +303,85 @@ def bot_task_1(stop_event=threading.Event(),
     logging.debug('Task(download):stopped!')
 
 
+def bot_task_2(stop_event=threading.Event(),
+               pause_event=threading.Event(),
+               task_started_event=threading.Event(),
+               task_collecting_videos_event=threading.Event(),
+               task_waiting_nex_iter_event=threading.Event(),
+               task_paused_event=threading.Event(),
+               task_stopped_event=threading.Event(),
+               is_max_time=False,
+               is_max_iter=False,
+               ignore_time=None,
+               interval=10,
+               iters_to_do=1,
+               working_time=0,
+               max_videos_count=None,
+               is_adult=False,
+               is_webm=False,
+               is_hot=False,
+               is_mp4=False,
+               **kwargs):
+    logging.debug('Task(download):started!')
+
+    started_date = datetime.now()
+    task_started_event.set()
+    while True:
+        last_iter = datetime.now()
+
+        if is_max_iter and iters_to_do <= 0:
+            break
+        if is_max_time and working_time < (datetime.now() - started_date).seconds:
+            break
+        if pause_event.isSet():
+            task_paused_event.set()
+            pause_event.wait()
+            task_paused_event.clear()
+        if stop_event.isSet():
+            break
+
+        task_collecting_videos_event.set()
+
+        try:
+            delete_all_videos_by_added_date(ignore_time=ignore_time,
+                                            max_videos_count=max_videos_count,
+                                            exit_event=stop_event,
+                                            is_adult=is_adult,
+                                            is_webm=is_webm,
+                                            is_hot=is_hot,
+                                            is_mp4=is_mp4,
+                                            )
+
+        except Exception as e:
+            logging.critical('Task(download): Error: {}.'.format(e))
+
+        task_collecting_videos_event.clear()
+
+        logging.debug('Task(download):{} iter done!')
+        iters_to_do -= 1
+
+        if is_max_iter and iters_to_do <= 0:
+            break
+        if is_max_time and working_time < (datetime.now() - started_date).seconds:
+            break
+        if pause_event.isSet():
+            task_paused_event.set()
+            pause_event.wait()
+            task_paused_event.clear()
+        if stop_event.isSet():
+            break
+
+        task_waiting_nex_iter_event.set()
+        sleep_time = interval - (datetime.now() - last_iter).seconds
+        if sleep_time > 0:
+            time.sleep(interval - (datetime.now() - last_iter).seconds)
+        task_waiting_nex_iter_event.clear()
+
+    task_stopped_event.set()
+    logging.debug('Task(download):stopped!')
+
+
+
 class BotIsBusy(Exception):
     pass
 
@@ -306,7 +392,7 @@ class TaskThread(threading.Thread):
     STATUS_STOPPED = 'stopped'
 
     PROCESS_STATUS_RESTING = 'resting'
-    PROCESS_STATUS_COLLECTING = 'collecting'
+    PROCESS_STATUS_COLLECTING = 'working'
     PROCESS_STATUS_WAITING = 'waiting'
 
     def __init__(self, name, target, data):
@@ -351,3 +437,6 @@ class TaskThread(threading.Thread):
         if self.task_collecting_videos_event.isSet():
             return self.PROCESS_STATUS_COLLECTING
         return self.PROCESS_STATUS_WAITING
+
+
+

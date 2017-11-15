@@ -43,6 +43,10 @@ class BotTaskForm(forms.ModelForm):
 
     is_music = forms.BooleanField(required=False)
     is_adult = forms.BooleanField(required=False)
+    is_webm = forms.BooleanField(required=False)
+    is_hot = forms.BooleanField(required=False)
+    is_mp4 = forms.BooleanField(required=False)
+
     max_videos_count = forms.IntegerField(required=False)
 
     def clean_interval(self):
@@ -112,6 +116,21 @@ class BotTaskForm(forms.ModelForm):
             return True
         return False
 
+    def clean_is_webm(self):
+        if self.cleaned_data['is_webm']:
+            return True
+        return False
+
+    def clean_is_hot(self):
+        if self.cleaned_data['is_hot']:
+            return True
+        return False
+
+    def clean_is_mp4(self):
+        if self.cleaned_data['is_mp4']:
+            return True
+        return False
+
     def clean_max_videos_count(self):
         data = self.cleaned_data['max_videos_count']
 
@@ -126,6 +145,128 @@ class BotTaskForm(forms.ModelForm):
                 raise forms.ValidationError('Max videos per iter mast be more then 0!')
 
         return data
+
+
+class BotTaskRemoveForm(forms.Form):
+    ignore_time = forms.IntegerField()
+    interval = forms.IntegerField()
+    with_words = forms.CharField(required=False)
+    without_words = forms.CharField(required=False)
+
+    is_max_time = forms.BooleanField(required=False)
+    working_time = forms.IntegerField(required=False)
+    is_max_iter = forms.BooleanField(required=False)
+    iters_to_do = forms.IntegerField(required=False)
+
+    is_music = forms.BooleanField(required=False)
+    is_adult = forms.BooleanField(required=False)
+    is_webm = forms.BooleanField(required=False)
+    is_hot = forms.BooleanField(required=False)
+    is_mp4 = forms.BooleanField(required=False)
+
+    max_videos_count = forms.IntegerField(required=False)
+
+    def clean_ignore_time(self):
+        data = self.cleaned_data['ignore_time']
+
+        if type(data) is not int:
+            raise forms.ValidationError('Ignore time mast be number!')
+
+        if data <= 0:
+            raise forms.ValidationError('Ignore time can not be negative!')
+
+        return data
+
+    def clean_interval(self):
+        data = self.cleaned_data['interval']
+
+        if type(data) is not int:
+            raise forms.ValidationError('Interval mast be number!')
+
+        if data < 0:
+            raise forms.ValidationError('Interval can not be negative!')
+
+        return data
+
+    def clean_is_max_time(self):
+        if self.cleaned_data['is_max_time']:
+            return True
+        return False
+
+    def clean_working_time(self):
+        data = self.cleaned_data['working_time']
+
+        if type(data) is not int:
+            if self.cleaned_data['is_max_time']:
+                raise forms.ValidationError('Working time mast be number!')
+            else:
+                data = 1
+
+        if not data > 0:
+            raise forms.ValidationError('Working time mast be more then 0!')
+
+        return data
+
+    def clean_is_max_iter(self):
+        if self.cleaned_data['is_max_iter']:
+            return True
+        return False
+
+    def clean_iters_to_do(self):
+        data = self.cleaned_data['iters_to_do']
+
+        if type(data) is not int:
+            if self.cleaned_data['is_max_iter']:
+                raise forms.ValidationError('Max iters mast be number!')
+            else:
+                data = 1
+
+        if not data > 0:
+            raise forms.ValidationError('Max iters mast be more then 0!')
+
+        return data
+
+    def clean_is_music(self):
+        if self.cleaned_data['is_music']:
+            return True
+        return False
+
+    def clean_is_adult(self):
+        if self.cleaned_data['is_adult']:
+            return True
+        return False
+
+    def clean_is_webm(self):
+        if self.cleaned_data['is_webm']:
+            return True
+        return False
+
+    def clean_is_hot(self):
+        if self.cleaned_data['is_hot']:
+            return True
+        return False
+
+    def clean_is_mp4(self):
+        if self.cleaned_data['is_mp4']:
+            return True
+        return False
+
+    def clean_max_videos_count(self):
+        data = self.cleaned_data['max_videos_count']
+
+        if type(data) is not int:
+            if data:
+                raise forms.ValidationError('Max videos per iter mast be number!')
+            else:
+                data = False
+
+        else:
+            if not data > 0:
+                raise forms.ValidationError('Max videos per iter mast be more then 0!')
+
+        return data
+
+
 
 
 """
