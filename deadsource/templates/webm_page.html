@@ -61,10 +61,12 @@
                                 {% if is_authenticated %}
 
                                 <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
+                                <!--admin top button -->
+                                <a href="#" class="file-praise-btn" title="Praise file">Praise</a>
+                                <!--admin top button end-->
                                 <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a>
                                 <div class="file-admin-information">
                                     <span><i>download time:</i> {{video.added_date}}</span>
-                                    <span><i>resolution:</i> 000x000</span>
                                     <span><i>database id:</i> {{video.id}}</span>
                                     <span><i>thread number:</i> 000000000</span>
                                 </div>
@@ -92,8 +94,9 @@
         <!--admin special menu -->
         {% if is_authenticated %}
         <ul class="admin-special-menu clearfix">
-            <li><a href="/">Home</a></li>
-            <li><a href="/newadmin">ControlPanel</a></li>
+            <li><a href="{% url 'webm-page' %}">Home</a></li>
+            <li><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
+            <li><a href="{% url 'status-bot' %}">BotStatus</a></li>
             <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
         </ul>
         {% endif %}
