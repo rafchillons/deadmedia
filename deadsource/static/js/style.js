@@ -13,6 +13,6 @@ $(document).ready(function () {
 
     //admin special information button 
     $('body').on('click', '.file-admin-information-btn', function () {
-        $(this).parent().find('.file-admin-information').slideToggle();
+        $(this).parent().find('.file-admin-information').slideToggle("fast");
     });
 });

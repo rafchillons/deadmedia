@@ -29,7 +29,7 @@
                 <li><a href="{% url 'adult-page' %}"><i class="fa fa-smile-o" aria-hidden="true"></i>Adult</a></li>
                 <li><a href="{% url 'webm-page' %}" class="active"><i class="fa fa-wheelchair-alt" aria-hidden="true"></i>Webm</a></li>
                 <li><a href="{% url 'mp4-page' %}"><i class="fa fa-mobile" aria-hidden="true"></i>Mp4</a></li>
-                <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
+                <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>Info</a></li>
                 <!--admin sign out-->
                 {% if is_authenticated %}
                 <li class="admin-sign-out-mobile"><a href="{% url 'logout' %}">Sign out</a></li>
@@ -61,6 +61,9 @@
                                 {% if is_authenticated %}
 
                                 <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
+                                <!--admin top button -->
+                                <a href="#" class="file-praise-btn" title="Praise file">Praise</a>
+                                <!--admin top button end-->
                                 <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a>
                                 <div class="file-admin-information">
                                     <span><i>download time:</i> {{video.added_date}}</span>
@@ -92,8 +95,9 @@
         <!--admin special menu -->
         {% if is_authenticated %}
         <ul class="admin-special-menu clearfix">
-            <li><a href="/">Home</a></li>
-            <li><a href="/newadmin">ControlPanel</a></li>
+            <li><a href="{% url 'webm-page' %}">Home</a></li>
+            <li><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
+            <li><a href="{% url 'status-bot' %}">BotStatus</a></li>
             <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
         </ul>
         {% endif %}
