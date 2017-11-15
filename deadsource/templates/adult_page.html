@@ -96,10 +96,21 @@
         </footer>
     </body>
 <script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'js/infinite.min.js' %}"></script>
-<script src="{% static 'js/style.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/fullscreen.js' %}"></script>
-<script src="{% static 'js/tippy.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+            onBeforePageLoad: function() {
+                $('.loading').show();
+            },
+            onAfterPageLoad: function($items) {
+                $('.loading').hide();
+            }
+        });
+
+    </script>
+    <script src="{% static 'js/style.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/fullscreen.js' %}"></script>
 </html>
