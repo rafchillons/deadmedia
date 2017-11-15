@@ -63,9 +63,9 @@
                                 <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
                                 <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a>
                                 <div class="file-admin-information">
-                                    <span><i>download time:</i> 00:00:00</span>
+                                    <span><i>download time:</i> {{video.added_date}}</span>
                                     <span><i>resolution:</i> 000x000</span>
-                                    <span><i>database id:</i> 000000000</span>
+                                    <span><i>database id:</i> {{video.id}}</span>
                                     <span><i>thread number:</i> 000000000</span>
                                 </div>
                                 {% endif %}
