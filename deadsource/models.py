@@ -19,6 +19,8 @@ class Video(models.Model):
     storage_name = models.CharField(max_length=200, default='')
 
     source_path = models.CharField(max_length=200, default='')
+    source_thread_number = models.CharField(max_length=200, default='')
+    source_thread_path = models.CharField(max_length=200, default='')
 
     preview_storage_path = models.CharField(max_length=200, default='')
     preview_storage_name = models.CharField(max_length=200, default='')
@@ -42,7 +44,7 @@ class Video(models.Model):
     is_source_object_deleted = models.BooleanField(max_length=1, default=False)
     is_source_thread_deleted = models.BooleanField(max_length=1, default=False)
 
-
+    STATUS_ERROR = 'Video status error'
     STATUS_NOTSET = 'Video status not set'
     STATUS_DOWNLOADING = 'Video is downloading'
     STATUS_DOWNLOADED = 'Video is downloaded'
@@ -51,6 +53,7 @@ class Video(models.Model):
         (STATUS_DOWNLOADING, 'Downloading'),
         (STATUS_DOWNLOADED, 'Downloaded'),
         (STATUS_NOTSET, 'Notset'),
+        (STATUS_ERROR, 'Error'),
     )
 
     video_status = models.CharField(max_length=200, choices=VIDEO_STATUS, default=STATUS_NOTSET)

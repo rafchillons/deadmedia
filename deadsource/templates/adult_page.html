@@ -55,12 +55,20 @@
                         <figcaption class="file-attr">
                             <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i>0</span>
                             <span class="file-name">{{video.title}}</span>
-                            <div class="file-admin-panel">
-                                <!--admin delete video button-->
+                            <div class="file-admin-panel clearfix">
+                                <!--admin special video buttons-->
                                 {% if is_authenticated %}
+
+                                <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
                                 <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a>
+                                <div class="file-admin-information">
+                                    <span><i>download time:</i> {{video.added_date}}</span>
+                                    <span><i>resolution:</i> {{video.video_width}}x{{video.video_height}</span>
+                                    <span><i>database id:</i> {{video.id}}</span>
+                                    <span><i>thread:</i><a href="{{video.source_thread_path}}"> {{video.source_thread_number}}</a></span>
+                                </div>
                                 {% endif %}
-                                <!--admin delete video button ending-->
+                                <!--admin special video buttons-->
                             </div>
                             <div class="file-info">
                                 <span class="file-size">({{video.video_size_str}}, {{video.video_duration_str}})</span>

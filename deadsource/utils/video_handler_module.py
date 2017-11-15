@@ -96,26 +96,36 @@ def _save_video_info_to_database(video,
 
     logging.debug("Saving video .")
 
-    video.title = description_json['fullname'].rsplit('.', 1)[0]
-    video.description_json = json.dumps(description_json)
-    video.video_height = description_json['height']
-    video.video_width = description_json['width']
-    video.video_duration_str = description_json['duration']
-    video.video_size = description_json['size']
-    video_size_str = (description_json['size'], 'Kb') \
-        if description_json['size'] < 1000 \
-        else (description_json['size'] / 1000, 'Mb')
-    video.video_size_str = '{}{}'.format(*video_size_str)
-    video.storage_path = storage_path
-    video.storage_name = basename(storage_path)
-    video.source_path = source_path
-    video.preview_storage_path = storage_path_preview
-    video.preview_storage_name = basename(storage_path_preview)
-    video.is_adult = description_json['is_adult']
-    video.is_webm = description_json['is_webm']
-    video.is_mp4 = description_json['is_mp4']
-    video.is_hot = description_json['is_hot']
-    video.video_status = video.STATUS_DOWNLOADED
+    try:
+        title = description_json['fullname'].rsplit('.', 1)[0]
+        if not title:
+            title = 'Untitled'
+        video.title = title
+        video.description_json = json.dumps(description_json)
+        video.video_height = description_json['height']
+        video.video_width = description_json['width']
+        video.video_duration_str = description_json['duration']
+        video.video_size = description_json['size']
+        video_size_str = (description_json['size'], 'Kb') \
+            if description_json['size'] < 1000 \
+            else (description_json['size'] / 1000, 'Mb')
+        video.video_size_str = '{}{}'.format(*video_size_str)
+        video.storage_path = storage_path
+        video.storage_name = basename(storage_path)
+        video.source_path = source_path
+        video.source_thread_path = 'https://2ch.hk/b/res/{}/.html'.format(source_path.rsplit('/', 2)[1])
+        video.source_thread_number = source_path.rsplit('/', 2)[1]
+        video.preview_storage_path = storage_path_preview
+        video.preview_storage_name = basename(storage_path_preview)
+        video.is_adult = description_json['is_adult']
+        video.is_webm = description_json['is_webm']
+        video.is_mp4 = description_json['is_mp4']
+        video.is_hot = description_json['is_hot']
+        video.video_status = video.STATUS_DOWNLOADED
+    except Exception as e:
+        logging.error('_save_video_info_to_database(): error while filling video info: {}.'.format(e))
+        video.video_status = video.STATUS_ERROR
+
     video.save()
 
     logging.debug("Saving video: complete.")
