@@ -90,7 +90,7 @@ def show_hot(request):
 
     page = request.GET.get('page', 1)
     paginator = Paginator(list_of_grouped_videos, 3)
-    
+
     try:
         videos = paginator.page(page)
     except PageNotAnInteger:
@@ -303,7 +303,7 @@ def create_bot_view(request):
         form = BotTaskForm(request.POST)
 
         if form.is_valid():
-            bot = BotTask
+            bot = BotTask()
 
             bot.bot_task = BotTask.BOT_TASK_DOWNLOAD_2CH_WEBM
             bot.task_data = json.dumps(form.cleaned_data)
