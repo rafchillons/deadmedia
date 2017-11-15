@@ -113,7 +113,7 @@ def _save_video_info_to_database(video,
         video.storage_path = storage_path
         video.storage_name = basename(storage_path)
         video.source_path = source_path
-        video.source_thread_path = 'https://2ch.hk/b/res/{}/.html'.format(source_path.rsplit('/', 2)[1])
+        video.source_thread_path = 'https://2ch.hk/b/res/{}.html'.format(source_path.rsplit('/', 2)[1])
         video.source_thread_number = source_path.rsplit('/', 2)[1]
         video.preview_storage_path = storage_path_preview
         video.preview_storage_name = basename(storage_path_preview)
