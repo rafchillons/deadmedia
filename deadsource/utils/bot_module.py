@@ -267,7 +267,6 @@ def bot_task_1(stop_event=threading.Event(),
             download_and_save_all_new_videos_2ch_b(with_words=with_words,
                                                    without_words=without_words,
                                                    max_videos_count=max_videos_count,
-                                                   is_music=is_music,
                                                    is_adult=is_adult,
                                                    is_webm=is_webm,
                                                    is_hot=is_hot,
@@ -349,8 +348,7 @@ def bot_task_2(stop_event=threading.Event(),
                                             is_adult=is_adult,
                                             is_webm=is_webm,
                                             is_hot=is_hot,
-                                            is_mp4=is_mp4,
-                                            )
+                                            is_mp4=is_mp4)
 
         except Exception as e:
             logging.critical('Task(download): Error: {}.'.format(e))
