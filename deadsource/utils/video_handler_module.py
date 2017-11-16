@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from download_and_save_module import download_and_save_file
+from deadsource.utils.download_and_save_module import download_and_save_file
 from django.shortcuts import render, redirect, get_object_or_404
 import json
-import parse_2ch_module
+from deadsource.utils import parse_2ch_module
 from urllib2 import Request, urlopen
 import urllib2
 import threading
@@ -26,6 +26,7 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
                                            is_webm=False,
                                            is_hot=False,
                                            is_mp4=False,
+                                           video_formats=('.webm',),
                                            exit_event=threading.Event()):  # this function is not for release
     logging.debug("Downloading and saving all videos from 2ch.")
 
@@ -34,7 +35,7 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
 
     founded_files_description = parse_2ch_module.find_files_in_threads(founded_threads)
 
-    webms_description = parse_2ch_module.find_all_webs_from_files(founded_files_description)
+    webms_description = parse_2ch_module.find_all_files_with_formats_from_files(founded_files_description, formats=video_formats)
     webms_description = _get_videos_from_list_not_in_db(webms_description)
 
     if max_videos_count and max_videos_count < webms_description.__len__():
@@ -66,7 +67,7 @@ def _download_and_save_webm_video_and_preview(webm_description):  # this functio
 
     download_url = webm_description['source']
     download_url_preview = webm_description['thumbnail_source']
-    path_to_save = join(MEDIA_ROOT, '{}.{}'.format(db_object.id, 'webm'))
+    path_to_save = join(MEDIA_ROOT, '{}{}'.format(db_object.id, webm_description['video_format']))
     path_to_save_preview = join(MEDIA_ROOT, '{}.{}'.format(db_object.id, 'jpg'))
 
     download_and_save_file(download_url, path_to_save)
