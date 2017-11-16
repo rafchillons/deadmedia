@@ -9,6 +9,18 @@
     <title>WEBM</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <style>
+        .bot-create-downloader,
+        .bot-create-eraser {
+            display: none;
+        }
+
+        .input-xs,
+        select.input-xs {
+            height: 20px;
+            line-height: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,9 +33,25 @@
                     <!-- сюда выводятся все ошибки-->
                     </span>
                     <div class="bot-create-btns">
-                        <a href="{% url 'create-bot-remover' %}" class="bot-create-btn">create eraser</a>
-                        <a href="{% url 'create-bot' %}" class="bot-create-btn">create downloader</a>
+                        <!--
+                        <a href="{% url 'create-bot-remover' %}" class="bot-create-btn eraser">create eraser</a>
+                        <a href="{% url 'create-bot' %}" class="bot-create-btn downloader">create downloader</a>
+-->
+                        <a class="bot-create-btn bot-create-btn-eraser">create eraser</a>
+                        <a class="bot-create-btn bot-create-btn-downloader">create downloader</a>
                     </div>
+                    <div class="bot-create-downloader">
+                        <form method="POST">
+                            <select class="form-control form-control-sm" name="bot_task" id="id_bot_task">
+                                <option value="Download webms from 2ch" selected>Download</option>
+                                <option value="Remove webms">Remove</option>
+                            </select>
+                            <div class="input-group input-xs" id="delete">
+                                <input name="storage_name" class="form-control" placeholder="File link" aria-label="Delete id" type="text">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="bot-create-eraser">123</div>
                     <div class="bot-list">
                         <!-- bot template -->
                         {% for bot in bots %}
@@ -128,7 +156,9 @@
         </div>
     </div>
 
-    {% for bot in bots %}
+
+    <a href="{% url 'create-bot-remover' %}" style="color: red;">create eraser</a>
+    <a href="{% url 'create-bot' %}" style="color: green;">create downloader</a> {% for bot in bots %}
     <p>-------------------------------------------
         <p>Status: {{bot.db_object.get_status}}</p>
         <p>Process status: {{bot.db_object.get_process_status}}</p>
@@ -152,10 +182,19 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/functions.js' %}"></script>
-    <script src="{% static 'js/tippy.min.js' %}"></script>
     <script>
         $('body').on('click', '.bot-about-toggler', function() {
             $(this).parent().parent().parent().find('.bot-about').slideToggle("fast");
+        });
+
+        $('body').on('click', '.bot-create-btn-eraser', function() {
+            $(this).parent().parent().find('.bot-create-downloader').slideUp("fast");
+            $(this).parent().parent().find('.bot-create-eraser').slideToggle("fast");
+        });
+
+        $('body').on('click', '.bot-create-btn-downloader', function() {
+            $(this).parent().parent().find('.bot-create-eraser').slideUp("fast");
+            $(this).parent().parent().find('.bot-create-downloader').slideToggle("fast");
         });
 
         function blink() {
