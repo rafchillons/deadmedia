@@ -32,6 +32,7 @@
         <p>Is adult: {{bot.data_dict.is_hot}}</p>
         <p>Is adult: {{bot.data_dict.is_mp4}}</p>
 
+        <p>Video formats: {{bot.data_dict.video_formats}}</p>
         <p>Max video count: {{bot.data_dict.max_videos_count}}</p>
 
         <p> <a href="{% url 'start-bot-id' bot.db_object.id %}">Start bot</a> </p>

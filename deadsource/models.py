@@ -58,6 +58,16 @@ class Video(models.Model):
 
     video_status = models.CharField(max_length=200, choices=VIDEO_STATUS, default=STATUS_NOTSET)
 
+    FORMAT_MP4 = '.mp4'
+    FORMAT_WEBM = '.webm'
+
+    VIDEO_FORMATS = (
+        (FORMAT_MP4, 'mp4'),
+        (FORMAT_WEBM, 'webm'),
+    )
+
+    video_format = models.CharField(max_length=200, choices=VIDEO_FORMATS, default=FORMAT_WEBM)
+
 
     def __str__(self):
         return self.title

@@ -47,6 +47,8 @@ class BotTaskForm(forms.ModelForm):
     is_hot = forms.BooleanField(required=False)
     is_mp4 = forms.BooleanField(required=False)
 
+    video_formats = forms.CharField(required=True)
+
     max_videos_count = forms.IntegerField(required=False)
 
     def clean_interval(self):
@@ -145,6 +147,30 @@ class BotTaskForm(forms.ModelForm):
                 raise forms.ValidationError('Max videos per iter mast be more then 0!')
 
         return data
+
+    def clean_video_formats(self):
+        wrong_formats = []
+        data = []
+        allowed_formats = {x[1]:x[0] for x in Video.VIDEO_FORMATS}
+
+        for elem in self.cleaned_data['video_formats'].split():
+            if elem in allowed_formats:
+                if allowed_formats[elem] in data:
+                    raise forms.ValidationError("Stop writing formats twice, you stupid fuck!")
+                data.append(allowed_formats[elem])
+            else:
+                wrong_formats.append(elem)
+
+        if wrong_formats:
+            str_errors = " '{}'"*(wrong_formats.__len__())
+            str_errors = str_errors.format(*wrong_formats)
+            str_formats = " '{}'"*(Video.VIDEO_FORMATS.__len__())
+            str_formats = str_formats.format(*allowed_formats)
+            raise forms.ValidationError('Wrong formats:{}! These are allowed:{}.'.format(str_errors, str_formats))
+
+        print(data)
+        return data
+
 
 
 class BotTaskRemoveForm(forms.Form):

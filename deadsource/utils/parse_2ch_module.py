@@ -17,16 +17,30 @@ from os.path import (
 CATALOG_URL = 'https://2ch.hk/b/catalog.json'
 
 
-def find_all_webs_from_files(all_files):
+def find_all_files_with_formats_from_files(all_files, formats=('.webm',)):
     """
     This function returns all founded webms in file
     and changes their paths to absolute
+    :param formats:
     :param all_files:
     :return:
     """
     logging.debug("Finding webms in files.")
 
-    result = filter(lambda x: x['path'].endswith('.webm'), all_files)
+    result = []
+
+    if formats:
+        for elem in all_files:
+            for end in formats:
+                if elem['path'].endswith(end):
+                    elem['video_format'] = end
+                    result.append(elem)
+                    break
+
+    else:
+        result = all_files
+
+        result = filter(lambda x: x['path'].endswith('.webm'), all_files)
 
     for elem in result:
         elem['source'] = 'https://2ch.hk{}'.format(elem['path'])
@@ -93,7 +107,6 @@ def _get_threads_without_word_in_comments(all_threads, words=()):
 
 def _get_links_from_thread_dicts(all_threads):
     return ["https://2ch.hk/b/res/{}.json".format(thread['num']) for thread in all_threads]
-
 
 
 

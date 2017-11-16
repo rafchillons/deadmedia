@@ -235,6 +235,7 @@ def bot_task_1(stop_event=threading.Event(),
                iters_to_do=1,
                working_time=0,
                with_words=(u'вебм', 'webm'),
+               video_formats=('.webm,'),
                without_words=('fap', u'музыкальный'),
                max_videos_count=None,
                is_music=False,
@@ -271,6 +272,7 @@ def bot_task_1(stop_event=threading.Event(),
                                                    is_webm=is_webm,
                                                    is_hot=is_hot,
                                                    is_mp4=is_mp4,
+                                                   video_formats=video_formats,
                                                    exit_event=stop_event)
 
         except Exception as e:

@@ -63,6 +63,10 @@
         {% for error in  form.max_videos_count.errors %}
             <h1>{{error}}</h1>
         {% endfor %}
+        <p>Formats to download: <input name="video_formats" type="text"></p>
+        {% for error in  form.video_formats.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
 
 
         <button class="btn btn-sm btn-default btn-block" type="submit">Create bot</button>
