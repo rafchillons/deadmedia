@@ -108,6 +108,14 @@
                                             <td>working time</td>
                                             <td><span class="badge">{{bot.data_dict.working_time}}</span></td>
                                         </tr>
+                                        <tr>
+                                            <td>file formats</td>
+                                            <!-- в зависимости от условия -->
+                                            <td>
+                                                <span class="badge">.mp4</span>
+                                                <span class="badge">.webm</span>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -137,7 +145,7 @@
         <p>Is music: {{bot.data_dict.is_webm}}</p>
         <p>Is hot: {{bot.data_dict.is_hot}}</p>
         <p>Is mp4: {{bot.data_dict.is_mp4}}</p>
-	<p>Video formats: {{bot.data_dict.video_formats}}</p>
+        <p>Video formats: {{bot.data_dict.video_formats}}</p>
 
     </p>-------------------------------------------- {% endfor %}
 
