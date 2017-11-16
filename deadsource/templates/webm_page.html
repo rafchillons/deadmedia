@@ -19,17 +19,17 @@
         </div>
 
         <!--    menu-->
-        <nav class="menu">
+        <<nav class="menu">
             <a href="#" class="menu-trigger clearfix">
             <span class="menu-logo">deadmedia</span>
             <i class="fa fa-bars" aria-hidden="true" id="menu-trigger-btn"></i>
         </a>
             <ul>
                 <li><a href="{% url 'hot-page' %}"><i class="fa fa-bolt" aria-hidden="true"></i>Hot</a></li>
-                <li><a href="{% url 'webm-page' %}" class="active"><i class="fa fa-wheelchair-alt" aria-hidden="true"></i>Webm</a></li>
                 <li><a href="{% url 'adult-page' %}"><i class="fa fa-smile-o" aria-hidden="true"></i>Adult</a></li>
+                <li><a href="{% url 'webm-page' %}" class="active"><i class="fa fa-wheelchair-alt" aria-hidden="true"></i>Webm</a></li>
                 <li><a href="{% url 'mp4-page' %}"><i class="fa fa-mobile" aria-hidden="true"></i>Mp4</a></li>
-                <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>Info</a></li>
+                <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
                 <!--admin sign out-->
                 {% if is_authenticated %}
                 <li class="admin-sign-out-mobile"><a href="{% url 'logout' %}">Sign out</a></li>
@@ -61,15 +61,12 @@
                                 {% if is_authenticated %}
 
                                 <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
-                                <!--admin top button -->
-                                <a href="#" class="file-praise-btn" title="Praise file">Praise</a>
-                                <!--admin top button end-->
                                 <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a>
                                 <div class="file-admin-information">
                                     <span><i>download time:</i> {{video.added_date}}</span>
                                     <span><i>resolution:</i> {{video.video_width}}x{{video.video_height}}</span>
                                     <span><i>database id:</i> {{video.id}}</span>
-                                    <span><i>thread:</i><a href="{{video.source_thread_path}}" target="_blank"> {{video.source_thread_number}}</a></span>
+                                    <span><i>thread:</i><a href="{{video.source_thread_path}}"> {{video.source_thread_number}}</a></span>
                                 </div>
                                 {% endif %}
                                 <!--admin special video buttons-->
@@ -95,9 +92,8 @@
         <!--admin special menu -->
         {% if is_authenticated %}
         <ul class="admin-special-menu clearfix">
-            <li><a href="{% url 'webm-page' %}">Home</a></li>
-            <li><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
-            <li><a href="{% url 'status-bot' %}">BotStatus</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/newadmin">ControlPanel</a></li>
             <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
         </ul>
         {% endif %}
@@ -108,7 +104,7 @@
             </div>
         </footer>
     </body>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'js/infinite.min.js' %}"></script>
     <script>
@@ -126,5 +122,4 @@
     <script src="{% static 'js/style.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/fullscreen.js' %}"></script>
-
 </html>
