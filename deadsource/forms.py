@@ -25,12 +25,7 @@ class VideoDeleteForm(forms.ModelForm):
             raise forms.ValidationError('Wrong url({})!'.format(e))
 
 
-class BotTaskForm(forms.ModelForm):
-    class Meta:
-        model = BotTask
-        fields = (
-            'bot_task',
-        )
+class BotTaskForm(forms.Form):
 
     interval = forms.IntegerField()
     with_words = forms.CharField(required=False)
@@ -170,7 +165,6 @@ class BotTaskForm(forms.ModelForm):
 
         print(data)
         return data
-
 
 
 class BotTaskRemoveForm(forms.Form):

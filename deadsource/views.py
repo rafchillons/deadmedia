@@ -298,7 +298,7 @@ def login_view(request):
 
 
 @login_required
-def create_bot_view(request):
+def create_bot_downloader_view(request):
     if request.method == 'POST':
         form = BotTaskForm(request.POST)
 
