@@ -113,7 +113,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/www/deadmedia/logs.txt',
+            'filename': 'logs.txt',
         },
     },
     'loggers': {
