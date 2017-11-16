@@ -1,30 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <p><a href="{% url 'create-bot' %}">create download bot</a> <a href="{% url 'create-bot-remover' %}">create remove bot</a></p>
+<html>
+{% load static %}
 
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width" />
+    <title>WEBM</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <div class="bots clearfix">
+                    <img src="{% static 'img/shtein.png' %}" width="100%">
+                    <span class="bot-console-log"><span class="console-arrow">></span>
+                    <!-- сюда выводятся все ошибки-->
+                    </span>
+                    <div class="bot-create-btns">
+                        <a href="{% url 'create-bot-remover' %}" class="bot-create-btn">create eraser</a>
+                        <a href="{% url 'create-bot' %}" class="bot-create-btn">create downloader</a>
+                    </div>
+                    <div class="bot-list">
+                        <!-- bot template -->
+                        {% for bot in bots %}
+                        <div class="bot">
+                            <div class="bot-preview">
+                                <div class="bot-id">
+                                    <span><b>Bot #{{bot.db_object.id}}</b></span>
+                                    <!-- в зависимости от условия -->
+                                    <span class="badge badge-fine">Working</span>
+                                    <span class="badge badge-error">Stopped</span>
+                                    <span class="badge badge-warning">Paused</span>
+                                </div>
+                                <div class="bot-controls clearfix">
+                                    <a class="btn-bot-run" href="{% url 'start-bot-id' bot.db_object.id %}">Run</a>
+                                    <a class="bot-btn-stop" href="{% url 'stop-bot-id' bot.db_object.id %}">Stop</a>
+                                    <a class="bot-btn-pause-on" href="{% url 'pause-on-bot-id' bot.db_object.id %}">Pause on</a>
+                                    <a class="bot-btn-pause-on" href="{% url 'pause-off-bot-id' bot.db_object.id %}">Pause off</a>
+                                    <a class="bot-btn-delete" href="{% url 'delete-bot-id' bot.db_object.id %}">Delete</a>
+                                    <a class="bot-about-toggler" title="More information"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                            <div class="bot-about">
+                                <table class="table table-sm table-bordered table-striped table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <td>categories</td>
+                                            <!-- в зависимости от того для каких категорий работает -->
+                                            <td>
+                                                <span class="badge badge-music">music</span>
+                                                <span class="badge badge-adult">adult</span>
+                                                <span class="badge badge-webm">webm</span>
+                                                <span class="badge badge-hot">hot</span>
+                                                <span class="badge">mp4</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-3">process status</td>
+                                            <td class="col-md-9">
+                                                <!-- в зависимости от условия -->
+                                                <span class="badge badge-fine">Working</span>
+                                                <span class="badge badge-info">Resting</span>
+                                                <span class="badge badge-warning">Waiting</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>task</td>
+                                            <td>{{bot.db_object.bot_task}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>lifetime</td>
+                                            <td><span class="badge">{{bot.data_dict.ignore_time}}<span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>with words</td>
+                                            <td><span class="badge">word_1</span><span class="badge">word_2</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>without words</td>
+                                            <td><span class="badge">word_1</span><span class="badge">word_2</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>max video count</td>
+                                            <td><span class="badge">{{bot.data_dict.max_videos_count}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>interval</td>
+                                            <td><span class="badge">{{bot.data_dict.interval}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>is max iter</td>
+                                            <td>
+                                                <!-- в зависимости от условия -->
+                                                <span class="badge badge-error">false</span>
+                                                <span class="badge badge-info">true</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>iters to do</td>
+                                            <td><span class="badge">{{bot.data_dict.iters_to_do}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>working time</td>
+                                            <td><span class="badge">{{bot.data_dict.working_time}}</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- bot template ending -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% for bot in bots %}
     <p>-------------------------------------------
-        <p>Id: {{bot.db_object.id}}</p>
         <p>Status: {{bot.db_object.get_status}}</p>
         <p>Process status: {{bot.db_object.get_process_status}}</p>
-        <p>Task: {{bot.db_object.bot_task}}</p>
 
-        <p>Save time: {{bot.data_dict.ignore_time}}</p>
         <p>With words: {{bot.data_dict.with_words}}</p>
         <p>Without words: {{bot.data_dict.without_words}}</p>
-        <p>Interval: {{bot.data_dict.interval}}</p>
 
         <p>Is max iter: {{bot.data_dict.is_max_iter}}</p>
-        <p>Iters to do: {{bot.data_dict.iters_to_do}}</p>
 
         <p>Is max time: {{bot.data_dict.is_max_time}}</p>
-        <p>Working time: {{bot.data_dict.working_time}}</p>
 
         <p>Is music: {{bot.data_dict.is_music}}</p>
         <p>Is adult: {{bot.data_dict.is_adult}}</p>
@@ -32,18 +138,27 @@
         <p>Is adult: {{bot.data_dict.is_hot}}</p>
         <p>Is adult: {{bot.data_dict.is_mp4}}</p>
 
-        <p>Max video count: {{bot.data_dict.max_videos_count}}</p>
+    </p>-------------------------------------------- {% endfor %}
 
-        <p> <a href="{% url 'start-bot-id' bot.db_object.id %}">Start bot</a> </p>
-        <p> <a href="{% url 'stop-bot-id' bot.db_object.id %}">Stop bot</a> </p>
-        <p> <a href="{% url 'delete-bot-id' bot.db_object.id %}">Delete bot</a> </p>
-        <p> <a href="{% url 'pause-on-bot-id' bot.db_object.id %}">Pause on</a> </p>
-        <p> <a href="{% url 'pause-off-bot-id' bot.db_object.id %}">Pause off</a> </p>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/functions.js' %}"></script>
+    <script src="{% static 'js/tippy.min.js' %}"></script>
+    <script>
+        $('body').on('click', '.bot-about-toggler', function() {
+            $(this).parent().parent().parent().find('.bot-about').slideToggle("fast");
+        });
 
-    </p>--------------------------------------------
+        function blink() {
+            $('.console-arrow')
+                .fadeOut('fast')
+                .fadeIn('fast');
 
-    {% endfor %}
+            setTimeout(blink, 800);
+        }
+        blink();
 
-
+    </script>
 </body>
+
 </html>
