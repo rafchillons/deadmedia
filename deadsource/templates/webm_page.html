@@ -64,7 +64,6 @@
                                 <a href="{% url 'video-delete-id' video.id %}" class="file-delete-btn" title="Delete file">Delete</a>
                                 <div class="file-admin-information">
                                     <span><i>download time:</i> {{video.added_date}}</span>
-                                    <span><i>resolution:</i> {{video.video_width}}x{{video.video_height}}</span>
                                     <span><i>database id:</i> {{video.id}}</span>
                                     <span><i>thread:</i><a href="{{video.source_thread_path}}"> {{video.source_thread_number}}</a></span>
                                 </div>
@@ -72,7 +71,7 @@
                                 <!--admin special video buttons-->
                             </div>
                             <div class="file-info">
-                                <span class="file-size">({{video.video_size_str}}, {{video.video_duration_str}})</span>
+                                <span class="file-size">({{video.video_size_str}}, {{video.video_width}}x{{video.video_height}}, {{video.video_duration_str}})</span>
                                 <a class="external-link" target="_blank" href="/storage/{{video.storage_name}}" title="{{video.title}}"><i class="fa fa-external-link"></i></a>
                             </div>
                         </figcaption>
