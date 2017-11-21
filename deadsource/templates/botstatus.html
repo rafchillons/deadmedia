@@ -9,18 +9,6 @@
     <title>WEBM</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
-    <style>
-        .bot-create-downloader,
-        .bot-create-eraser {
-            display: none;
-        }
-
-        .input-xs,
-        select.input-xs {
-            height: 20px;
-            line-height: 20px;
-        }
-    </style>
 </head>
 
 <body>
@@ -40,18 +28,150 @@
                         <a class="bot-create-btn bot-create-btn-eraser">create eraser</a>
                         <a class="bot-create-btn bot-create-btn-downloader">create downloader</a>
                     </div>
-                    <div class="bot-create-downloader">
-                        <form method="POST">
-                            <select class="form-control form-control-sm" name="bot_task" id="id_bot_task">
-                                <option value="Download webms from 2ch" selected>Download</option>
-                                <option value="Remove webms">Remove</option>
-                            </select>
-                            <div class="input-group input-xs" id="delete">
-                                <input name="storage_name" class="form-control" placeholder="File link" aria-label="Delete id" type="text">
-                            </div>
-                        </form>
+                    <div class="bot-create-forms clearfix">
+                        <div class="bot-create-eraser">
+                            <form method="POST" class="text-left">
+                                <input type='hidden' name='csrfmiddlewaretoken' value='qPURWlwXjeuFwOBEMzzZPOFiKD57hiXfk1o1zxT64WqsHFetSPYk9l25PTRUALbE' />
+                                <div class="form-group">
+                                    <label for="ignore_time">ignore time</label>
+                                    <input name="ignore_time" type="number" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_adult">adult</label>
+                                    <input name="is_adult" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_music">music</label>
+                                    <input name="is_music" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_webm">webm</label>
+                                    <input name="is_webm" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_hot">hot</label>
+                                    <input name="is_hot" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_mp4">mp4</label>
+                                    <input name="is_mp4" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="interval">iters interval</label>
+                                    <input name="interval" type="number" value="0" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_time">enable lifetime</label>
+                                    <input name="is_max_time" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="working_time">lifetime</label>
+                                    <input name="working_time" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_iter">enable max iter</label>
+                                    <input name="is_max_iter" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="iters_to_do">max iters number</label>
+                                    <input name="iters_to_do" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="max_videos_count">videos per iter</label>
+                                    <input name="max_videos_count" type="number" class="input-xs">
+                                </div>
+
+                                <button class="bot-create-submit-btn" type="submit">create bot</button>
+                            </form>
+                        </div>
+                        <div class="bot-create-downloader">
+                            <form method="POST" class="text-left">
+                                <input type='hidden' name='csrfmiddlewaretoken' value='ZjdVl0vsc6MPqUc4N6kjLg2cWOnztdJYTvH5YcSBXOICBLPTTmJE5NpZ149mMGXn' />
+                                <div class="form-group">
+                                    <label for="with_words">search words</label>
+                                    <input name="with_words" type="text" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="without_words">ignore words</label>
+                                    <input name="without_words" type="text" class="input-xs"></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_adult">adult</label>
+                                    <input name="is_adult" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_music">music</label>
+                                    <input name="is_music" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_webm">webm</label>
+                                    <input name="is_webm" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_hot">hot</label>
+                                    <input name="is_hot" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_mp4">mp4</label>
+                                    <input name="is_mp4" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="interval">iters interval</label>
+                                    <input name="interval" type="number" value="0" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_time">enable lifetime</label>
+                                    <input name="is_max_time" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="working_time">lifetime</label>
+                                    <input name="working_time" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_iter">enable max iter</label>
+                                    <input name="is_max_iter" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="iters_to_do">max ites number</label>
+                                    <input name="iters_to_do" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="max_videos_count">videos per iter</label>
+                                    <input name="max_videos_count" type="number" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="video_formats">download formats</label>
+                                    <input name="video_formats" type="text" class="input-xs">
+                                </div>
+
+                                <button class="bot-create-submit-btn" type="submit">create bot</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="bot-create-eraser">123</div>
                     <div class="bot-list">
                         <!-- bot template -->
                         {% for bot in bots %}
@@ -156,45 +276,25 @@
         </div>
     </div>
 
-
-    <a href="{% url 'create-bot-remover' %}" style="color: red;">create eraser</a>
-    <a href="{% url 'create-bot' %}" style="color: green;">create downloader</a> {% for bot in bots %}
-    <p>-------------------------------------------
-        <p>Status: {{bot.db_object.get_status}}</p>
-        <p>Process status: {{bot.db_object.get_process_status}}</p>
-
-        <p>With words: {{bot.data_dict.with_words}}</p>
-        <p>Without words: {{bot.data_dict.without_words}}</p>
-
-        <p>Is max iter: {{bot.data_dict.is_max_iter}}</p>
-
-        <p>Is max time: {{bot.data_dict.is_max_time}}</p>
-
-        <p>Is music: {{bot.data_dict.is_music}}</p>
-        <p>Is adult: {{bot.data_dict.is_adult}}</p>
-        <p>Is music: {{bot.data_dict.is_webm}}</p>
-        <p>Is hot: {{bot.data_dict.is_hot}}</p>
-        <p>Is mp4: {{bot.data_dict.is_mp4}}</p>
-        <p>Video formats: {{bot.data_dict.video_formats}}</p>
-
-    </p>-------------------------------------------- {% endfor %}
-
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/functions.js' %}"></script>
     <script>
         $('body').on('click', '.bot-about-toggler', function() {
             $(this).parent().parent().parent().find('.bot-about').slideToggle("fast");
         });
 
         $('body').on('click', '.bot-create-btn-eraser', function() {
-            $(this).parent().parent().find('.bot-create-downloader').slideUp("fast");
-            $(this).parent().parent().find('.bot-create-eraser').slideToggle("fast");
+            $('.bot-create-btn-downloader').removeClass('selected');
+            $(this).parent().parent().find('.bot-create-downloader').slideUp('fast');
+            $(this).parent().parent().find('.bot-create-eraser').toggle('fast');
+            $('.bot-create-btn-eraser').toggleClass('selected');
         });
 
         $('body').on('click', '.bot-create-btn-downloader', function() {
-            $(this).parent().parent().find('.bot-create-eraser').slideUp("fast");
-            $(this).parent().parent().find('.bot-create-downloader').slideToggle("fast");
+            $('.bot-create-btn-eraser').removeClass('selected');
+            $(this).parent().parent().find('.bot-create-eraser').slideUp('fast');
+            $(this).parent().parent().find('.bot-create-downloader').toggle('fast');
+            $('.bot-create-btn-downloader').toggleClass('selected');
         });
 
         function blink() {
