@@ -180,8 +180,10 @@ def delete_all_videos(request):
     videos = Video.objects.all()
 
     for video in videos:
-        video.delete()
-        
+        delete_video_by_db_object(video)
+
+
+
     return redirect('page-admin-new')
 
 
