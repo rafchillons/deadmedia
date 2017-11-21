@@ -15,7 +15,8 @@ $(document).ready(function () {
     var border_offset = 4;
 
     $('body').append($container);
-    window.expand = function (num, src, image_width, image_height, cloud) {
+    window.expand = function (num, src, image_width, image_height, cloud, elem_id) {
+        jQuery.getJSON("video/hit/" + elem_id); //views counter
         if (active == num) {
             hide();
             return false;

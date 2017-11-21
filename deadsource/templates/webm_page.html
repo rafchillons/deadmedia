@@ -49,9 +49,9 @@
                 {% for video in videos_row %}
                 <div class="col-md-6 col-lg-3 image" id="test">
                     <figure>
-                        <div id="{{video.id}}" class="image-link" onclick="expand(1488, '/storage/{{video.storage_name}}', {{video.video_width}}, {{video.video_height}}, 0)">
+                        <div id="{{video.id}}" class="image-link" onclick="expand(1488, '/storage/{{video.storage_name}}', {{video.video_width}}, {{video.video_height}}, 0, {{video.id}})">
                             <img src='/storage/{{video.preview_storage_name}}' alt="Loading..." class="file-preview">
-                            <span class="file-size">{{video.video_size_str}}, {{video.video_width}}x{{video.video_height}}, {{video.video_duration_str}}</span>
+                            <!-- <span class="file-size">{{video.video_size_str}}, {{video.video_width}}x{{video.video_height}}, {{video.video_duration_str}}</span> -->
                         </div>
                         <figcaption class="file-attr">
                             <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i>0</span>
@@ -103,6 +103,7 @@
         </footer>
     </body>
     <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/fullscreen.js' %}"></script>
     <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'js/infinite.min.js' %}"></script>
     <script>
@@ -119,6 +120,5 @@
     </script>
     <script src="{% static 'js/style.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/fullscreen.js' %}"></script>
 
 </html>
