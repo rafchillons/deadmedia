@@ -177,7 +177,11 @@ def show_admin_page(request):
 
 @login_required
 def delete_all_videos(request):
-    delete_all_videos_by_added_date()
+    videos = Video.objects.all()
+
+    for video in videos:
+        video.delete()
+        
     return redirect('page-admin-new')
 
 
