@@ -53,6 +53,15 @@ urlpatterns = [
     url(r'^newadmin$', views.new_admin, name='page-admin-new'),
     url(r'^error404$', views.handler404, name='error404-page'),
 
+    url(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
+    url(r'^video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
+
+    url(r'^test$', views.test, name='test'),
+
+
+
+
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

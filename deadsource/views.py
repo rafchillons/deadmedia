@@ -28,6 +28,9 @@ from django.contrib import messages
 import logging
 import json
 
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
+
 
 def main_page(request):
     videos = Video.objects.all().order_by('added_date')
@@ -391,3 +394,18 @@ def delete_video_id_view(request, pk):
     video = get_object_or_404(Video, pk=pk)
     delete_video_by_db_object(video)
     return redirect('webm-page')
+
+
+@login_required
+def test(request):
+    hit_count = HitCount.objects.get_for_object(get_object_or_404(Video, pk=1614))
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
+
+    return HttpResponse(0)
+
+
+def hit_video_view(request, pk):
+    hit_count = HitCount.objects.get_for_object(get_object_or_404(Video, pk=pk))
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
+
+    return HttpResponse(0)

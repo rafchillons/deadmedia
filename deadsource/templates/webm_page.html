@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <body>
+
+    {% load hitcount_tags %}
+
+
+
+
         <div class="container">
             <div class="category">
                 <div class="category-title">
@@ -48,13 +54,16 @@
             {% for videos_row in videos %}
             <div class="infinite-item row images">
                 {% for video in videos_row %}
+
+
+
                 <div class="col-md-6 col-lg-3 image" id="test">
                     <figure>
                         <div id="{{video.id}}" class="image-link" onclick="expand(1488, '/storage/{{video.storage_name}}', {{video.video_width}}, {{video.video_height}}, 0)">
                             <img src='/storage/{{video.preview_storage_name}}' alt="Loading..." class="file-preview">
                         </div>
                         <figcaption class="file-attr">
-                            <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i>0</span>
+                            <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i>{% get_hit_count for video %}</span>
                             <span class="file-name">{{video.title}}</span>
                             <div class="file-admin-panel clearfix">
                                 <!--admin special video buttons-->
@@ -121,4 +130,12 @@
     <script src="{% static 'js/style.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/fullscreen.js' %}"></script>
+
+    <script>
+        $('body').on('click', '.image-link', function() {
+            var kek = jQuery.getJSON("video/hit/" + this.id);
+        });
+    </script>
+
+
 </html>
