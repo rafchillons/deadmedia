@@ -1,4 +1,5 @@
 <!DOCTYPE html> {% load static %}
+{% load hitcount_tags %}
 <html>
 
 <head lang="en">
@@ -54,7 +55,7 @@
                             <!-- <span class="file-size">{{video.video_size_str}}, {{video.video_width}}x{{video.video_height}}, {{video.video_duration_str}}</span> -->
                         </div>
                         <figcaption class="file-attr">
-                            <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i>0</span>
+                            <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i>{% get_hit_count for video %}</span>
                             <span class="file-name">{{video.title}}</span>
                             <div class="file-admin-panel clearfix">
                                 <!--admin special video buttons-->
