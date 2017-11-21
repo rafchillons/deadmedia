@@ -99,7 +99,7 @@ def _save_video_info_to_database(video,
 
     try:
         title = description_json['fullname'].rsplit('.', 1)[0]
-        if not title:
+        if title != ' ':
             title = 'Untitled'
         video.title = title
         video.description_json = json.dumps(description_json)
