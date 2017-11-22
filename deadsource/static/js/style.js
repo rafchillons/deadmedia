@@ -15,4 +15,30 @@ $(document).ready(function () {
     $('body').on('click', '.file-admin-information-btn', function () {
         $(this).parent().find('.file-admin-information').slideToggle("fast");
     });
+
+    $('body').on('click', '.file-delete-btn', function () {
+        $(this).css('cursor', 'default').css('text-decoration', 'none').css('color', 'red');;
+        $(this).text("Deleted");
+        linkImg = $(this).parent().parent().parent().find('.image-link')
+        id = linkImg.attr('id');
+        img = $("#" + id).find('img');
+
+        jQuery.getJSON("video/" + id + "/delete/");
+
+        linkImg.css("background-image", "url(/assets/img/deleted.png)");
+        linkImg.attr("onclick", " ");
+        linkImg.css('cursor', 'default');
+        linkImg.css('opacity', '0.7');
+    });
+
+    //file short info slide
+    $(document).on({
+        mouseenter: function () {
+            $(this).find('.file-size').fadeIn('fast');
+        },
+        mouseleave: function () {
+            $(this).find('.file-size').fadeOut('fast');
+        }
+    }, ".image-link");
+
 });
