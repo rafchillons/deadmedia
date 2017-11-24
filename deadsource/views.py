@@ -407,7 +407,8 @@ def delete_video_id_view(request, pk):
 def test(request):
     video = get_object_or_404(Video, pk=1620)
     name = video.get_description()['fullname']
-    print()
+    print("name: {}".format(name))
+    print("title: {}".format(video.title))
     return HttpResponse(0)
 
 

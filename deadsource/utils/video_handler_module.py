@@ -11,13 +11,13 @@ import logging
 import time
 from datetime import datetime
 from deadsource.models import Video
-from deadmedia.settings import MEDIA_ROOT
+from deadmedia.settings import MEDIA_ROOT, MEDIA_URL
 from os.path import (
     join,
     basename,
 )
 from os import remove
-
+import os
 
 def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
                                            without_words=(),
@@ -58,6 +58,7 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
         except Exception as e:
             logging.critical("Download_and_save_new_videos: {}.".format(e))
 
+
     logging.debug("Downloading and saving all videos from 2ch: complete.")
 
 
@@ -67,8 +68,9 @@ def _download_and_save_webm_video_and_preview(webm_description):  # this functio
 
     download_url = webm_description['source']
     download_url_preview = webm_description['thumbnail_source']
-    path_to_save = join(MEDIA_ROOT, '{}{}'.format(db_object.id, webm_description['video_format']))
-    path_to_save_preview = join(MEDIA_ROOT, '{}.{}'.format(db_object.id, 'jpg'))
+    folder_to_save = __set_folder_for_video(db_object.id)
+    path_to_save = join(folder_to_save, '{}{}'.format(db_object.id, webm_description['video_format']))
+    path_to_save_preview = join(folder_to_save, '{}.{}'.format(db_object.id, 'jpg'))
 
     download_and_save_file(download_url, path_to_save)
     download_and_save_file(download_url_preview, path_to_save_preview)
@@ -82,11 +84,11 @@ def _download_and_save_webm_video_and_preview(webm_description):  # this functio
 def _save_video_info_to_database(video,
                                  storage_path,
                                  source_path,
-                                 storage_path_preview,
+                                 preview_storage_path,
                                  description_json):
     """
     This function saves video info to database object.
-    :param storage_path_preview:
+    :param preview_storage_path:
     :param description_json:
     :param source_path_preview:
     :param source_path:
@@ -99,7 +101,7 @@ def _save_video_info_to_database(video,
 
     try:
         title = description_json['fullname'].rsplit('.', 1)[0]
-        if title != ' ':
+        if not title.split():
             title = 'Untitled'
         video.title = title
         video.description_json = json.dumps(description_json)
@@ -113,11 +115,14 @@ def _save_video_info_to_database(video,
         video.video_size_str = '{}{}'.format(*video_size_str)
         video.storage_path = storage_path
         video.storage_name = basename(storage_path)
+        video.storage_path_url = "{}{}".format(MEDIA_URL.rsplit('/', 1)[0], storage_path.split(MEDIA_ROOT, 1)[1])
+        video.preview_storage_path_url = "{}{}".format(MEDIA_URL.rsplit('/', 1)[0], preview_storage_path.split(MEDIA_ROOT, 1)[1])
         video.source_path = source_path
         video.source_thread_path = 'https://2ch.hk/b/res/{}.html'.format(source_path.rsplit('/', 2)[1])
         video.source_thread_number = source_path.rsplit('/', 2)[1]
-        video.preview_storage_path = storage_path_preview
-        video.preview_storage_name = basename(storage_path_preview)
+        video.preview_storage_path = preview_storage_path
+        video.preview_storage_name = basename(preview_storage_path)
+
         video.is_adult = description_json['is_adult']
         video.is_webm = description_json['is_webm']
         video.is_mp4 = description_json['is_mp4']
@@ -234,3 +239,12 @@ def _remove_video_from_storage(video):
             raise
 
     logging.debug("Removing video from media: complete.")
+
+
+def __set_folder_for_video(video_id):
+    folder = join(MEDIA_ROOT, str(video_id/1000))
+
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
+    return folder

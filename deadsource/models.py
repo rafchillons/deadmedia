@@ -17,6 +17,7 @@ class Video(models.Model):
 
     storage_path = models.CharField(max_length=200, default='')
     storage_name = models.CharField(max_length=200, default='')
+    storage_path_url = models.CharField(max_length=200, default='')
 
     source_path = models.CharField(max_length=200, default='')
     source_thread_number = models.CharField(max_length=200, default='')
@@ -24,6 +25,7 @@ class Video(models.Model):
 
     preview_storage_path = models.CharField(max_length=200, default='')
     preview_storage_name = models.CharField(max_length=200, default='')
+    preview_storage_path_url = models.CharField(max_length=200, default='')
 
     video_width = models.CharField(max_length=200, default='300')
     video_height = models.CharField(max_length=200, default='300')
