@@ -17,18 +17,19 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.file-delete-btn', function () {
-        $(this).css('cursor', 'default').css('text-decoration', 'none').css('color', 'red');;
+        $(this).css('cursor', 'default').css('text-decoration', 'none').css('color', 'red');
         $(this).text("Deleted");
-        linkImg = $(this).parent().parent().parent().find('.image-link')
-        id = linkImg.attr('id');
-        img = $("#" + id).find('img');
+        image = $(this).parent().parent().parent().parent();
+        imageId = image.attr('id');
+        console.log(imageId);
+        
+        linkImage = $('#' + imageId).children().find('.image-link');
+        jQuery.getJSON("video/" + imageId + "/delete/");
 
-        jQuery.getJSON("video/" + id + "/delete/");
-
-        linkImg.css("background-image", "url(/assets/img/deleted.png)");
-        linkImg.attr("onclick", " ");
-        linkImg.css('cursor', 'default');
-        linkImg.css('opacity', '0.7');
+        linkImage.css("background-image", "url(/assets/img/deleted.png)");
+        linkImage.attr("onclick", " ");
+        linkImage.css('cursor', 'default');
+        linkImage.css('opacity', '0.7');
     });
 
     //file short info slide
@@ -41,4 +42,12 @@ $(document).ready(function () {
         }
     }, ".image-link");
 
+    //like btn
+    $('body').on('click', '.file-like-area', function () {
+        console.log('sdfsdf');
+        likeBtn = $(this).find('.fa');
+        likeBtn.removeClass('fa-heart-o');
+        likeBtn.addClass('fa-heart active');
+    });
 });
+
