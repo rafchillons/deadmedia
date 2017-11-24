@@ -30,6 +30,7 @@ import json
 
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
+import hitcount
 
 
 def main_page(request):
@@ -404,14 +405,24 @@ def delete_video_id_view(request, pk):
 
 @login_required
 def test(request):
-    hit_count = HitCount.objects.get_for_object(get_object_or_404(Video, pk=1614))
-    hit_count_response = HitCountMixin.hit_count(request, hit_count)
-
+    video = get_object_or_404(Video, pk=1620)
+    name = video.get_description()['fullname']
+    print()
     return HttpResponse(0)
 
 
 def hit_video_view(request, pk):
-    hit_count = HitCount.objects.get_for_object(get_object_or_404(Video, pk=pk))
+    video = get_object_or_404(Video, pk=pk)
+    hit_count = HitCount.objects.get_for_object(video)
+    hit_count_before = hit_count.hits
     hit_count_response = HitCountMixin.hit_count(request, hit_count)
+    hit_count_after = hit_count.hits
 
-    return HttpResponse(0)
+    if type(hit_count_after) is not int:
+        hit_count_after = hit_count_before + 1
+    else:
+        hit_count_after = -1
+
+
+    print(type(HttpResponse(hit_count_after)))
+    return HttpResponse(hit_count_after)

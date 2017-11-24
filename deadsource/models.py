@@ -68,9 +68,16 @@ class Video(models.Model):
 
     video_format = models.CharField(max_length=200, choices=VIDEO_FORMATS, default=FORMAT_WEBM)
 
-
     def __str__(self):
         return self.title
+
+    def set_description(self, data):
+        self.description_json = json.dumps(data)
+        self.save()
+
+    def get_description(self):
+        return json.loads(str(self.description_json))
+
 
 
     """
