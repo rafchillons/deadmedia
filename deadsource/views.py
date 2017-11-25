@@ -59,8 +59,9 @@ def show_webm(request):
         videos = paginator.page(paginator.num_pages)
 
     return render(request,
-                  'webm_page.html',
+                  'videos_page.html',
                   {
+                      'category_name': 'webm',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
                   })
@@ -81,8 +82,9 @@ def show_adult(request):
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
     return render(request,
-                  'adult_page.html',
+                  'videos_page.html',
                   {
+                      'category_name': 'adult',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
                   })
@@ -102,8 +104,9 @@ def show_hot(request):
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
     return render(request,
-                  'hot_page.html',
+                  'videos_page.html',
                   {
+                      'category_name': 'hot',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
                   })
@@ -125,8 +128,9 @@ def show_mp4(request):
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
     return render(request,
-                  'mp4_page.html',
+                  'videos_page.html',
                   {
+                      'category_name': 'mp4',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
                   })
@@ -136,18 +140,32 @@ def show_faq(request):
     return render(request,
                   'faq_page.html',
                   {
+                      'category_name': 'faq',
                       'is_authenticated': request.user.is_authenticated(),
                   })
 
 
 @login_required
 def show_all(request):
-    videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('added_date')
+    list_of_grouped_videos = zip(
+        *[iter(
+            Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('-added_date'))] * 4)
 
+    page = request.GET.get('page', 1)
+    paginator = Paginator(list_of_grouped_videos, 3)
+
+    try:
+        videos = paginator.page(page)
+    except PageNotAnInteger:
+        videos = paginator.page(1)
+    except EmptyPage:
+        videos = paginator.page(paginator.num_pages)
     return render(request,
-                  'all_page.html',
+                  'videos_page.html',
                   {
+                      'category_name': 'all',
                       'videos': videos,
+                      'is_authenticated': request.user.is_authenticated(),
                   })
 
 
