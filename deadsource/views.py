@@ -10,7 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 import deadmedia.settings
 from .forms import VideoDeleteForm, BotTaskForm, BotTaskRemoveForm
-from .models import Video, BotTask
+from .models import Video, BotTask, PaginatorModel
 from .utils.bot_module import (
     ThreadDownloader,
     VideoRemover,
@@ -423,11 +423,27 @@ def delete_video_id_view(request, pk):
 
 @login_required
 def test(request):
-    video = get_object_or_404(Video, pk=1620)
-    name = video.get_description()['fullname']
-    print("name: {}".format(name))
-    print("title: {}".format(video.title))
-    return HttpResponse(0)
+
+    try:
+        page = int(request.GET.get('page', 1))
+    except Exception as e:
+        logging.error('error!{} '.format(e))
+        page = 1
+
+    list_of_grouped_videos = zip(*[iter(
+                Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True).order_by(
+                    '-added_date')[12 * (page - 1):24 * page])] * 4)
+
+    paginator = Paginator(list_of_grouped_videos, 3)
+    videos = paginator.page(page)
+
+    return render(request,
+                  'videos_page.html',
+                  {
+                      'category_name': 'webm',
+                      'videos': videos,
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
 
 
 def hit_video_view(request, pk):
@@ -441,7 +457,6 @@ def hit_video_view(request, pk):
         hit_count_after = hit_count_before + 1
     else:
         hit_count_after = -1
-
 
     print(type(HttpResponse(hit_count_after)))
     return HttpResponse(hit_count_after)

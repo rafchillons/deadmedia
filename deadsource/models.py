@@ -220,3 +220,35 @@ class BotTask(models.Model):
     def pause_off(self):
         for thread in [x for x in threading.enumerate() if x.getName() == 'Bot({})'.format(self.id)]:
             thread.pause_off()
+
+
+class PaginatorModel(models.Model):
+    updated_date = models.DateTimeField(default=timezone.now)
+
+    paginator_json = models.BinaryField(default='')
+
+    CATEGORY_HOT = 'Hot category'
+    CATEGORY_ADULT = 'Adult category'
+    CATEGORY_WEBM = 'Webm category'
+    CATEGORY_MP4 = 'Mp4 category'
+    CATEGORY_NOTSET = 'Category notset'
+    
+    CATEGORY = (
+        (CATEGORY_HOT, 'hot'),
+        (CATEGORY_ADULT, 'adult'),
+        (CATEGORY_WEBM, 'webm'),
+        (CATEGORY_MP4, 'mp4'),
+        (CATEGORY_NOTSET, 'notset'),
+    )
+
+    category = models.CharField(max_length=200, choices=CATEGORY, default=CATEGORY_NOTSET)
+    
+    def set_paginator(self, data):
+        self.paginator_json = json.dumps(data)
+        self.save()
+
+    def get_paginator(self):
+        return json.loads(str(self.paginator_json))
+
+    def __str__(self):
+        return "Paginator model object ({})".format(self.category)
