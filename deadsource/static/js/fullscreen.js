@@ -17,6 +17,11 @@ $(document).ready(function () {
     $('body').append($container);
     window.expand = function (num, src, image_width, image_height, cloud, elem_id) {
 
+		jQuery.get('https://deadmedia.ru/video/hit/' + elem_id)
+            .done(function(data) {
+                if (data >= 0) $('#' + elem_id).find('.file-views-number').text(data);
+            }); //views counter
+
         if (active == num) {
             hide();
             return false;
@@ -52,11 +57,6 @@ $(document).ready(function () {
 
             resize(multiplier_width < multiplier_height ? multiplier_width : multiplier_height, true);
         }
-
-        jQuery.get('video/hit/' + elem_id)
-            .done(function(data) {
-                if (data >= 0) $('#' + elem_id).find('.file-views-number').text(data);
-            }); //views counter
 
         return false;
     };
