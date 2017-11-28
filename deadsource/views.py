@@ -44,17 +44,22 @@ def main_page(request):
 
 
 def show_webm(request):
-    list_of_grouped_videos = zip(*[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
-                                                                   is_webm=True).order_by(
-        '-added_date'))] * 4)
+    try:
+        page = int(request.GET.get('page', 1))
+    except Exception as e:
+        logging.error('error!{} '.format(e))
+        page = 1
 
-    page = request.GET.get('page', 1)
-    paginator = Paginator(list_of_grouped_videos, 3)
+    list_of_grouped_videos = zip(*[iter(
+        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True).order_by(
+            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+
+    paginator = Paginator(list_of_grouped_videos, 6)
 
     try:
-        videos = paginator.page(page)
-    except PageNotAnInteger:
         videos = paginator.page(1)
+        next_page = page + 1
+        videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
 
@@ -68,17 +73,22 @@ def show_webm(request):
 
 
 def show_adult(request):
-    list_of_grouped_videos = zip(*[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
-                                                                   is_adult=True).order_by(
-        '-added_date'))] * 4)
+    try:
+        page = int(request.GET.get('page', 1))
+    except Exception as e:
+        logging.error('error!{} '.format(e))
+        page = 1
 
-    page = request.GET.get('page', 1)
-    paginator = Paginator(list_of_grouped_videos, 3)
+    list_of_grouped_videos = zip(*[iter(
+        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_adult=True).order_by(
+            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+
+    paginator = Paginator(list_of_grouped_videos, 6)
 
     try:
-        videos = paginator.page(page)
-    except PageNotAnInteger:
         videos = paginator.page(1)
+        next_page = page + 1
+        videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
     return render(request,
@@ -91,16 +101,22 @@ def show_adult(request):
 
 
 def show_hot(request):
-    list_of_grouped_videos = zip(*[iter(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
-                                                                   is_hot=True).order_by('-added_date'))] * 4)
+    try:
+        page = int(request.GET.get('page', 1))
+    except Exception as e:
+        logging.error('error!{} '.format(e))
+        page = 1
 
-    page = request.GET.get('page', 1)
-    paginator = Paginator(list_of_grouped_videos, 3)
+    list_of_grouped_videos = zip(*[iter(
+        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_hot=True).order_by(
+            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+
+    paginator = Paginator(list_of_grouped_videos, 6)
 
     try:
-        videos = paginator.page(page)
-    except PageNotAnInteger:
         videos = paginator.page(1)
+        next_page = page + 1
+        videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
     return render(request,
@@ -113,18 +129,22 @@ def show_hot(request):
 
 
 def show_mp4(request):
-    list_of_grouped_videos = zip(
-        *[iter(
-            Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED,
-                                       is_mp4=True).order_by('-added_date'))] * 4)
+    try:
+        page = int(request.GET.get('page', 1))
+    except Exception as e:
+        logging.error('error!{} '.format(e))
+        page = 1
 
-    page = request.GET.get('page', 1)
-    paginator = Paginator(list_of_grouped_videos, 3)
+    list_of_grouped_videos = zip(*[iter(
+        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_mp4=True).order_by(
+            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+
+    paginator = Paginator(list_of_grouped_videos, 6)
 
     try:
-        videos = paginator.page(page)
-    except PageNotAnInteger:
         videos = paginator.page(1)
+        next_page = page + 1
+        videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
     return render(request,
@@ -435,7 +455,7 @@ def test(request):
                     '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
 
     paginator = Paginator(list_of_grouped_videos, 6)
-    
+
     try:
         videos = paginator.page(1)
         next_page = page + 1
