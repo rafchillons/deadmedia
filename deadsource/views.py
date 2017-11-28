@@ -432,10 +432,16 @@ def test(request):
 
     list_of_grouped_videos = zip(*[iter(
                 Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True).order_by(
-                    '-added_date')[12 * (page - 1):24 * page])] * 4)
+                    '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
 
-    paginator = Paginator(list_of_grouped_videos, 3)
-    videos = paginator.page(page)
+    paginator = Paginator(list_of_grouped_videos, 6)
+    
+    try:
+        videos = paginator.page(1)
+        next_page = page + 1
+        videos.next_page_number = next_page
+    except EmptyPage:
+        videos = paginator.page(paginator.num_pages)
 
     return render(request,
                   'videos_page.html',
