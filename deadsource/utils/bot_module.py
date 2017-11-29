@@ -277,6 +277,7 @@ def bot_task_1(stop_event=threading.Event(),
 
         except Exception as e:
             logging.critical('Task(download): Error: {}.'.format(e))
+            raise
 
         task_collecting_videos_event.clear()
 
@@ -354,6 +355,7 @@ def bot_task_2(stop_event=threading.Event(),
 
         except Exception as e:
             logging.critical('Task(download): Error: {}.'.format(e))
+            raise
 
         task_collecting_videos_event.clear()
 

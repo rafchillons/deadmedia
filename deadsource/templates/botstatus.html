@@ -180,9 +180,11 @@
                                 <div class="bot-id">
                                     <span><b>Bot #{{bot.db_object.id}}</b></span>
                                     <!-- в зависимости от условия -->
-                                    <span class="badge badge-fine">Working</span>
+
+                                    <span class="badge badge-fine">{{bot.get_status}}</span>
                                     <span class="badge badge-error">Stopped</span>
                                     <span class="badge badge-warning">Paused</span>
+                                    <span class="badge badge-fine"></span>
                                 </div>
                                 <div class="bot-controls clearfix">
                                     <a class="btn-bot-run" href="{% url 'start-bot-id' bot.db_object.id %}">Run</a>

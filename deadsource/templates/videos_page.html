@@ -44,7 +44,8 @@
             {% endfor %}
         </div>
         {% if videos.has_next %}
-        <a class="infinite-more-link" href="?page={{ videos.next_page_number }}"></a> {% endif %}
+            <a class="infinite-more-link" href="?page={{ videos.next_page_number }}"></a>
+        {% endif %}
         <div class="loading">
             <div class="loading-image">
                 <span><i class="fa fa-spinner fa-spin"></i></span>

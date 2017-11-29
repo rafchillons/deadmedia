@@ -57,7 +57,7 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
             logging.warning('Can not download {}: {}'.format(webm_description['source'], e))
         except Exception as e:
             logging.critical("Download_and_save_new_videos: {}.".format(e))
-
+            raise
 
     logging.debug("Downloading and saving all videos from 2ch: complete.")
 
@@ -104,7 +104,7 @@ def _save_video_info_to_database(video,
         if not title.split():
             title = 'Untitled'
         video.title = title
-        video.description_json = json.dumps(description_json)
+        video.description_json = json.dumps(description_json).encode()
         video.video_height = description_json['height']
         video.video_width = description_json['width']
         video.video_duration_str = description_json['duration']

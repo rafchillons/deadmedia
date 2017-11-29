@@ -13,7 +13,7 @@ class Video(models.Model):
 
     added_date = models.DateTimeField(default=timezone.now)
 
-    description_json = models.BinaryField(default='')
+    description_json = models.BinaryField(default=''.encode())
 
     storage_path = models.CharField(max_length=200, default='')
     storage_name = models.CharField(max_length=200, default='')
