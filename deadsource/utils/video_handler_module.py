@@ -19,6 +19,7 @@ from os.path import (
 from os import remove
 import os
 
+
 def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
                                            without_words=(),
                                            max_videos_count=None,

@@ -54,13 +54,24 @@ urlpatterns = [
     url(r'^error404$', views.handler404, name='error404-page'),
 
     url(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
+
     url(r'^video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
+    url(r'^adult/video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
+    url(r'^hot/video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
+    url(r'^mp4/video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
+
+    url(r'^category/hide$', views.webm_category_hide, name='category-hide-webm'),
+    url(r'^adult/category/hide$', views.adult_category_hide, name='category-hide-adult'),
+    url(r'^hot/category/hide$', views.hot_category_hide, name='category-hide-hot'),
+    url(r'^mp4/category/hide$', views.mp4_category_hide, name='category-hide-mp4'),
+
+    url(r'^category/delete$', views.webm_category_delete, name='category-delete-webm'),
+    url(r'^adult/category/delete$', views.adult_category_delete, name='category-delete-adult'),
+    url(r'^hot/category/delete$', views.hot_category_delete, name='category-delete-hot'),
+    url(r'^mp4/category/delete$', views.mp4_category_delete, name='category-delete-mp4'),
+
 
     url(r'^test$', views.test, name='test'),
-
-
-
-
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -50,12 +50,16 @@ class Video(models.Model):
     STATUS_NOTSET = 'Video status not set'
     STATUS_DOWNLOADING = 'Video is downloading'
     STATUS_DOWNLOADED = 'Video is downloaded'
+    STATUS_DELETED = 'Video is deleted'
+    STATUS_HIDDEN = 'Video is hidden'
 
     VIDEO_STATUS = (
         (STATUS_DOWNLOADING, 'Downloading'),
         (STATUS_DOWNLOADED, 'Downloaded'),
         (STATUS_NOTSET, 'Notset'),
         (STATUS_ERROR, 'Error'),
+        (STATUS_HIDDEN, 'Hidden'),
+        (STATUS_DELETED, 'Deleted'),
     )
 
     video_status = models.CharField(max_length=200, choices=VIDEO_STATUS, default=STATUS_NOTSET)

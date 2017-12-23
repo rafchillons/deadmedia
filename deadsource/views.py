@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import requests
 from requests.exceptions import ConnectionError
@@ -17,6 +16,9 @@ from .utils.bot_module import (
 )
 from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date, \
     delete_video_by_db_object
+from .utils.categorys_handler_module import (
+    remove_all_videos_from_category,
+)
 from django.http import *
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -69,6 +71,8 @@ def show_webm(request):
                       'category_name': 'webm',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
+                      'hide_videos_link': 'category-hide-webm',
+                      'delete_videos_link': 'category-delete-webm',
                   })
 
 
@@ -97,6 +101,8 @@ def show_adult(request):
                       'category_name': 'adult',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
+                      'hide_videos_link': 'category-hide-adult',
+                      'delete_videos_link': 'category-delete-adult',
                   })
 
 
@@ -125,6 +131,8 @@ def show_hot(request):
                       'category_name': 'hot',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
+                      'hide_videos_link': 'category-hide-hot',
+                      'delete_videos_link': 'category-delete-hot',
                   })
 
 
@@ -153,6 +161,8 @@ def show_mp4(request):
                       'category_name': 'mp4',
                       'videos': videos,
                       'is_authenticated': request.user.is_authenticated(),
+                      'hide_videos_link': 'category-hide-mp4',
+                      'delete_videos_link': 'category-delete-mp4',
                   })
 
 
@@ -440,36 +450,58 @@ def delete_video_id_view(request, pk):
     delete_video_by_db_object(video)
     return redirect('webm-page')
 
+@login_required
+def webm_category_hide(request):
+    remove_all_videos_from_category('is_webm')
+    return redirect('webm-page')
+
+@login_required
+def mp4_category_hide(request):
+    remove_all_videos_from_category('is_mp4')
+    return redirect('mp4-page')
+
+@login_required
+def adult_category_hide(request):
+    remove_all_videos_from_category('is_adult')
+    return redirect('adult-page')
+
+@login_required
+def hot_category_hide(request):
+    remove_all_videos_from_category('is_hot')
+    return redirect('hot-page')
+
+@login_required
+def webm_category_delete(request):
+    remove_all_videos_from_category('is_webm')
+    return redirect('webm-page')
+
+@login_required
+def mp4_category_delete(request):
+    remove_all_videos_from_category('is_mp4')
+    return redirect('mp4-page')
+
+@login_required
+def adult_category_delete(request):
+    remove_all_videos_from_category('is_adult')
+    return redirect('adult-page')
+
+@login_required
+def hot_category_delete(request):
+    remove_all_videos_from_category('is_hot')
+    return redirect('hot-page')
+
 
 @login_required
 def test(request):
 
-    try:
-        page = int(request.GET.get('page', 1))
-    except Exception as e:
-        logging.error('error!{} '.format(e))
-        page = 1
+    for x in range(10):
+        model = Video()
+        model.video_status = Video.STATUS_DOWNLOADED
+        model.is_mp4 = True
+        model.title = 'test{}'.format(x)
+        model.save()
 
-    list_of_grouped_videos = zip(*[iter(
-                Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True).order_by(
-                    '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
-
-    paginator = Paginator(list_of_grouped_videos, 6)
-
-    try:
-        videos = paginator.page(1)
-        next_page = page + 1
-        videos.next_page_number = next_page
-    except EmptyPage:
-        videos = paginator.page(paginator.num_pages)
-
-    return render(request,
-                  'videos_page.html',
-                  {
-                      'category_name': 'webm',
-                      'videos': videos,
-                      'is_authenticated': request.user.is_authenticated(),
-                  })
+    return redirect('webm-page')
 
 
 def hit_video_view(request, pk):
@@ -486,3 +518,27 @@ def hit_video_view(request, pk):
 
     print(type(HttpResponse(hit_count_after)))
     return HttpResponse(hit_count_after)
+
+
+@login_required
+def delete_category(request, pk):
+    if pk == 'adult':
+        videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_adult=True)
+        for video in videos:
+            video.is_adult = False
+            video.save()
+    elif pk == 'mp4':
+        videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_mp4=True)
+        for video in videos:
+            video.is_mp4 = False
+            video.save()
+    elif pk == 'webm':
+        videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True)
+        for video in videos:
+            video.is_webm = False
+            video.save()
+    else:
+        return redirect('error404')
+
+    return redirect('page-admin-new')
+

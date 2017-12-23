@@ -3,5 +3,13 @@
 
     <div class="container">
     </div>
-
+    <!--admin special menu -->
+        {% if is_authenticated %}
+        <ul class="admin-special-menu clearfix">
+            <li><a href="/">Home</a></li>
+            <li><a href="/newadmin">ControlPanel</a></li>
+            <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+        </ul>
+        {% endif %}
+    <!--admin special menu ending-->
  {% endblock %}

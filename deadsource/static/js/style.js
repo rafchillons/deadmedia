@@ -24,12 +24,13 @@ $(document).ready(function () {
         console.log(imageId);
         
         linkImage = $('#' + imageId).children().find('.image-link');
-        jQuery.getJSON("video/" + imageId + "/delete/");
-
-        linkImage.css("background-image", "url(/assets/img/deleted.png)");
-        linkImage.attr("onclick", " ");
-        linkImage.css('cursor', 'default');
-        linkImage.css('opacity', '0.7');
+        jQuery.getJSON("/video/" + imageId + "/delete/")
+            .done(function(data) {
+                linkImage.css("background-image", "url(/assets/img/deleted.png)");
+                linkImage.attr("onclick", " ");
+                linkImage.css('cursor', 'default');
+                linkImage.css('opacity', '0.7');
+            });
     });
 
     //file short info slide
