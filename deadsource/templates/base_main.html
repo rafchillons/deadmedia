@@ -12,8 +12,11 @@
         <div class="container">
             <div class="category">
                 <div class="category-title">
+<!--
                     <span class="title">DM</span>
                     <span class="title-sub">{{category_name}}</span>
+-->
+                    <img src="{% static 'img/logo.png' %}" class="logo" width="320px">
                 </div>
             </div>
         </div>
@@ -21,7 +24,8 @@
         <!--    menu-->
         <nav class="menu">
             <a href="#" class="menu-trigger clearfix">
-            <span class="menu-logo">deadmedia</span>
+<!--            <span class="menu-logo">deadmedia</span>-->
+            <div class="menu-logo-img"><img src="{% static 'img/logo_pride.png' %}" height="26px"></div>
             <i class="fa fa-bars" aria-hidden="true" id="menu-trigger-btn"></i>
         </a>
             <ul>
@@ -45,8 +49,7 @@
             <hr>
         </div>
 
-        {% block content %}
-        {% endblock %}
+        {% block content %} {% endblock %}
         <footer class="footer">
             <div class="container">
                 <span class="copyright">Copyright &copy; 2017 deadmedia.us All rights reserved.</span>
