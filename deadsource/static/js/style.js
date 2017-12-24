@@ -22,7 +22,7 @@ $(document).ready(function () {
         image = $(this).parent().parent().parent().parent();
         imageId = image.attr('id');
         console.log(imageId);
-        
+
         linkImage = $('#' + imageId).children().find('.image-link');
         jQuery.getJSON("/video/" + imageId + "/delete/");
 
@@ -44,10 +44,15 @@ $(document).ready(function () {
 
     //like btn
     $('body').on('click', '.file-like-area', function () {
-        console.log('sdfsdf');
+        console.log('Лайк-лайк-ла-ла-лайк!');
+        elem_id = $(this).parent().parent().parent().parent().parent().attr('id');
+        console.log(elem_id);
         likeBtn = $(this).find('.fa');
         likeBtn.removeClass('fa-heart-o');
         likeBtn.addClass('fa-heart active');
+        jQuery.get('/video/' + elem_id + '/like/')
+            .done(function (data) {
+                if (data >= 0) $('#' + elem_id).find('.file-likes-number').text(data);
+            });
     });
 });
-
