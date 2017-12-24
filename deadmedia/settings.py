@@ -83,8 +83,12 @@ WSGI_APPLICATION = 'deadmedia.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dead_db',
+	'USER': 'dbuser',
+        'PASSWORD': 'Rafchillons_db@@@%%^&*)$&',
+        #'HOST': 'dbprod01ned.mycompany.com',
+        #'PORT': '1540',
     }
 }
 
@@ -130,7 +134,7 @@ STATIC_URL = '/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/storage/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'storage')
+MEDIA_ROOT = '/home/rafchillons/deadmedia/storage'#os.path.join(BASE_DIR, 'storage')
 
 RECAPTCHA_PUBLIC_KEY = '6LdsEDcUAAAAALXj0Pevj6wg8vFDMCWQZ54FqlUa'
 RECAPTCHA_PRIVATE_KEY = '6LdsEDcUAAAAAKbOXsvJ7vO2az8QhKH__9nKPPlY'
