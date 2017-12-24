@@ -32,7 +32,7 @@ import json
 
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
-import hitcount
+
 
 
 def main_page(request):
@@ -491,19 +491,6 @@ def hot_category_delete(request):
     return redirect('hot-page')
 
 
-@login_required
-def test(request):
-
-    for x in range(10):
-        model = Video()
-        model.video_status = Video.STATUS_DOWNLOADED
-        model.is_mp4 = True
-        model.title = 'test{}'.format(x)
-        model.save()
-
-    return redirect('webm-page')
-
-
 def hit_video_view(request, pk):
     video = get_object_or_404(Video, pk=pk)
     hit_count = HitCount.objects.get_for_object(video)
@@ -518,6 +505,18 @@ def hit_video_view(request, pk):
 
     print(type(HttpResponse(hit_count_after)))
     return HttpResponse(hit_count_after)
+
+
+def view_video_by_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    views = video.view_video(request)
+    return HttpResponse(views)
+
+
+def like_video_by_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    likes = video.like_video(request)
+    return HttpResponse(likes)
 
 
 @login_required
@@ -542,3 +541,41 @@ def delete_category(request, pk):
 
     return redirect('page-admin-new')
 
+
+#@login_required
+def test(request):
+    video = get_object_or_404(Video, pk=1)
+    return HttpResponse(video.check_if_video_been_viewed(request))
+    #videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=False, is_adult=False, is_mp4=False, is_hot=False)
+    #for video in videos:
+    #    video.is_webm = False
+    #    video.save()
+
+
+
+    #for x in range(10):
+    #    model = Video.objects.create_video()
+    #    model.video_status = Video.STATUS_DOWNLOADED
+    #    model.is_mp4 = True
+    #    model.title = 'test{}'.format(x)
+    #    model.save()
+
+    #print('HTTP_USER_AGENT:{}'.format(request.META['HTTP_USER_AGENT']))
+    #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
+    #print('HTTP_COOKIE:{}'.format(request.META['HTTP_COOKIE']))
+    #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
+
+
+    #print('ip:{}'.format(get_client_ip(request)))
+    #print('request: {}'.format(request.META.keys()))
+
+    #return redirect('webm-page')
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip

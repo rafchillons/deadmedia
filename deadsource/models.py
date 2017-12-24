@@ -6,9 +6,34 @@ from django.utils import timezone
 
 import threading
 import json
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
+
+
+class VideoViews(models.Model):
+    pass
+
+
+class VideoLikes(models.Model):
+    pass
+
+
+class VideoManager(models.Manager):
+    def create_video(self):
+        video_views = VideoViews()
+        video_views.save()
+        video_likes = VideoLikes()
+        video_likes.save()
+        video = self.create(video_likes=video_likes, video_views=video_views)
+        return video
 
 
 class Video(models.Model):
+    objects = VideoManager()
+
+    video_views = models.ForeignKey('VideoViews')
+    video_likes = models.ForeignKey('VideoLikes')
+
     title = models.CharField(max_length=200, default='Default title')
 
     added_date = models.DateTimeField(default=timezone.now)
@@ -84,6 +109,17 @@ class Video(models.Model):
     def get_description(self):
         return json.loads(str(self.description_json))
 
+    def view_video(self, request):
+        hit_count = HitCount.objects.get_for_object(self.video_views)
+        hit_count_response = HitCountMixin.hit_count(request, hit_count)
+
+        return hit_count_response
+
+    def like_video(self, request):
+        hit_count = HitCount.objects.get_for_object(self.video_likes)
+        hit_count_response = HitCountMixin.hit_count(request, hit_count)
+
+        return hit_count_response
 
 
     """
@@ -151,6 +187,7 @@ class Video(models.Model):
 
 
 """
+
 
 
 class BotTask(models.Model):
@@ -256,3 +293,6 @@ class PaginatorModel(models.Model):
 
     def __str__(self):
         return "Paginator model object ({})".format(self.category)
+
+
+

@@ -55,10 +55,15 @@ urlpatterns = [
 
     url(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
 
-    url(r'^video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
-    url(r'^adult/video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
-    url(r'^hot/video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
-    url(r'^mp4/video/hit/(?P<pk>[0-9]+)/$', views.hit_video_view, name='video-hit'),
+    url(r'^video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
+    url(r'^adult/video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
+    url(r'^hot/video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
+    url(r'^mp4/video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
+
+    url(r'^video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
+    url(r'^adult/video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
+    url(r'^hot/video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
+    url(r'^mp4/video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
 
     url(r'^category/hide$', views.webm_category_hide, name='category-hide-webm'),
     url(r'^adult/category/hide$', views.adult_category_hide, name='category-hide-adult'),

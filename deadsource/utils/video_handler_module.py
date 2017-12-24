@@ -64,7 +64,7 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
 
 
 def _download_and_save_webm_video_and_preview(webm_description):  # this function is not for release
-    db_object = Video()
+    db_object = Video().objects.create_video()
     db_object.save()
 
     download_url = webm_description['source']
