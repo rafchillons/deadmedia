@@ -44,9 +44,8 @@ $(document).ready(function () {
 
     //like btn
     $('body').on('click', '.file-like-area', function () {
-        console.log('Лайк-лайк-ла-ла-лайк!');
         elem_id = $(this).parent().parent().parent().parent().parent().attr('id');
-        console.log(elem_id);
+        console.log('Лайк-лайк-ла-ла-лайк!' + elem_id);
         likeBtn = $(this).find('.fa');
         likeBtn.removeClass('fa-heart-o');
         likeBtn.addClass('fa-heart active');
