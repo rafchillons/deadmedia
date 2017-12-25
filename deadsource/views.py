@@ -19,6 +19,8 @@ from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, 
 from .utils.categorys_handler_module import (
     remove_all_videos_from_category,
 )
+from .utils.inspector_module import fined_banned_videos_and_delete_them
+from .utils.parse_2ch_module import _find_files_in_thread
 from django.http import *
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -582,12 +584,12 @@ def test(request):
     #print('HTTP_COOKIE:{}'.format(request.META['HTTP_COOKIE']))
     #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
 
-    video = get_object_or_404(Video, pk=7)
+    #video = get_object_or_404(Video, pk=7)
     #print('liked:{}'.format(video.is_liked(request)))
 
     #print('ip:{}'.format(get_client_ip(request)))
     #print('request: {}'.format(request.META.keys()))
-
+    fined_banned_videos_and_delete_them()
     return redirect('webm-page')
 
 

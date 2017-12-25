@@ -109,7 +109,6 @@ def _get_links_from_thread_dicts(all_threads):
     return ["https://2ch.hk/b/res/{}.json".format(thread['num']) for thread in all_threads]
 
 
-
 def find_files_in_threads(threads_url):
     """
     This function returns all files found in threads
