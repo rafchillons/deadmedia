@@ -466,7 +466,7 @@ def bot_pause_on(request, pk):
 @login_required
 def delete_video_id_view(request, pk):
     video = get_object_or_404(Video, pk=pk)
-    delete_video_by_db_object(video)
+    delete_video_by_db_object(video, remove_from_db=False)
     return redirect('webm-page')
 
 @login_required
