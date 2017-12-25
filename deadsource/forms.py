@@ -287,6 +287,53 @@ class BotTaskRemoveForm(forms.Form):
         return data
 
 
+class BotTaskInspectForm(forms.Form):
+    interval = forms.IntegerField()
+
+    is_max_time = forms.BooleanField(required=False)
+    working_time = forms.IntegerField(required=False)
+    is_max_iter = forms.BooleanField(required=False)
+    iters_to_do = forms.IntegerField(required=False)
+
+    is_music = forms.BooleanField(required=False)
+
+    def clean_is_max_time(self):
+        if self.cleaned_data['is_max_time']:
+            return True
+        return False
+
+    def clean_working_time(self):
+        data = self.cleaned_data['working_time']
+
+        if type(data) is not int:
+            if self.cleaned_data['is_max_time']:
+                raise forms.ValidationError('Working time mast be number!')
+            else:
+                data = 1
+
+        if not data > 0:
+            raise forms.ValidationError('Working time mast be more then 0!')
+
+        return data
+
+    def clean_is_max_iter(self):
+        if self.cleaned_data['is_max_iter']:
+            return True
+        return False
+
+    def clean_iters_to_do(self):
+        data = self.cleaned_data['iters_to_do']
+
+        if type(data) is not int:
+            if self.cleaned_data['is_max_iter']:
+                raise forms.ValidationError('Max iters mast be number!')
+            else:
+                data = 1
+
+        if not data > 0:
+            raise forms.ValidationError('Max iters mast be more then 0!')
+
+        return data
 
 
 """
