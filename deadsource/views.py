@@ -569,7 +569,7 @@ def test(request):
     #print('ip:{}'.format(get_client_ip(request)))
     #print('request: {}'.format(request.META.keys()))
 
-    #return redirect('webm-page')
+    return redirect('webm-page')
 
 
 def get_client_ip(request):
