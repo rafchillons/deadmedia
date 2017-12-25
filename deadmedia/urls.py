@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^hot/$', views.show_hot, name='hot-page'),
     url(r'^mp4/$', views.show_mp4, name='mp4-page'),
     url(r'^all/$', views.show_all, name='all-page'),
+    url(r'^hidden/$', views.show_hidden, name='hidden-page'),
 
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^login/$', views.login_view, name='login-page'),
@@ -46,6 +47,7 @@ urlpatterns = [
     url(r'^bot/(?P<pk>[0-9]+)/pause/off/$', views.bot_pause_off, name='pause-off-bot-id'),
 
     url(r'^video/(?P<pk>[0-9]+)/delete/$', views.delete_video_id_view, name='video-delete-id'),
+    url(r'^video/(?P<pk>[0-9]+)/hide/$', views.hide_video_id_view, name='video-hide-id'),
 
     url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
     url(r'^delete/$', views.delete_all_videos, name='delete-all'),

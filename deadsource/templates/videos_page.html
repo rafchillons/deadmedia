@@ -22,6 +22,7 @@
                             <span><i>download time:</i> {{video.added_date}}</span>
                             <span><i>database id:</i> {{video.id}}</span>
                             <span><i>thread({% if video.is_thread_alive %}alive{% else %}dead{% endif %}):</i><a href="{{video.source_thread_path}}"> {{video.source_thread_number}}</a></span>
+                            <span><i>status:</i> {{video.video_status}}</span>
                         </div>
                         {% endif %}
                         <!--admin special video buttons-->
