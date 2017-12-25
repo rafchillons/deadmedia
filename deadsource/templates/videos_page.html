@@ -28,9 +28,23 @@
                     </div>
                     <div class="file-info clearfix">
                         <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i><span class="file-views-number">{% get_hit_count for video.video_views %}</span></span>
-                        <span class="file-like"><span class="file-like-area"><i class="fa fa-heart-o" aria-hidden="true"></i></span><span class="file-likes-number">{% get_hit_count for video.video_likes %}</span></span>
+                        <span class="file-like">
+
+                            {% if video.is_liked  %}
+                            <span class="file-like-area">
+                                <i class="fa fa-heart active" aria-hidden="true"></i>
+                            </span>
+                            {% else %}
+                            <span class="file-like-area">
+                                <i class="fa fa-heart-o " aria-hidden="true"></i>
+                            </span>
+                            {% endif %}
+
+                            <span class="file-likes-number">{% get_hit_count for video.video_likes %}</span>
+                        </span>
+
                         <!-- like
-                                    <span class="file-like"><i class="fa fa-heart active" aria-hidden="true"></i>0</span>
+                         <span class="file-like"><i class="fa fa-heart active" aria-hidden="true"></i>0</span>
                                 -->
                         <a class="external-link" target="_blank" href="{{video.storage_path_url}}" title="{{video.title}}"><i class="fa fa-external-link"></i></a>
                     </div>

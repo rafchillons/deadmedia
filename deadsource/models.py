@@ -8,7 +8,7 @@ import threading
 import json
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
-
+from .utils import hitcount_module
 
 class VideoViews(models.Model):
     pass
@@ -112,15 +112,19 @@ class Video(models.Model):
     def view_video(self, request):
         hit_count = HitCount.objects.get_for_object(self.video_views)
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
-
         return hit_count_response.hit_counted
 
     def like_video(self, request):
         hit_count = HitCount.objects.get_for_object(self.video_likes)
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
-
         return hit_count_response.hit_counted
 
+    def check_if_liked(self, request):
+        hit_count = HitCount.objects.get_for_object(self.video_likes)
+        hit_count_response = hitcount_module.is_hit(request, hit_count)
+        return not hit_count_response.hit_counted
+
+    is_liked = models.BooleanField(max_length=1, default=False)
 
     """
     created_date = models.DateTimeField(

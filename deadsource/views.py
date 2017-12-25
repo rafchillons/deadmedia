@@ -52,9 +52,13 @@ def show_webm(request):
         logging.error('error!{} '.format(e))
         page = 1
 
-    list_of_grouped_videos = zip(*[iter(
-        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True).order_by(
-            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True).order_by(
+        '-added_date')[24 * (page - 1):(24 * page) + 24]
+
+    for video in videos_to_show:
+        video.is_liked = video.check_if_liked(request)
+
+    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
 
     paginator = Paginator(list_of_grouped_videos, 6)
 
@@ -64,6 +68,9 @@ def show_webm(request):
         videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
+
+    for video in videos:
+        setattr(video, 'is_liked', video.check_if_liked(request))
 
     return render(request,
                   'videos_page.html',
@@ -83,9 +90,13 @@ def show_adult(request):
         logging.error('error!{} '.format(e))
         page = 1
 
-    list_of_grouped_videos = zip(*[iter(
-        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_adult=True).order_by(
-            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_adult=True).order_by(
+        '-added_date')[24 * (page - 1):(24 * page) + 24]
+
+    for video in videos_to_show:
+        video.is_liked = video.check_if_liked(request)
+
+    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
 
     paginator = Paginator(list_of_grouped_videos, 6)
 
@@ -95,6 +106,10 @@ def show_adult(request):
         videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
+
+    for video in videos:
+        setattr(video, 'is_liked', video.check_if_liked(request))
+
     return render(request,
                   'videos_page.html',
                   {
@@ -113,9 +128,13 @@ def show_hot(request):
         logging.error('error!{} '.format(e))
         page = 1
 
-    list_of_grouped_videos = zip(*[iter(
-        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_hot=True).order_by(
-            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_hot=True).order_by(
+            '-added_date')[24 * (page - 1):(24 * page) + 24]
+
+    for video in videos_to_show:
+        video.is_liked = video.check_if_liked(request)
+
+    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
 
     paginator = Paginator(list_of_grouped_videos, 6)
 
@@ -125,6 +144,7 @@ def show_hot(request):
         videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
+
     return render(request,
                   'videos_page.html',
                   {
@@ -143,9 +163,13 @@ def show_mp4(request):
         logging.error('error!{} '.format(e))
         page = 1
 
-    list_of_grouped_videos = zip(*[iter(
-        Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_mp4=True).order_by(
-            '-added_date')[24 * (page - 1):(24 * page) + 24])] * 4)
+    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_mp4=True).order_by(
+            '-added_date')[24 * (page - 1):(24 * page) + 24]
+
+    for video in videos_to_show:
+        video.is_liked = video.check_if_liked(request)
+
+    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
 
     paginator = Paginator(list_of_grouped_videos, 6)
 
@@ -155,6 +179,7 @@ def show_mp4(request):
         videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
+
     return render(request,
                   'videos_page.html',
                   {
@@ -551,20 +576,20 @@ def test(request):
     #    video.is_webm = False
     #    video.save()
 
-
-
-    for x in range(10):
-        model = Video.objects.create_video()
-        model.video_status = Video.STATUS_DOWNLOADED
-        model.is_webm = True
-        model.title = 'test{}'.format(x)
-        model.save()
+    #for x in range(10):
+    #    model = Video.objects.create_video()
+    #    model.video_status = Video.STATUS_DOWNLOADED
+    #    model.is_webm = True
+    #    model.title = 'test{}'.format(x)
+    #    model.save()
 
     #print('HTTP_USER_AGENT:{}'.format(request.META['HTTP_USER_AGENT']))
     #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
     #print('HTTP_COOKIE:{}'.format(request.META['HTTP_COOKIE']))
     #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
 
+    video = get_object_or_404(Video, pk=7)
+    #print('liked:{}'.format(video.is_liked(request)))
 
     #print('ip:{}'.format(get_client_ip(request)))
     #print('request: {}'.format(request.META.keys()))
