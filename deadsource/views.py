@@ -544,8 +544,8 @@ def delete_category(request, pk):
 
 #@login_required
 def test(request):
-    video = get_object_or_404(Video, pk=1)
-    return HttpResponse(video.check_if_video_been_viewed(request))
+    #video = get_object_or_404(Video, pk=1)
+    #return HttpResponse(video.check_if_video_been_viewed(request))
     #videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=False, is_adult=False, is_mp4=False, is_hot=False)
     #for video in videos:
     #    video.is_webm = False
@@ -553,12 +553,12 @@ def test(request):
 
 
 
-    #for x in range(10):
-    #    model = Video.objects.create_video()
-    #    model.video_status = Video.STATUS_DOWNLOADED
-    #    model.is_mp4 = True
-    #    model.title = 'test{}'.format(x)
-    #    model.save()
+    for x in range(10):
+        model = Video.objects.create_video()
+        model.video_status = Video.STATUS_DOWNLOADED
+        model.is_webm = True
+        model.title = 'test{}'.format(x)
+        model.save()
 
     #print('HTTP_USER_AGENT:{}'.format(request.META['HTTP_USER_AGENT']))
     #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
