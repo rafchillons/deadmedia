@@ -151,7 +151,8 @@ def _get_videos_from_list_not_in_db(videos_description_json):
 def _get_videos_from_db_not_in_list(videos_description_json):
     logging.debug("Getting videos not in list.")
 
-    video_in_db = Video.objects().filter(video_status=Video.STATUS_DOWNLOADED)
+    video_in_db = Video.objects().filter()
+
     videos_description_json_source = [x['source'] for x in videos_description_json]
     result = filter(lambda y: y.source_path not in videos_description_json_source, video_in_db)
 
