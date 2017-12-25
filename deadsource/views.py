@@ -221,6 +221,31 @@ def show_all(request):
 
 
 @login_required
+def show_hidden(request):
+    list_of_grouped_videos = zip(
+        *[iter(
+            Video.objects.all().filter(video_status=Video.STATUS_HIDDEN).order_by('-added_date'))] * 4)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(list_of_grouped_videos, 1)
+
+    try:
+        videos = paginator.page(page)
+    except PageNotAnInteger:
+        videos = paginator.page(1)
+    except EmptyPage:
+        videos = paginator.page(paginator.num_pages)
+    return render(request,
+                  'videos_page.html',
+                  {
+                      'category_name': 'hidden',
+                      'videos': videos,
+                      'is_authenticated': request.user.is_authenticated(),
+                  })
+
+
+
+@login_required
 def show_admin_page(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
@@ -470,6 +495,15 @@ def delete_video_id_view(request, pk):
     video = get_object_or_404(Video, pk=pk)
     delete_video_by_db_object(video, remove_from_db=False)
     return redirect('webm-page')
+
+@login_required
+def hide_video_id_view(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    video.video_status = Video.STATUS_HIDDEN
+    video.save()
+    return redirect('webm-page')
+
+
 
 @login_required
 def webm_category_hide(request):
