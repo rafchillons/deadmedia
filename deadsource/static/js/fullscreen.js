@@ -17,9 +17,12 @@ $(document).ready(function () {
     $('body').append($container);
     window.expand = function (num, src, image_width, image_height, cloud, elem_id) {
 
-		jQuery.get('/video/hit/' + elem_id)
-            .done(function(data) {
-                if (data >= 0) $('#' + elem_id).find('.file-views-number').text(data);
+        jQuery.get('/video/' + elem_id + '/view/')
+            .done(function (data) {
+                if (data == "True") {
+                    var currentViewsCountInc = parseInt($('#' + elem_id).find('.file-views-number').text()) + 1;
+                    $('#' + elem_id).find('.file-views-number').text(currentViewsCountInc);
+                }
             }); //views counter
 
         if (active == num) {

@@ -45,13 +45,16 @@ $(document).ready(function () {
     //like btn
     $('body').on('click', '.file-like-area', function () {
         elem_id = $(this).parent().parent().parent().parent().parent().attr('id');
-        console.log('Лайк-лайк-ла-ла-лайк!' + elem_id);
+        console.log('Лайк-лайк-ла-ла-лайк!');
         likeBtn = $(this).find('.fa');
         likeBtn.removeClass('fa-heart-o');
         likeBtn.addClass('fa-heart active');
         jQuery.get('/video/' + elem_id + '/like/')
             .done(function (data) {
-                if (data >= 0) $('#' + elem_id).find('.file-likes-number').text(data);
+                if (data == "True") {
+                    var currentLikesCountInc = parseInt($('#' + elem_id).find('.file-likes-number').text()) + 1;
+                    $('#' + elem_id).find('.file-likes-number').text(currentLikesCountInc);
+                }
             });
     });
 });
