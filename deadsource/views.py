@@ -198,7 +198,7 @@ def show_faq(request):
 def show_all(request):
     list_of_grouped_videos = zip(
         *[iter(
-            Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED).order_by('-added_date'))] * 4)
+            Video.objects.all().filter().order_by('-added_date'))] * 4)
 
     page = request.GET.get('page', 1)
     paginator = Paginator(list_of_grouped_videos, 3)
