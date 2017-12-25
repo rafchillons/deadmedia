@@ -113,13 +113,13 @@ class Video(models.Model):
         hit_count = HitCount.objects.get_for_object(self.video_views)
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
 
-        return hit_count_response
+        return hit_count_response.hit_counted
 
     def like_video(self, request):
         hit_count = HitCount.objects.get_for_object(self.video_likes)
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
 
-        return hit_count_response
+        return hit_count_response.hit_counted
 
 
     """
