@@ -69,9 +69,6 @@ def show_webm(request):
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
 
-    for video in videos:
-        setattr(video, 'is_liked', video.check_if_liked(request))
-
     return render(request,
                   'videos_page.html',
                   {
@@ -106,9 +103,6 @@ def show_adult(request):
         videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
-
-    for video in videos:
-        setattr(video, 'is_liked', video.check_if_liked(request))
 
     return render(request,
                   'videos_page.html',
