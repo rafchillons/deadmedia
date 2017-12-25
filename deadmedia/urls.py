@@ -35,7 +35,8 @@ urlpatterns = [
     url(r'^accounts/login/$', views.login_view, name='login-page'),
 
 
-    url(r'^create/$', views.create_bot_downloader_view, name='create-bot'),
+    url(r'^bot/downloader/create/$', views.create_bot_downloader_view, name='create-downloader-bot'),
+    url(r'^bot/inspector/create/$', views.create_bot_inspector_view, name='create-inspector-bot'),
     url(r'^status/$', views.bot_status_view, name='status-bot'),
 
     url(r'^bot/create/remover$', views.create_bot_remover_view, name='create-bot-remover'),

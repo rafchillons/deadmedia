@@ -202,8 +202,6 @@ class Video(models.Model):
 
 """
 
-
-
 class BotTask(models.Model):
     added_date = models.DateTimeField(default=timezone.now)
 
@@ -221,10 +219,12 @@ class BotTask(models.Model):
 
     BOT_TASK_DOWNLOAD_2CH_WEBM = 'Download webms from 2ch'
     BOT_TASK_REMOVE_WEBM = 'Remove webms'
+    BOT_TASK_INSPECT_BANNED = 'Insect banned'
 
     BOT_TASK = (
         (BOT_TASK_DOWNLOAD_2CH_WEBM, 'Download'),
         (BOT_TASK_REMOVE_WEBM, 'Remove'),
+        (BOT_TASK_INSPECT_BANNED, 'Inspect')
     )
 
     bot_task = models.CharField(max_length=200, choices=BOT_TASK, default=BOT_TASK_DOWNLOAD_2CH_WEBM)
@@ -232,7 +232,7 @@ class BotTask(models.Model):
     task_data = models.BinaryField(default='{}')
 
     def start_bot(self):
-        from .utils.bot_module import BotIsBusy, bot_task_1, bot_task_2, TaskThread
+        from .utils.bot_module import BotIsBusy, bot_task_1, bot_task_2, bot_task_3, TaskThread
         if filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
             raise BotIsBusy('Bot (id={}) is working already!'.format(self.id))
 
@@ -242,6 +242,8 @@ class BotTask(models.Model):
             task = bot_task_1
         elif self.bot_task == self.BOT_TASK_REMOVE_WEBM:
             task = bot_task_2
+        elif self.bot_task == self.BOT_TASK_INSPECT_BANNED:
+            task = bot_task_3
 
         thread = TaskThread('Bot({})'.format(self.id), task, data)
         thread.start()

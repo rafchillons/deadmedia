@@ -8,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 import deadmedia.settings
-from .forms import VideoDeleteForm, BotTaskForm, BotTaskRemoveForm
+from .forms import VideoDeleteForm, BotTaskForm, BotTaskRemoveForm, BotTaskInspectForm
 from .models import Video, BotTask, PaginatorModel
 from .utils.bot_module import (
     ThreadDownloader,
@@ -439,6 +439,26 @@ def create_bot_remover_view(request):
         form = BotTaskForm()
 
     return render(request, 'create_remove_bot.html', {'form': form, 'messages': messages.get_messages(request)})
+
+
+@login_required
+def create_bot_inspector_view(request):
+    if request.method == 'POST':
+        form = BotTaskInspectForm(request.POST)
+        if form.is_valid():
+            bot = BotTask()
+
+            bot.bot_task = BotTask.BOT_TASK_INSPECT_BANNED
+            bot.task_data = json.dumps(form.cleaned_data)
+
+            bot.save()
+            return redirect('webm-page')
+
+    else:
+        form = BotTaskForm()
+
+    return render(request, 'create_inspect_bot.html', {'form': form, 'messages': messages.get_messages(request)})
+
 
 
 @login_required

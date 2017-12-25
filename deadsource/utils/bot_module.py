@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 import logging
 from .video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date
+from .inspector_module import fined_banned_videos_and_delete_them
 from deadsource.models import BotTask
 import json
 
@@ -382,6 +383,71 @@ def bot_task_2(stop_event=threading.Event(),
     task_stopped_event.set()
     logging.debug('Task(download):stopped!')
 
+
+def bot_task_3(stop_event=threading.Event(),
+               pause_event=threading.Event(),
+               task_started_event=threading.Event(),
+               task_collecting_videos_event=threading.Event(),
+               task_waiting_nex_iter_event=threading.Event(),
+               task_paused_event=threading.Event(),
+               task_stopped_event=threading.Event(),
+               is_max_time=False,
+               is_max_iter=False,
+               interval=10,
+               iters_to_do=1,
+               working_time=0,
+               **kwargs):
+    logging.debug('Task(inspect):started!')
+
+    started_date = datetime.now()
+    task_started_event.set()
+    while True:
+        last_iter = datetime.now()
+
+        if is_max_iter and iters_to_do <= 0:
+            break
+        if is_max_time and working_time < (datetime.now() - started_date).seconds:
+            break
+        if pause_event.isSet():
+            task_paused_event.set()
+            pause_event.wait()
+            task_paused_event.clear()
+        if stop_event.isSet():
+            break
+
+        task_collecting_videos_event.set()
+
+        try:
+            fined_banned_videos_and_delete_them()
+
+        except Exception as e:
+            logging.critical('Task(inspect): Error: {}.'.format(e))
+            raise
+
+        task_collecting_videos_event.clear()
+
+        logging.debug('Task(inspect):{} iter done!')
+        iters_to_do -= 1
+
+        if is_max_iter and iters_to_do <= 0:
+            break
+        if is_max_time and working_time < (datetime.now() - started_date).seconds:
+            break
+        if pause_event.isSet():
+            task_paused_event.set()
+            pause_event.wait()
+            task_paused_event.clear()
+        if stop_event.isSet():
+            break
+
+        task_waiting_nex_iter_event.set()
+        sleep_time = interval - (datetime.now() - last_iter).seconds
+        if sleep_time > 0:
+            time.sleep(interval - (datetime.now() - last_iter).seconds)
+        task_waiting_nex_iter_event.clear()
+
+    task_stopped_event.set()
+    logging.debug('Task(inspect):stopped!')
 
 
 class BotIsBusy(Exception):
