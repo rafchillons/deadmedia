@@ -141,7 +141,7 @@ def _save_video_info_to_database(video,
 def _get_videos_from_list_not_in_db(videos_description_json):
     logging.debug("Getting videos not in db.")
 
-    video_in_db_sources = [x.source_path for x in Video.objects.filter(video_status=Video.STATUS_DOWNLOADED)]
+    video_in_db_sources = [x.source_path for x in Video.objects.all()]
     result = filter(lambda y: y['source'] not in video_in_db_sources, videos_description_json)
 
     logging.debug("Getting videos not in db: complete.")
@@ -151,7 +151,7 @@ def _get_videos_from_list_not_in_db(videos_description_json):
 def _get_videos_from_db_not_in_list(videos_description_json):
     logging.debug("Getting videos not in list.")
 
-    video_in_db = Video.objects().filter()
+    video_in_db = Video.objects().filter(video_status=Video.STATUS_DOWNLOADED)
 
     videos_description_json_source = [x['source'] for x in videos_description_json]
     result = filter(lambda y: y.source_path not in videos_description_json_source, video_in_db)
