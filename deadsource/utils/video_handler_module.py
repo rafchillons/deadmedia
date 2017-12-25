@@ -64,8 +64,7 @@ def download_and_save_all_new_videos_2ch_b(with_words=(u'вебм', 'webm'),
 
 
 def _download_and_save_webm_video_and_preview(webm_description):  # this function is not for release
-    db_object = Video().objects.create_video()
-    db_object.save()
+    db_object = Video.objects.create_video()
 
     download_url = webm_description['source']
     download_url_preview = webm_description['thumbnail_source']
@@ -104,8 +103,9 @@ def _save_video_info_to_database(video,
         title = description_json['fullname'].rsplit('.', 1)[0]
         if not title.split():
             title = 'Untitled'
-        video.title = title
-        video.description_json = json.dumps(description_json).encode()
+
+        video.title = title.encode('utf-8')
+        video.description_json = json.dumps(description_json).encode('utf-8')
         video.video_height = description_json['height']
         video.video_width = description_json['width']
         video.video_duration_str = description_json['duration']
