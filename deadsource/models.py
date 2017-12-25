@@ -47,6 +47,7 @@ class Video(models.Model):
     source_path = models.CharField(max_length=200, default='')
     source_thread_number = models.CharField(max_length=200, default='')
     source_thread_path = models.CharField(max_length=200, default='')
+    is_thread_alive = models.BooleanField(max_length=1, default=True)
 
     preview_storage_path = models.CharField(max_length=200, default='')
     preview_storage_name = models.CharField(max_length=200, default='')
