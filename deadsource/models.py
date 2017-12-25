@@ -126,6 +126,15 @@ class Video(models.Model):
 
     is_liked = models.BooleanField(max_length=1, default=False)
 
+    def delete(self):
+        likes = self.video_likes
+        views = self.video_views
+
+        super(Video, self).delete()
+
+        likes.delete()
+        views.delete()
+
     """
     created_date = models.DateTimeField(
             default=timezone.now)

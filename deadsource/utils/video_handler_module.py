@@ -203,11 +203,17 @@ def delete_video_by_source_link(video_source_link):
     logging.debug('Removing video: complete.')
 
 
-def delete_video_by_db_object(db_object):
+def delete_video_by_db_object(db_object, remove_from_db=True, remove_from_drive=True):
     logging.debug('Removing video {}'.format(db_object))
 
-    _remove_video_from_storage(db_object)
-    _remove_video_from_db(db_object)
+    if remove_from_drive:
+        _remove_video_from_storage(db_object)
+
+    if remove_from_db:
+        _remove_video_from_db(db_object)
+    else:
+        db_object.video_status = Video.STATUS_DELETED
+        db_object.save()
 
     logging.debug('Removing video: complete.')
 
