@@ -403,7 +403,7 @@ def bot_status_view(request):
             'data_dict': json.loads(str(bot.task_data)),
         })
 
-    return render(request, 'botstatus.html', {'bots': bots_list})
+    return render(request, 'botstatus.html', {'bots': bots_list, 'is_authenticated': request.user.is_authenticated()})
 
 
 @login_required
