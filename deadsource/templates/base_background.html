@@ -27,20 +27,8 @@
     <!--    favicon-->
     
     <body>
-
         {% block background_content %}
         {% endblock %}
-
-        <!--admin special menu -->
-        {% if is_authenticated %}
-        <ul class="admin-special-menu clearfix">
-            <li><a href="{% url 'webm-page' %}">Home</a></li>
-            <li><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
-            <li><a href="{% url 'status-bot' %}">Status</a></li>
-            <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-        </ul>
-        {% endif %}
-        <!--admin special menu ending-->
         <footer class="footer">
             <div class="container">
                 <span class="copyright">Copyright &copy; 2017-2018 deadmedia.us All rights reserved.</span>
