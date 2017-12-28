@@ -21,6 +21,7 @@ from .utils.categorys_handler_module import (
 )
 from .utils.inspector_module import fined_banned_videos_and_delete_them
 from .utils.parse_2ch_module import _find_files_in_thread
+from .utils import paginator_module
 from django.http import *
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -48,28 +49,7 @@ def main_page(request):
 
 
 def show_webm(request):
-    try:
-        page = int(request.GET.get('page', 1))
-    except Exception as e:
-        logging.error('error!{} '.format(e))
-        page = 1
-
-    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True).order_by(
-        '-added_date')[24 * (page - 1):(24 * page) + 24]
-
-    for video in videos_to_show:
-        video.is_liked = video.check_if_liked(request)
-
-    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
-
-    paginator = Paginator(list_of_grouped_videos, 6)
-
-    try:
-        videos = paginator.page(1)
-        next_page = page + 1
-        videos.next_page_number = next_page
-    except EmptyPage:
-        videos = paginator.page(paginator.num_pages)
+    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_webm': True})
 
     return render(request,
                   'videos_page.html',
@@ -83,28 +63,8 @@ def show_webm(request):
 
 
 def show_adult(request):
-    try:
-        page = int(request.GET.get('page', 1))
-    except Exception as e:
-        logging.error('error!{} '.format(e))
-        page = 1
 
-    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_adult=True).order_by(
-        '-added_date')[24 * (page - 1):(24 * page) + 24]
-
-    for video in videos_to_show:
-        video.is_liked = video.check_if_liked(request)
-
-    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
-
-    paginator = Paginator(list_of_grouped_videos, 6)
-
-    try:
-        videos = paginator.page(1)
-        next_page = page + 1
-        videos.next_page_number = next_page
-    except EmptyPage:
-        videos = paginator.page(paginator.num_pages)
+    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_adult': True})
 
     return render(request,
                   'videos_page.html',
@@ -118,28 +78,7 @@ def show_adult(request):
 
 
 def show_hot(request):
-    try:
-        page = int(request.GET.get('page', 1))
-    except Exception as e:
-        logging.error('error!{} '.format(e))
-        page = 1
-
-    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_hot=True).order_by(
-            '-added_date')[24 * (page - 1):(24 * page) + 24]
-
-    for video in videos_to_show:
-        video.is_liked = video.check_if_liked(request)
-
-    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
-
-    paginator = Paginator(list_of_grouped_videos, 6)
-
-    try:
-        videos = paginator.page(1)
-        next_page = page + 1
-        videos.next_page_number = next_page
-    except EmptyPage:
-        videos = paginator.page(paginator.num_pages)
+    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_hot': True})
 
     return render(request,
                   'videos_page.html',
@@ -153,28 +92,7 @@ def show_hot(request):
 
 
 def show_mp4(request):
-    try:
-        page = int(request.GET.get('page', 1))
-    except Exception as e:
-        logging.error('error!{} '.format(e))
-        page = 1
-
-    videos_to_show = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_mp4=True).order_by(
-            '-added_date')[24 * (page - 1):(24 * page) + 24]
-
-    for video in videos_to_show:
-        video.is_liked = video.check_if_liked(request)
-
-    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
-
-    paginator = Paginator(list_of_grouped_videos, 6)
-
-    try:
-        videos = paginator.page(1)
-        next_page = page + 1
-        videos.next_page_number = next_page
-    except EmptyPage:
-        videos = paginator.page(paginator.num_pages)
+    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_mp4': True})
 
     return render(request,
                   'videos_page.html',
@@ -630,7 +548,7 @@ def delete_category(request, pk):
     return redirect('page-admin-new')
 
 
-#@login_required
+@login_required
 def test(request):
     #video = get_object_or_404(Video, pk=1)
     #return HttpResponse(video.check_if_video_been_viewed(request))
@@ -639,12 +557,14 @@ def test(request):
     #    video.is_webm = False
     #    video.save()
 
-    #for x in range(10):
-    #    model = Video.objects.create_video()
-    #    model.video_status = Video.STATUS_DOWNLOADED
-    #    model.is_webm = True
-    #    model.title = 'test{}'.format(x)
-    #    model.save()
+    for x in range(100):
+        model = Video.objects.create_video()
+        model.video_status = Video.STATUS_DOWNLOADED
+        model.is_webm = True
+        model.is_adult = True
+        model.is_mp4 = True
+        model.title = 'test{}'.format(x)
+        model.save()
 
     #print('HTTP_USER_AGENT:{}'.format(request.META['HTTP_USER_AGENT']))
     #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
@@ -656,7 +576,7 @@ def test(request):
 
     #print('ip:{}'.format(get_client_ip(request)))
     #print('request: {}'.format(request.META.keys()))
-    fined_banned_videos_and_delete_them()
+    #fined_banned_videos_and_delete_them()
     return redirect('webm-page')
 
 
