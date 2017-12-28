@@ -1,25 +1,6 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base_special_admin_menu.html' %}
+{% block admin_menu_content %}
 {% load static %}
-
-<head lang="en">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width" />
-    <title>WEBM</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
-</head>
-
-<body>
-    <!--admin special menu -->
-    <ul class="admin-special-menu clearfix">
-        <li><a href="/">Home</a></li>
-        <li><a href="/newadmin">ControlPanel</a></li>
-        <li><a href="/status">Status</a></li>
-        <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-    </ul>
-    <!--admin special menu ending-->
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3 text-center">
@@ -315,6 +296,4 @@
         blink();
 
     </script>
-</body>
-
-</html>
+{% endblock %}
