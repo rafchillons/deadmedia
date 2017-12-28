@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html>
-{% load static %}
-
-<head lang="en">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width" />
-    <title>WEBM</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
+{% extends 'base_background.html' %}
+{% block background_content %}
+{% load staticfiles %}
     <div class="container">
         <div class="admin-header">
             <div class="logo">
@@ -27,7 +17,6 @@
 
                     <form method="POST">
                         {% csrf_token %}
-
                         <div class="input-group input-group-sm" id="delete">
                             <input name="storage_name" type="text" class="form-control" placeholder="File link" aria-label="Delete id">
                             <span class="input-group-btn">
@@ -56,23 +45,4 @@
             </div>
         </div>
     </div>
-    <!--admin special menu -->
-    <ul class="admin-special-menu clearfix">
-        <li><a href="/">Home</a></li>
-        <li><a href="/newadmin">ControlPanel</a></li>
-        <li><a href="/status">Status</a></li>
-        <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-    </ul>
-    <!--admin special menu ending-->
-    <footer class="footer">
-        <div class="container">
-            <span class="copyright">Copyright &copy; 2017 deadmedia.us All rights reserved.</span>
-        </div>
-    </footer>
-</body>
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/functions.js' %}"></script>
-<script src="{% static 'js/tippy.min.js' %}"></script>
-
-</html>
+{% endblock %}

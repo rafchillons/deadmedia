@@ -1,0 +1,44 @@
+{% extends 'base_background.html' %} {% block background_content %}{% load static %}
+        <div class="container">
+            <div class="category">
+                <div class="category-title">
+                    <!--
+                    <span class="title">DM</span>
+                    <span class="title-sub">{{category_name}}</span>
+-->
+                    <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" width="320px"></a>
+                </div>
+            </div>
+        </div>
+        <!--    menu-->
+        <nav class="menu clearfix">
+            <a href="/" class="menu-logo-img"><img src="{% static 'img/logo_pride.png' %}" height="26px"></a>
+            <!--            <span class="menu-logo">deadmedia</span>-->
+            <a id="menu-trigger-btn">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </a>
+            <ul>
+                <!--menu elements-->
+                <li><a href="{% url 'hot-page' %}"><i class="fa fa-bolt" aria-hidden="true"></i>Hot</a></li>
+                <li><a href="{% url 'adult-page' %}"><i class="fa fa-smile-o" aria-hidden="true"></i>Adult</a></li>
+                <li><a href="{% url 'webm-page' %}" class="active"><i class="fa fa-wheelchair-alt" aria-hidden="true"></i>Webm</a></li>
+                <li><a href="{% url 'mp4-page' %}"><i class="fa fa-mobile" aria-hidden="true"></i>Mp4</a></li>
+                <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
+                <!--menu elements end-->
+                <!--admin sign out-->
+                {% if is_authenticated %}
+                <li class="admin-sign-out-mobile"><a href="{% url 'logout' %}">Sign out</a></li>
+                {% endif %}
+                <!--admin logout ending-->
+            </ul>
+        </nav>
+        <!--    menu ending-->
+
+        <div class="container">
+            <div class="menu-special-border"></div>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+{% endblock %}
