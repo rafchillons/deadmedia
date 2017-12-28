@@ -1,6 +1,5 @@
 {% extends 'base_background.html' %} {% block background_content %}{% load static %}
-{% block admin_menu_content %}
-{% endblock %}
+
 <!--admin special menu -->
         {% if is_authenticated %}
         <ul class="admin-special-menu clearfix">
@@ -11,4 +10,8 @@
         </ul>
         {% endif %}
 <!--admin special menu ending-->
+
+{% block admin_menu_content %}
+{% endblock %}
+
 {% endblock %}
