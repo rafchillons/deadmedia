@@ -1,15 +1,62 @@
-{% extends 'base_main.html' %}
- {% block content %}
-
-    <div class="container">
+{% extends 'base_main.html' %} {% block content %}
+<div class="container">
+    <div class="row no-gutters faq">
+        <div class="col-sm-4 col-md-3 col-md-offset-2 col-sm-offset-1">
+            <div class="faq-menu-title questions"><i class="fa fa-question-circle" aria-hidden="true"></i> Questions</div>
+            <div class="faq-menu">
+                <div class="center">
+                    <a href="#" class="ul-heading"><i>Basics</i></a>
+                    <ul>
+                        <li><a href="#">What is deadmedia?</a></li>
+                    </ul>
+                    <a href="#" class="ul-heading"><i>Donations</i></a>
+                    <ul>
+                        <li>What is deadmedia?</li>
+                        <li>What is deadmedia?</li>
+                        <li>What is deadmedia?</li>
+                        <li>What is deadmedia?</li>
+                        <li>What is deadmedia?</li>
+                        <li>What is deadmedia?</li>
+                    </ul>
+                    <a href="#" class="ul-heading"><i>Commercial</i></a>
+                    <a href="#" class="ul-heading"><i>Report abuse</i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="faq-menu-title answers"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Answers</div>
+            <div class="faq-about">
+                <a class="faq-about-heading" id="anchor">What is deadmedia?</a>
+                <p>
+                    You two, who oft a helping hand Have lent, in need and tribulation. Come, let me know your expectation Of this, our enterprise, in German land! I wish the crowd to feel itself well treated, Especially since it lives and lets me live; The posts are set, the booth of boards completed. And each awaits the banquet I shall give.
+                </p>
+                <hr>
+                <a class="faq-about-heading" id="anchor">What's your name?</a>
+                <p>
+                    You two, who oft a helping hand Have lent, in need and tribulation. Come, let me know your expectation Of this, our enterprise, in German land! I wish the crowd to feel itself well treated, Especially since it lives and lets me live; The posts are set, the booth of boards completed. And each awaits the banquet I shall give.
+                </p>
+                <hr>
+                <a class="faq-about-heading" id="anchor">How are you?</a>
+                <p>
+                    You two, who oft a helping hand Have lent, in need and tribulation. Come, let me know your expectation Of this, our enterprise, in German land! I wish the crowd to feel itself well treated, Especially since it lives and lets me live; The posts are set, the booth of boards completed. And each awaits the banquet I shall give.
+                </p>
+                <hr>
+                <a class="faq-about-heading" id="anchor">I did nat hit her! I DID NAT!</a>
+                <p>
+                    You two, who oft a helping hand Have lent, in need and tribulation. Come, let me know your expectation Of this, our enterprise, in German land! I wish the crowd to feel itself well treated, Especially since it lives and lets me live; The posts are set, the booth of boards completed. And each awaits the banquet I shall give.
+                </p>
+            </div>
+        </div>
     </div>
-    <!--admin special menu -->
-        {% if is_authenticated %}
-        <ul class="admin-special-menu clearfix">
-            <li><a href="/">Home</a></li>
-            <li><a href="/newadmin">ControlPanel</a></li>
-            <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-        </ul>
-        {% endif %}
-    <!--admin special menu ending-->
- {% endblock %}
+</div>
+<!--admin special menu -->
+{% if is_authenticated %}
+<ul class="admin-special-menu clearfix">
+    <li><a href="/">Home</a></li>
+    <li><a href="/newadmin">ControlPanel</a></li>
+    <li><a href="/status">Status</a></li>
+    <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+</ul>
+{% endif %}
+<!--admin special menu ending-->
+{% endblock %}

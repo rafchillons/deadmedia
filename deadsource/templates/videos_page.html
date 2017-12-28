@@ -34,14 +34,12 @@
                             {% if video.is_liked  %}
                             <span class="file-like-area">
                                 <i class="fa fa-heart active" aria-hidden="true"></i>
-                            </span>
-                            {% else %}
-                            <span class="file-like-area">
+                            </span> {% else %}
+                        <span class="file-like-area">
                                 <i class="fa fa-heart-o " aria-hidden="true"></i>
-                            </span>
-                            {% endif %}
+                            </span> {% endif %}
 
-                            <span class="file-likes-number">{% get_hit_count for video.video_likes %}</span>
+                        <span class="file-likes-number">{% get_hit_count for video.video_likes %}</span>
                         </span>
 
                         <!-- like
