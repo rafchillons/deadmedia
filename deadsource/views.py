@@ -296,26 +296,8 @@ def new_admin(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
 
-    all_videos_in_db = list(reversed(Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)))
+    all_videos_in_db = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)
     all_videos_count = all_videos_in_db.__len__()
-
-    all_videos_weight = 0
-    for video in all_videos_in_db:
-        all_videos_weight += int(video.video_size)
-
-    videos_weight = {}
-    if all_videos_weight > 999999999:
-        videos_weight['size'] = all_videos_weight / 1000000000
-        videos_weight['type'] = 'Tb'
-    elif all_videos_weight > 999999:
-        videos_weight['size'] = all_videos_weight / 1000000
-        videos_weight['type'] = 'Gb'
-    elif all_videos_weight > 999:
-        videos_weight['size'] = all_videos_weight / 1000
-        videos_weight['type'] = 'Mb'
-    else:
-        videos_weight['size'] = all_videos_weight
-        videos_weight['type'] = 'Kb'
 
     if request.method == 'POST':
         form = VideoDeleteForm(request.POST)
@@ -331,13 +313,40 @@ def new_admin(request):
     return render(request,
                   'admin.html',
                   {
-                      'videos_weight': videos_weight['size'],
-                      'videos_weight_type': videos_weight['type'],
+                      'videos_weight': 'unknown',
+                      'videos_weight_type': 'gb',
                       'videos_count': all_videos_count,
                       'form': form,
                       'bot_downloader': bot_downloader.instance,
                       'bot_remover': bot_remover.instance,
+                      'is_authenticated': request.user.is_authenticated(),
+
                   })
+
+
+@login_required
+def get_videos_size_in_db(request):
+    all_videos_weight = 0
+    all_videos_weight_type = 'Kb'
+    all_videos_in_db = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)
+
+    for video in all_videos_in_db:
+        all_videos_weight += int(video.video_size)
+
+    if all_videos_weight > 999999999:
+        all_videos_weight = all_videos_weight / 1000000000
+        all_videos_weight_type = 'Tb'
+    elif all_videos_weight > 999999:
+        all_videos_weight = all_videos_weight / 1000000
+        all_videos_weight_type = 'Gb'
+    elif all_videos_weight > 999:
+        all_videos_weight = all_videos_weight / 1000
+        all_videos_weight_type = 'Mb'
+
+    size  = '{}{}'.format(all_videos_weight, all_videos_weight_type)
+
+    return HttpResponse()
+
 
 
 def handler404(request):
