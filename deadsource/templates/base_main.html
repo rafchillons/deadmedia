@@ -70,7 +70,7 @@
         <!--admin special menu -->
         {% if is_authenticated %}
         <ul class="admin-special-menu clearfix">
-            <li><a href="{% url 'webm-page' %}/">Home</a></li>
+            <li><a href="{% url 'webm-page' %}">Home</a></li>
             <li><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
             <li><a href="{% url 'status-bot' %}">Status</a></li>
             <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
