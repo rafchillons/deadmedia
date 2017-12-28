@@ -265,7 +265,7 @@ def get_videos_size_in_db(request):
 
 
 @login_required
-def get_videos_size_in_db(request):
+def get_videos_count_in_db(request):
     all_videos_in_db = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)
     all_videos_count = all_videos_in_db.__len__()
     return HttpResponse(all_videos_count)

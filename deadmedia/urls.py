@@ -50,10 +50,12 @@ urlpatterns = [
     url(r'^video/(?P<pk>[0-9]+)/delete/$', views.delete_video_id_view, name='video-delete-id'),
     url(r'^video/(?P<pk>[0-9]+)/hide/$', views.hide_video_id_view, name='video-hide-id'),
 
-    url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
+    #url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
     url(r'^delete/$', views.delete_all_videos, name='delete-all'),
 
     url(r'^newadmin$', views.new_admin, name='page-admin-new'),
+    url(r'^videos/size$', views.get_videos_size_in_db, name='page-admin-videos-size'),
+    url(r'^videos/count$', views.get_videos_count_in_db, name='page-admin-videos-count'),
     url(r'^error404$', views.handler404, name='error404-page'),
 
     url(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
