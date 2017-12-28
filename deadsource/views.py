@@ -296,8 +296,7 @@ def new_admin(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
 
-    all_videos_in_db = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)
-    all_videos_count = all_videos_in_db.__len__()
+
 
     if request.method == 'POST':
         form = VideoDeleteForm(request.POST)
@@ -313,9 +312,8 @@ def new_admin(request):
     return render(request,
                   'admin.html',
                   {
-                      'videos_weight': 'unknown',
-                      'videos_weight_type': 'gb',
-                      'videos_count': all_videos_count,
+                      'videos_weight': 'collecting',
+                      'videos_count': 'collecting',
                       'form': form,
                       'bot_downloader': bot_downloader.instance,
                       'bot_remover': bot_remover.instance,
@@ -343,10 +341,16 @@ def get_videos_size_in_db(request):
         all_videos_weight = all_videos_weight / 1000
         all_videos_weight_type = 'Mb'
 
-    size  = '{}{}'.format(all_videos_weight, all_videos_weight_type)
+    size = '{}{}'.format(all_videos_weight, all_videos_weight_type)
 
-    return HttpResponse()
+    return HttpResponse(size)
 
+
+@login_required
+def get_videos_size_in_db(request):
+    all_videos_in_db = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)
+    all_videos_count = all_videos_in_db.__len__()
+    return HttpResponse(all_videos_count)
 
 
 def handler404(request):
