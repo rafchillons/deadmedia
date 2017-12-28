@@ -22,9 +22,9 @@ $(document).ready(function () {
         image = $(this).parent().parent().parent().parent();
         imageId = image.attr('id');
         console.log(imageId);
-        
+
         linkImage = $('#' + imageId).children().find('.image-link');
-        jQuery.getJSON("video/" + imageId + "/delete/");
+        jQuery.getJSON("/video/" + imageId + "/delete/");
 
         linkImage.css("background-image", "url(/assets/img/deleted.png)");
         linkImage.attr("onclick", " ");
@@ -44,10 +44,17 @@ $(document).ready(function () {
 
     //like btn
     $('body').on('click', '.file-like-area', function () {
-        console.log('sdfsdf');
+        elem_id = $(this).parent().parent().parent().parent().parent().attr('id');
+        console.log('Лайк-лайк-ла-ла-лайк!');
         likeBtn = $(this).find('.fa');
         likeBtn.removeClass('fa-heart-o');
         likeBtn.addClass('fa-heart active');
+        jQuery.get('/video/' + elem_id + '/like/')
+            .done(function (data) {
+                if (data == "True") {
+                    var currentLikesCountInc = parseInt($('#' + elem_id).find('.file-likes-number').text()) + 1;
+                    $('#' + elem_id).find('.file-likes-number').text(currentLikesCountInc);
+                }
+            });
     });
 });
-
