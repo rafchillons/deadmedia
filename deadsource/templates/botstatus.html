@@ -169,9 +169,16 @@
                                 <div class="bot-id">
                                     <span><b>Bot #{{bot.db_object.id}}</b></span>
                                     <!-- статус бота в зависимости от условия -->
+
+                                    {% if bot.db_object.get_status == bot.db_object.BOT_STATUS_STOPPED %}
                                     <span class="badge badge-error">Stopped</span>
-                                    <span class="badge badge-warning">Paused</span>
+                                    {% endif %}
+                                    {% if bot.db_object.get_status == bot.db_object.BOT_STATUS_WORKING %}
                                     <span class="badge badge-fine">Running</span>
+                                    {% endif %}
+                                    {% if bot.db_object.get_status == bot.db_object.BOT_STATUS_FINISHING %}
+                                    <span class="badge badge-warning">Finishing</span>
+                                    {% endif %}
                                 </div>
                                 <div class="bot-controls clearfix">
                                     <a class="btn-bot-run" href="{% url 'start-bot-id' bot.db_object.id %}">Run</a>

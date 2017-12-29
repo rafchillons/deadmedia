@@ -237,9 +237,9 @@ class Video(models.Model):
 class BotTask(models.Model):
     added_date = models.DateTimeField(default=timezone.now)
 
-    BOT_STATUS_WORKING = 'Bot is working'
-    BOT_STATUS_FINISHING = 'Bot is finishing'
-    BOT_STATUS_STOPPED = 'Bot is stopped'
+    BOT_STATUS_WORKING = 'working'
+    BOT_STATUS_FINISHING = 'finishing'
+    BOT_STATUS_STOPPED = 'stopped'
 
     BOT_STATUS = (
         (BOT_STATUS_WORKING, 'Working'),
@@ -286,6 +286,7 @@ class BotTask(models.Model):
         for thread in [x for x in threading.enumerate() if x.getName() == 'Bot({})'.format(self.id)]:
             thread.stop()
 
+    @property
     def get_status(self):
         if not filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
             from .utils.bot_module import TaskThread
@@ -294,6 +295,7 @@ class BotTask(models.Model):
         return list(filter(lambda x: x.getName() == 'Bot({})'.format(self.id),
                            threading.enumerate()))[0].get_status()
 
+    @property
     def get_process_status(self):
         if not filter(lambda x: x.getName() == 'Bot({})'.format(self.id), threading.enumerate()):
             from .utils.bot_module import TaskThread
