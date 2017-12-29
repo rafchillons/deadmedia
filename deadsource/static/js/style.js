@@ -15,6 +15,10 @@ $(document).ready(function () {
     $('body').on('click', '.file-admin-information-btn', function () {
         $(this).parent().find('.file-admin-information').slideToggle("fast");
     });
+    
+    $('body').on('click', '.file-admin-tools-btn', function () {
+        $(this).parent().find('.file-change-category').slideToggle("fast");
+    });
 
     $('body').on('click', '.file-delete-btn', function () {
         $(this).css('cursor', 'default').css('text-decoration', 'none').css('color', 'red');
