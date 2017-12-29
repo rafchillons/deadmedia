@@ -557,14 +557,14 @@ def test(request):
     #    video.is_webm = False
     #    video.save()
 
-    for x in range(100):
-        model = Video.objects.create_video()
-        model.video_status = Video.STATUS_DOWNLOADED
-        model.is_webm = True
-        model.is_adult = True
-        model.is_mp4 = True
-        model.title = 'test{}'.format(x)
-        model.save()
+    #for x in range(100):
+    #    model = Video.objects.create_video()
+    #    model.video_status = Video.STATUS_DOWNLOADED
+    #    model.is_webm = True
+    #    model.is_adult = True
+    #    model.is_mp4 = True
+    #    model.title = 'test{}'.format(x)
+    #    model.save()
 
     #print('HTTP_USER_AGENT:{}'.format(request.META['HTTP_USER_AGENT']))
     #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))

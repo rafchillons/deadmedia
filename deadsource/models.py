@@ -9,6 +9,8 @@ import json
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
 from .utils import hitcount_module
+from django.shortcuts import render, redirect, get_object_or_404
+import logging
 
 class VideoViews(models.Model):
     pass
@@ -24,15 +26,15 @@ class VideoManager(models.Manager):
         video_views.save()
         video_likes = VideoLikes()
         video_likes.save()
-        video = self.create(video_likes=video_likes, video_views=video_views)
+        video = self.create(video_likes_id=video_likes.id, video_views_id=video_views.id)
         return video
 
 
 class Video(models.Model):
     objects = VideoManager()
 
-    video_views = models.ForeignKey('VideoViews')
-    video_likes = models.ForeignKey('VideoLikes')
+    video_views_id = models.IntegerField()
+    video_likes_id = models.IntegerField()
 
     title = models.CharField(max_length=200, default='Default title')
 
@@ -110,31 +112,60 @@ class Video(models.Model):
     def get_description(self):
         return json.loads(str(self.description_json))
 
+    @property
+    def get_views(self):
+        views = get_object_or_404(VideoViews, pk=self.video_views_id)
+        hit_count = HitCount.objects.get_for_object(views)
+        return hit_count.hits
+
+    @property
+    def get_likes(self):
+        likes = get_object_or_404(VideoLikes, pk=self.video_likes_id)
+        hit_count = HitCount.objects.get_for_object(likes)
+        return hit_count.hits
+
     def view_video(self, request):
-        hit_count = HitCount.objects.get_for_object(self.video_views)
+        views = get_object_or_404(VideoViews, pk=self.video_views_id)
+        hit_count = HitCount.objects.get_for_object(views)
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
         return hit_count_response.hit_counted
 
     def like_video(self, request):
-        hit_count = HitCount.objects.get_for_object(self.video_likes)
+        likes = get_object_or_404(VideoLikes, pk=self.video_likes_id)
+        hit_count = HitCount.objects.get_for_object(likes)
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
         return hit_count_response.hit_counted
 
     def check_if_liked(self, request):
-        hit_count = HitCount.objects.get_for_object(self.video_likes)
+        likes = get_object_or_404(VideoLikes, pk=self.video_likes_id)
+        hit_count = HitCount.objects.get_for_object(likes)
         hit_count_response = hitcount_module.is_hit(request, hit_count)
         return not hit_count_response.hit_counted
 
     is_liked = models.BooleanField(max_length=1, default=False)
 
     def delete(self):
-        likes = self.video_likes
-        views = self.video_views
+        try:
+            likes = get_object_or_404(VideoLikes, pk=self.video_likes_id)
+        except Exception as e:
+            logging.error(e)
+            likes = None
+
+        try:
+            views = get_object_or_404(VideoViews, pk=self.video_views_id)
+        except Exception as e:
+            logging.error(e)
+            views = None
 
         super(Video, self).delete()
 
-        likes.delete()
-        views.delete()
+        if likes:
+            likes.delete()
+
+        if views:
+            views.delete()
+
+
 
     """
     created_date = models.DateTimeField(
@@ -202,6 +233,7 @@ class Video(models.Model):
 
 """
 
+
 class BotTask(models.Model):
     added_date = models.DateTimeField(default=timezone.now)
 
@@ -243,7 +275,7 @@ class BotTask(models.Model):
         elif self.bot_task == self.BOT_TASK_REMOVE_WEBM:
             task = bot_task_2
         elif self.bot_task == self.BOT_TASK_INSPECT_BANNED:
-            task = bot_task_3
+            task = bot_task_3()
 
         thread = TaskThread('Bot({})'.format(self.id), task, data)
         thread.start()
