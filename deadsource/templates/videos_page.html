@@ -18,6 +18,15 @@
 
                         <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
                         <a class="file-delete-btn" title="Delete file">Delete</a>
+                        <div class="file-change-category">
+                            <a href="/" class="file-category-change-btn" title="Change category">Change to</a>
+                            <select>
+                                <option value="adult">adult</option>
+                                <option value="webm">webm</option>
+                                <option value="mp4">mp4</option>
+                                <option value="hot">hot</option>
+                            </select>
+                        </div>
                         <div class="file-admin-information">
                             <span><i>download time:</i> {{video.added_date}}</span>
                             <span><i>database id:</i> {{video.id}}</span>
