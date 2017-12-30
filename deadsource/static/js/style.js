@@ -34,6 +34,7 @@ $(document).ready(function () {
         linkImage.attr("onclick", " ");
         linkImage.css('cursor', 'default');
         linkImage.css('opacity', '0.7');
+        $(this).parent().find('.file-admin-tools-btn').remove();
     });
 
     //file change category 
@@ -54,7 +55,7 @@ $(document).ready(function () {
         linkImage.css('opacity', '0.7');
         $(this).parent().find('.file-category-change-select').remove();
     });
-    
+
     //file short info slide
     $(document).on({
         mouseenter: function () {

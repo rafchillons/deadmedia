@@ -34,6 +34,7 @@ $(document).ready(function () {
         linkImage.attr("onclick", " ");
         linkImage.css('cursor', 'default');
         linkImage.css('opacity', '0.7');
+        $(this).parent().find('.file-admin-tools-btn').remove();
     });
 
     //file change category 
@@ -42,10 +43,8 @@ $(document).ready(function () {
         $(this).css('cursor', 'default').css('text-decoration', 'none').css('color', 'red');
         $(this).text("Moved");
         var category = $(this).parent().find('.file-category-change-select :selected').text();
-        console.log(category);
         image = $(this).parent().parent().parent().parent().parent();
         imageId = image.attr('id');
-        console.log(imageId);
 
         linkImage = $('#' + imageId).children().find('.image-link');
         jQuery.getJSON("/video/" + imageId + "/delete/");
@@ -54,9 +53,9 @@ $(document).ready(function () {
         linkImage.attr("onclick", " ");
         linkImage.css('cursor', 'default');
         linkImage.css('opacity', '0.7');
-        $(this).parent().find('.file-category-change-select').text('');
+        $(this).parent().find('.file-category-change-select').remove();
     });
-    
+
     //file short info slide
     $(document).on({
         mouseenter: function () {
