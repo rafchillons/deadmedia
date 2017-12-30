@@ -77,6 +77,11 @@ urlpatterns = [
     url(r'^hot/category/delete$', views.hot_category_delete, name='category-delete-hot'),
     url(r'^mp4/category/delete$', views.mp4_category_delete, name='category-delete-mp4'),
 
+    url(r'^video/(?P<pk>[0-9]+)/move/mp4/$', views.video_move_mp4_id, name='video-move-mp4'),
+    url(r'^video/(?P<pk>[0-9]+)/move/adult/$', views.video_move_adult_id, name='video-move-adult'),
+    url(r'^video/(?P<pk>[0-9]+)/move/webm/$', views.video_move_webm_id, name='video-move-webm'),
+    url(r'^video/(?P<pk>[0-9]+)/move/hot/$', views.video_move_hot_id, name='video-move-hot'),
+
 
     url(r'^test$', views.test, name='test'),
 

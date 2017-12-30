@@ -517,6 +517,46 @@ def hot_category_delete(request):
     remove_all_videos_from_category('is_hot')
     return redirect('hot-page')
 
+@login_required
+def video_move_webm_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    video.is_webm = True
+    video.is_adult = False
+    video.is_mp4 = False
+    video.is_hot = False
+    video.save()
+    return redirect('webm-page')
+
+@login_required
+def video_move_adult_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    video.is_webm = False
+    video.is_adult = True
+    video.is_mp4 = False
+    video.is_hot = False
+    video.save()
+    return redirect('adult-page')
+
+@login_required
+def video_move_mp4_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    video.is_webm = False
+    video.is_adult = False
+    video.is_mp4 = True
+    video.is_hot = False
+    video.save()
+    return redirect('mp4-page')
+
+@login_required
+def video_move_hot_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    video.is_webm = False
+    video.is_adult = False
+    video.is_mp4 = False
+    video.is_hot = True
+    video.save()
+    return redirect('hot-page')
+
 
 def hit_video_view(request, pk):
     video = get_object_or_404(Video, pk=pk)
