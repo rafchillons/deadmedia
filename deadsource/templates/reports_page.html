@@ -1,9 +1,9 @@
- {% extends 'base_categories_menu.html' %} {% block content %}
- {% load hitcount_tags %}
+{% extends 'base_special_admin_menu.html' %} 
+{% block admin_menu_content %}
+{% load static %}
 <div class="infinite-container container">
-    {% for videos_row in videos %}
+    {% for video in videos %}
     <div class="infinite-item row images">
-        {% for video in videos_row %}
         <div id="{{video.id}}" class="col-md-6 col-lg-3 image">
             <figure>
                 <div class="image-link" onclick="expand(1488, '{{video.storage_path_url}}', {{video.video_width}}, {{video.video_height}}, 0, {{video.id}})" style="background-image: url({{video.preview_storage_path_url}})">
@@ -30,6 +30,7 @@
                     </div>
                     <div class="file-info clearfix">
                         <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i><span class="file-views-number">{{ video.get_views }}</span></span>
+                        <span class="file-reports"><span class="file-reports-number">reports:{{ video.get_reports }}</span></span>
                         <span class="file-like">
 
                             {% if video.is_liked  %}
@@ -51,7 +52,6 @@
                 </figcaption>
             </figure>
         </div>
-        {% endfor %}
     </div>
     {% endfor %}
 </div>

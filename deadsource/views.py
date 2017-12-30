@@ -189,6 +189,28 @@ def show_admin_page(request):
 
 
 @login_required
+def show_reported(request):
+
+     try:
+         page = int(request.GET.get('page', -1))
+     except Exception as e:
+         logging.error('error!{} '.format(e))
+         page = -1
+
+     all_videos = [x for x in Video.objects.all().order_by('-added_date') if x.get_reports > 0]
+
+     sorted_videos = sorted(all_videos, key=lambda y: y.get_reports, reverse=True)
+     videos = sorted_videos
+
+     return render(request,
+                   'reports_page.html',
+                   {
+                       'is_authenticated': request.user.is_authenticated(),
+                       'videos': videos,
+                   })
+
+
+@login_required
 def delete_all_videos(request):
     videos = Video.objects.all()
 
@@ -356,7 +378,6 @@ def create_bot_downloader_view(request):
 def create_bot_remover_view(request):
     if request.method == 'POST':
         form = BotTaskRemoveForm(request.POST)
-
         if form.is_valid():
             bot = BotTask()
 
@@ -525,6 +546,12 @@ def like_video_by_id(request, pk):
     return HttpResponse(likes)
 
 
+def report_video_by_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    reports = video.report_video(request)
+    return HttpResponse(reports)
+
+
 @login_required
 def delete_category(request, pk):
     if pk == 'adult':
@@ -548,7 +575,7 @@ def delete_category(request, pk):
     return redirect('page-admin-new')
 
 
-@login_required
+#@login_required
 def test(request):
     #video = get_object_or_404(Video, pk=1)
     #return HttpResponse(video.check_if_video_been_viewed(request))
@@ -557,14 +584,19 @@ def test(request):
     #    video.is_webm = False
     #    video.save()
 
-    #for x in range(100):
-    #    model = Video.objects.create_video()
-    #    model.video_status = Video.STATUS_DOWNLOADED
-    #    model.is_webm = True
-    #    model.is_adult = True
-    #    model.is_mp4 = True
-    #    model.title = 'test{}'.format(x)
-    #    model.save()
+    for x in range(100):
+        model = Video.objects.create_video()
+        model.video_status = Video.STATUS_DOWNLOADED
+        model.is_webm = True
+        model.is_adult = True
+        model.is_mp4 = True
+        model.title = 'test{}'.format(x)
+        model.save()
+        model.report_video(request)
+
+
+
+
 
     #print('HTTP_USER_AGENT:{}'.format(request.META['HTTP_USER_AGENT']))
     #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))

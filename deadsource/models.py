@@ -12,11 +12,16 @@ from .utils import hitcount_module
 from django.shortcuts import render, redirect, get_object_or_404
 import logging
 
+
 class VideoViews(models.Model):
     pass
 
 
 class VideoLikes(models.Model):
+    pass
+
+
+class VideoReports(models.Model):
     pass
 
 
@@ -26,7 +31,11 @@ class VideoManager(models.Manager):
         video_views.save()
         video_likes = VideoLikes()
         video_likes.save()
-        video = self.create(video_likes_id=video_likes.id, video_views_id=video_views.id)
+        video_reports = VideoReports()
+        video_reports.save()
+        video = self.create(video_likes_id=video_likes.id,
+                            video_views_id=video_views.id,
+                            video_reports_id=video_reports.id)
         return video
 
 
@@ -35,6 +44,7 @@ class Video(models.Model):
 
     video_views_id = models.IntegerField()
     video_likes_id = models.IntegerField()
+    video_reports_id = models.IntegerField()
 
     title = models.CharField(max_length=200, default='Default title')
 
@@ -124,6 +134,12 @@ class Video(models.Model):
         hit_count = HitCount.objects.get_for_object(likes)
         return hit_count.hits
 
+    @property
+    def get_reports(self):
+        reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
+        hit_count = HitCount.objects.get_for_object(reports)
+        return hit_count.hits
+
     def view_video(self, request):
         views = get_object_or_404(VideoViews, pk=self.video_views_id)
         hit_count = HitCount.objects.get_for_object(views)
@@ -144,27 +160,43 @@ class Video(models.Model):
 
     is_liked = models.BooleanField(max_length=1, default=False)
 
+    def report_video(self, request):
+        reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
+        hit_count = HitCount.objects.get_for_object(reports)
+        hit_count_response = HitCountMixin.hit_count(request, hit_count)
+        return hit_count_response.hit_counted
+
+    def check_if_reported(self, request):
+        reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
+        hit_count = HitCount.objects.get_for_object(reports)
+        hit_count_response = hitcount_module.is_hit(request, hit_count)
+        return not hit_count_response.hit_counted
+
     def delete(self):
         try:
             likes = get_object_or_404(VideoLikes, pk=self.video_likes_id)
         except Exception as e:
             logging.error(e)
             likes = None
-
         try:
             views = get_object_or_404(VideoViews, pk=self.video_views_id)
         except Exception as e:
             logging.error(e)
             views = None
+        try:
+            reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
+        except Exception as e:
+            logging.error(e)
+            reports = None
 
         super(Video, self).delete()
 
         if likes:
             likes.delete()
-
         if views:
             views.delete()
-
+        if reports:
+            reports.delete()
 
 
     """

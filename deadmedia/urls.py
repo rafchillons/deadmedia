@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^mp4/$', views.show_mp4, name='mp4-page'),
     url(r'^all/$', views.show_all, name='all-page'),
     url(r'^hidden/$', views.show_hidden, name='hidden-page'),
+    url(r'^report/$', views.show_reported, name='reported-page'),
 
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^login/$', views.login_view, name='login-page'),
@@ -60,26 +61,12 @@ urlpatterns = [
 
     url(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
 
-    url(r'^video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
-    url(r'^adult/video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
-    url(r'^hot/video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
-    url(r'^mp4/video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
-
-    url(r'^video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
-    url(r'^adult/video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
-    url(r'^hot/video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
-    url(r'^mp4/video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
-
-    url(r'^category/hide$', views.webm_category_hide, name='category-hide-webm'),
-    url(r'^adult/category/hide$', views.adult_category_hide, name='category-hide-adult'),
-    url(r'^hot/category/hide$', views.hot_category_hide, name='category-hide-hot'),
-    url(r'^mp4/category/hide$', views.mp4_category_hide, name='category-hide-mp4'),
-
-    url(r'^category/delete$', views.webm_category_delete, name='category-delete-webm'),
-    url(r'^adult/category/delete$', views.adult_category_delete, name='category-delete-adult'),
-    url(r'^hot/category/delete$', views.hot_category_delete, name='category-delete-hot'),
-    url(r'^mp4/category/delete$', views.mp4_category_delete, name='category-delete-mp4'),
-
+    url(r'^(/|adult/|hot/|mp4/)video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
+    url(r'^(/|adult/|hot/|mp4/)video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
+    url(r'^(/|adult/|hot/|mp4/)video/(?P<pk>[0-9]+)/report/$', views.report_video_by_id, name='video-report'),
+    url(r'^(/|adult/|hot/|mp4/)category/hide$', views.adult_category_hide, name='category-hide-adult'),
+    url(r'^(/|adult/|hot/|mp4/)category/delete$', views.adult_category_delete, name='category-delete-adult'),
+    url(r'^video/(?P<pk>[0-9]+)/report/$', views.report_video_by_id, name='video-report'),
 
     url(r'^test$', views.test, name='test'),
 

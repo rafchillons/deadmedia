@@ -1,0 +1,18 @@
+{% extends 'base_special_admin_menu.html' %}
+{% block admin_menu_content %}
+{% load static %}
+<div class="container">
+    <div class="admin-header">
+        <div class="logo">
+            <img src="{% static 'img/lunch1.png' %}" height="140px" width="140px">
+        </div>
+        <span class="title">Reports</span>
+    </div>
+</div>
+
+
+
+{% for videos_row in videos %}
+
+{% endblock %}
+

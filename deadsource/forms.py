@@ -1,8 +1,9 @@
 from django import forms
-from .models import Video, BotTask
+from .models import Video, BotTask, VideoReports
 from django.contrib.auth.forms import AuthenticationForm
 from deadmedia import settings
 
+from django.shortcuts import render, redirect, get_object_or_404
 
 class VideoDeleteForm(forms.ModelForm):
     class Meta:
@@ -334,6 +335,7 @@ class BotTaskInspectForm(forms.Form):
             raise forms.ValidationError('Max iters mast be more then 0!')
 
         return data
+
 
 
 """

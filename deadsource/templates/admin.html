@@ -44,7 +44,8 @@
         </div>
     </div>
 </div>
-{% endblock %} {% block script_content %}
+{% endblock %}
+{% block script_content %}
 <script type="text/javascript">
     $(document).ready(function() {
         jQuery.get('/videos/size').done(function(data) {
