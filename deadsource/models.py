@@ -164,6 +164,11 @@ class Video(models.Model):
         reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
         hit_count = HitCount.objects.get_for_object(reports)
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
+
+        if not self.is_reported and self.get_reports > 2:
+            self.is_reported = True
+            self.save()
+
         return hit_count_response.hit_counted
 
     def check_if_reported(self, request):
@@ -171,6 +176,23 @@ class Video(models.Model):
         hit_count = HitCount.objects.get_for_object(reports)
         hit_count_response = hitcount_module.is_hit(request, hit_count)
         return not hit_count_response.hit_counted
+
+    def reset_reports(self):
+        new_reports = VideoReports()
+        new_reports.save()
+
+        try:
+            reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
+            reports.delete()
+        except Exception as e:
+            logging.error(e)
+
+        self.is_reported = False
+        self.video_reports_id = new_reports.id
+        self.save()
+
+
+    is_reported = models.BooleanField(max_length=1, default=False)
 
     def delete(self):
         try:

@@ -197,8 +197,7 @@ def show_reported(request):
          logging.error('error!{} '.format(e))
          page = -1
 
-     all_videos = [x for x in Video.objects.all().order_by('-added_date') if x.get_reports > 0]
-
+     all_videos = Video.objects.all().filter(is_reported=True).order_by('-added_date')
      sorted_videos = sorted(all_videos, key=lambda y: y.get_reports, reverse=True)
      videos = sorted_videos
 
@@ -547,6 +546,7 @@ def video_move_mp4_id(request, pk):
     video.save()
     return redirect('mp4-page')
 
+
 @login_required
 def video_move_hot_id(request, pk):
     video = get_object_or_404(Video, pk=pk)
@@ -556,6 +556,13 @@ def video_move_hot_id(request, pk):
     video.is_hot = True
     video.save()
     return redirect('hot-page')
+
+
+@login_required
+def video_reports_reset_id(request, pk):
+    video = get_object_or_404(Video, pk=pk)
+    video.reset_reports()
+    return redirect('webm-page')
 
 
 def hit_video_view(request, pk):

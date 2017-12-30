@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^mp4/$', views.show_mp4, name='mp4-page'),
     url(r'^all/$', views.show_all, name='all-page'),
     url(r'^hidden/$', views.show_hidden, name='hidden-page'),
-    url(r'^report/$', views.show_reported, name='reported-page'),
+    url(r'^reports/$', views.show_reported, name='reported-page'),
 
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^login/$', views.login_view, name='login-page'),
@@ -82,6 +82,7 @@ urlpatterns = [
     url(r'^video/(?P<pk>[0-9]+)/move/webm/$', views.video_move_webm_id, name='video-move-webm'),
     url(r'^video/(?P<pk>[0-9]+)/move/hot/$', views.video_move_hot_id, name='video-move-hot'),
 
+    url(r'^video/(?P<pk>[0-9]+)/reports/reset/$', views.video_reports_reset_id, name='video-reports-reset'),
 
     url(r'^test$', views.test, name='test'),
 
