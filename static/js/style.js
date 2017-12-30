@@ -47,7 +47,7 @@ $(document).ready(function () {
         imageId = image.attr('id');
 
         linkImage = $('#' + imageId).children().find('.image-link');
-        jQuery.getJSON("/video/" + imageId + "/delete/");
+        jQuery.getJSON("/video/" + imageId + "/move/" + category + "/");
 
         linkImage.css("background-image", "url(/assets/img/category.jpg)");
         linkImage.attr("onclick", " ");
@@ -65,6 +65,16 @@ $(document).ready(function () {
             $(this).find('.file-size').fadeOut('fast');
         }
     }, ".image-link");
+
+
+    //report btn 
+    $('body').on('click', '.file-report', function () {
+        $(this).css('cursor', 'default').css('text-decoration', 'none').css('font-style', 'italic');
+        $(this).text("Reported");
+        image = $(this).parent().parent().parent().parent();
+        imageId = image.attr('id');
+        jQuery.getJSON("/video/" + imageId + "/report/");
+    });
 
     //like btn
     $('body').on('click', '.file-like-area', function () {

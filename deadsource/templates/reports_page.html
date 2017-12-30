@@ -1,65 +1,16 @@
-{% extends 'base_special_admin_menu.html' %} 
-{% block admin_menu_content %}
-{% load static %}
-<div class="infinite-container container">
-    {% for video in videos %}
-    <div class="infinite-item row images">
-        <div id="{{video.id}}" class="col-md-6 col-lg-3 image">
-            <figure>
-                <div class="image-link" onclick="expand(1488, '{{video.storage_path_url}}', {{video.video_width}}, {{video.video_height}}, 0, {{video.id}})" style="background-image: url({{video.preview_storage_path_url}})">
-                    <span class="file-size">
-                        {{video.video_size_str}}, {{video.video_duration_str}}, {{video.video_width}}x{{video.video_height}}
-                    </span>
-                </div>
-                <figcaption class="file-attr">
-                    <span class="file-name">{{video.title}}</span>
-                    <div class="file-admin-panel clearfix">
-                        <!--admin special video buttons-->
-                        {% if is_authenticated %}
-
-                        <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
-                        <a class="file-delete-btn" title="Delete file">Delete</a>
-                        <div class="file-admin-information">
-                            <span><i>download time:</i> {{video.added_date}}</span>
-                            <span><i>database id:</i> {{video.id}}</span>
-                            <span><i>thread({% if video.is_thread_alive %}alive{% else %}dead{% endif %}):</i><a href="{{video.source_thread_path}}"> {{video.source_thread_number}}</a></span>
-                            <span><i>status:</i> {{video.video_status}}</span>
-                        </div>
-                        {% endif %}
-                        <!--admin special video buttons-->
-                    </div>
-                    <div class="file-info clearfix">
-                        <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i><span class="file-views-number">{{ video.get_views }}</span></span>
-                        <span class="file-reports"><span class="file-reports-number">reports:{{ video.get_reports }}</span></span>
-                        <span class="file-like">
-
-                            {% if video.is_liked  %}
-                            <span class="file-like-area">
-                                <i class="fa fa-heart active" aria-hidden="true"></i>
-                            </span> {% else %}
-                        <span class="file-like-area">
-                                <i class="fa fa-heart-o " aria-hidden="true"></i>
-                            </span> {% endif %}
-
-                        <span class="file-likes-number">{{video.get_likes}}</span>
-                        </span>
-
-                        <!-- like
-                         <span class="file-like"><i class="fa fa-heart active" aria-hidden="true"></i>0</span>
-                                -->
-                        <a class="external-link" target="_blank" href="{{video.storage_path_url}}" title="{{video.title}}"><i class="fa fa-external-link"></i></a>
-                    </div>
-                </figcaption>
-            </figure>
+{% extends 'base_special_admin_menu.html' %} {% block admin_menu_content %} {% load static %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <div class="reports clearfix">
+                <img src="{% static 'img/reports.png' %}" width="100%">
+            </div>
         </div>
     </div>
-    {% endfor %}
 </div>
-{% if videos.has_next %}
-<a class="infinite-more-link" href="?page={{ videos.next_page_number }}"></a> {% endif %}
-<div class="loading">
-    <div class="loading-image">
-        <span><i class="fa fa-spinner fa-spin"></i></span>
-    </div>
-</div>
+{% endblock %} {% block script_content %}
+<script type="text/javascript">
+
+
+</script>
 {% endblock %}
