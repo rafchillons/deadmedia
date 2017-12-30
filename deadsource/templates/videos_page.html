@@ -16,11 +16,11 @@
                         <!--admin special video buttons-->
                         {% if is_authenticated %}
                         <div class="file-admin-information-btn"><i class="fa fa-minus-square-o" aria-hidden="true"></i></div>
-                        <div class="file-admin-tools-btn"><i class="fa fa-wrench" aria-hidden="true"></i></div>
-                        <a class="file-delete-btn" title="Delete file">Delete</a>
+                        <div class="file-admin-tools-btn">Tools</div>
+                        <a class="file-delete-btn file-admin-btn" title="Delete file">Delete</a>
                         <div class="file-change-category">
-                            <a href="/" class="file-category-change-btn" title="Change category">Change to</a>
-                            <select>
+                            <a class="file-category-change-btn file-admin-btn" title="Change category">Change to</a>
+                            <select class="file-category-change-select">
                                 <option value="adult">adult</option>
                                 <option value="webm">webm</option>
                                 <option value="mp4">mp4</option>
