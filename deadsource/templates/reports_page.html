@@ -3,15 +3,18 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3 text-center">
             <div class="reports clearfix">
-                <img src="{% static 'img/reports.png' %}" width="100%">
+                <img src="{% static 'img/reports.gif' %}" width="100%">
                 <div class="reports-list">
-                    <table class="table table-sm table-bordered table-striped table-condensed">
+                    <table class="table table-sm table-bordered table-striped">
                         <tbody>
+                            {% for video in videos %}
                             <tr>
                                 <td class="report-file-name" onclick="expand(1488, '{{video.storage_path_url}}', {{video.video_width}}, {{video.video_height}}, 0, {{video.id}})">{{video.title}}</td>
-                                <td><span class="badge">{{video.get_reports}}</span></td>
-                                <td>test</td>
+                                <td style="width: 50px;">{{video.get_reports}}</td>
+                                <td style='width: 40px;'><a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a></td>
+                                <td style='width: 40px;'><a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a></td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
