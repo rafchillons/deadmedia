@@ -12,7 +12,7 @@
                                 <td class="report-file-name" id="{{video.id}}" onclick="expand(1488, '{{video.storage_path_url}}', {{video.video_width}}, {{video.video_height}}, 0, {{video.id}})">{{video.title}}</td>
                                 <td style="width: 50px;">{{video.get_reports}}</td>
                                 <td style='width: 40px;'><a class="report-file-delete"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a></td>
-                                <td style='width: 40px;'><a href="#" class="report-file-ok"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a></td>
+                                <td style='width: 40px;'><a class="report-file-ok"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -24,10 +24,37 @@
 </div>
 {% endblock %} {% block script_content %}
 <script type="text/javascript">
+    function deleteRow(button, decision) {
+        var row = $(button).closest('tr')
+            .children('td')
+            .css({
+                backgroundColor: decision,
+                borderColor: decision
+            });
+        setTimeout(function() {
+            $(row)
+                .animate({
+                    paddingTop: 0,
+                    paddingBottom: 0
+                }, 500)
+                .wrapInner('<div />')
+                .children()
+                .slideUp(500, function() {
+                    $(this).closest('tr').remove();
+                });
+        }, 350);
+    };
     $('body').on('click', '.report-file-delete', function() {
-        var elem_id = $(this).parent().attr('id');
+        var elem_id = $(this).parent().parent().find(".report-file-name").attr('id');
+        console.log("/video/" + elem_id + "/delete/");
         jQuery.getJSON("/video/" + elem_id + "/delete/");
-        $(this).parent().parent().remove();
+        deleteRow(this, "red");
+    });
+    $('body').on('click', '.report-file-ok', function() {
+        var elem_id = $(this).parent().parent().find(".report-file-name").attr('id');
+        console.log("/video/" + elem_id + "/reports/reset/");
+        jQuery.getJSON("/video/" + elem_id + "/reports/reset/");
+        deleteRow(this, "#80E800");
     });
 
 </script>
