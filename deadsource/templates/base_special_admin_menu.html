@@ -6,7 +6,7 @@
     <li><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
     <li><a href="{% url 'status-bot' %}">Status</a></li>
     <li><a href="{% url 'reported-page' %}">Report</a></li>
-    <li class="admin-sign-out"><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+    <li><a href="{% url 'logout' %}">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
 </ul>
 <nav class="menu mobile-only clearfix">
     <a href="{% url 'page-admin-new' %}" class="menu-logo-img"><img src="{% static 'img/dance.gif' %}" height="30px"></a>
@@ -22,7 +22,7 @@
         <li class="mobile-only"><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
         <li class="mobile-only"><a href="{% url 'status-bot' %}">Status</a></li>
         <li class="mobile-only"><a href="{% url 'reported-page' %}">Report</a></li>
-        <li class="mobile-only admin-sign-out-mobile"><a href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign out</a></li>
+        <li class="mobile-only"><a href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign out</a></li>
         {% endif %}
         <!--admin logout ending-->
     </ul>
