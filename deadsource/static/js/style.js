@@ -11,7 +11,7 @@
 
         setTimeout(function () {
             el.fadeOut('slow');
-        }, 2500);
+        }, 2800);
     };
 
     $(document).ready(function () {
