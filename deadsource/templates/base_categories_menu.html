@@ -48,4 +48,19 @@
     <div class="menu-special-border"></div>
 </div>
 
+{% block script_content %}
+<script>
+     var description = [
+        "{% static 'img/logo_0.png' %}",
+        "{% static 'img/logo_1.png' %}",
+        "{% static 'img/logo_2.png' %}",
+        "{% static 'img/logo_3.png' %}"
+     ];
+
+    var size = description.length
+    var x = Math.floor(size*Math.random())
+    $(".logo").attr("src", description[x]);
+</script>
+{% endblock %}
+
 {% block content %} {% endblock %} {% endblock %}
