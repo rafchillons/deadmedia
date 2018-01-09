@@ -12,13 +12,13 @@
 <div class="container">
     <div class="category">
         <div class="category-title">
-            <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" width="320px"></a>
+            <a href="/"><img src="{% static 'img/logo_0.png' %}" class="logo" width="320px"></a>
         </div>
     </div>
 </div>
 <!--    menu-->
 <nav class="menu clearfix">
-    <a href="/" class="menu-logo-img"><img src="{% static 'img/logo_pride.png' %}" height="26px"></a>
+    <a href="/" class="menu-logo-img"><img src="{% static 'img/logo_0.png' %}" height="26px" class="logo-mobile"></a>
     <!--            <span class="menu-logo">deadmedia</span>-->
     <a id="menu-trigger-btn">
                 <i class="fa fa-bars" aria-hidden="true"></i>
@@ -59,7 +59,7 @@
 
         var size = description.length
         var x = Math.floor(size*Math.random())
-        $(".logo, .menu-logo-img").attr("src", description[x]);
+        $(".logo, .logo-mobile").attr("src", description[x]);
 </script>
 {% endblock %}
 
