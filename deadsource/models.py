@@ -165,9 +165,16 @@ class Video(models.Model):
         hits_before = hit_count.hits
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
         result = hit_count_response.hit_counted
-
+        print('kek')
         if result:
             self.video_likes = hits_before + 1
+            print('kek')
+            if self.video_likes > 10 and not self.is_adult and not self.is_hot:
+                self.is_webm = False
+                self.is_mp4 = False
+                self.is_adult = False
+                self.is_hot = True
+
             self.save()
 
         return result
