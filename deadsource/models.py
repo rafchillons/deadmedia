@@ -42,9 +42,13 @@ class VideoManager(models.Manager):
 class Video(models.Model):
     objects = VideoManager()
 
-    video_views_id = models.IntegerField()
-    video_likes_id = models.IntegerField()
-    video_reports_id = models.IntegerField()
+    video_views_id = models.IntegerField(default=-1)
+    video_likes_id = models.IntegerField(default=-1)
+    video_reports_id = models.IntegerField(default=-1)
+
+    video_views = models.IntegerField(default=0)
+    video_likes = models.IntegerField(default=0)
+    video_reports = models.IntegerField(default=0)
 
     title = models.CharField(max_length=200, default='Default title')
 
@@ -122,7 +126,7 @@ class Video(models.Model):
     def get_description(self):
         return json.loads(str(self.description_json))
 
-    @property
+    """@property
     def get_views(self):
         views = get_object_or_404(VideoViews, pk=self.video_views_id)
         hit_count = HitCount.objects.get_for_object(views)
@@ -138,19 +142,35 @@ class Video(models.Model):
     def get_reports(self):
         reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
         hit_count = HitCount.objects.get_for_object(reports)
-        return hit_count.hits
+        return hit_count.hits"""
 
     def view_video(self, request):
+        result = False
         views = get_object_or_404(VideoViews, pk=self.video_views_id)
         hit_count = HitCount.objects.get_for_object(views)
+        hits_before = hit_count.hits
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
-        return hit_count_response.hit_counted
+        result = hit_count_response.hit_counted
+
+        if result:
+            self.video_views = hits_before + 1
+            self.save()
+
+        return result
 
     def like_video(self, request):
+        result = False
         likes = get_object_or_404(VideoLikes, pk=self.video_likes_id)
         hit_count = HitCount.objects.get_for_object(likes)
+        hits_before = hit_count.hits
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
-        return hit_count_response.hit_counted
+        result = hit_count_response.hit_counted
+
+        if result:
+            self.video_likes = hits_before + 1
+            self.save()
+
+        return result
 
     def check_if_liked(self, request):
         likes = get_object_or_404(VideoLikes, pk=self.video_likes_id)
@@ -161,15 +181,22 @@ class Video(models.Model):
     is_liked = models.BooleanField(max_length=1, default=False)
 
     def report_video(self, request):
+        result = False
         reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
         hit_count = HitCount.objects.get_for_object(reports)
+        hits_before = hit_count.hits
         hit_count_response = HitCountMixin.hit_count(request, hit_count)
+        result = hit_count_response.hit_counted
 
-        if not self.is_reported and self.get_reports > 2:
-            self.is_reported = True
+        if result:
+            self.video_reports = hits_before + 1
+
+            if self.video_reports > 3:
+                self.is_reported = True
+
             self.save()
 
-        return hit_count_response.hit_counted
+        return result
 
     def check_if_reported(self, request):
         reports = get_object_or_404(VideoReports, pk=self.video_reports_id)
@@ -189,8 +216,8 @@ class Video(models.Model):
 
         self.is_reported = False
         self.video_reports_id = new_reports.id
+        self.video_reports = 0
         self.save()
-
 
     is_reported = models.BooleanField(max_length=1, default=False)
 
