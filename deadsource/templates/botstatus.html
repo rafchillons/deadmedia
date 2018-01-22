@@ -181,11 +181,11 @@
                                     {% endif %}
                                 </div>
                                 <div class="bot-controls clearfix">
-                                    <a class="btn-bot-run" href="{% url 'start-bot-id' bot.db_object.id %}">Run</a>
-                                    <a class="bot-btn-stop" href="{% url 'stop-bot-id' bot.db_object.id %}">Stop</a>
-                                    <a class="bot-btn-pause-on" href="{% url 'pause-on-bot-id' bot.db_object.id %}">Pause on</a>
-                                    <a class="bot-btn-pause-on" href="{% url 'pause-off-bot-id' bot.db_object.id %}">Pause off</a>
-                                    <a class="bot-btn-delete" href="{% url 'delete-bot-id' bot.db_object.id %}">Delete</a>
+                                    <a class="btn-bot-run" href="{% url 'bot-command' bot.db_object.id 'start' %}">Run</a>
+                                    <a class="bot-btn-stop" href="{% url 'bot-command' bot.db_object.id 'stop' %}">Stop</a>
+                                    <a class="bot-btn-pause-on" href="{% url 'bot-command' bot.db_object.id 'pause/on' %}">Pause on</a>
+                                    <a class="bot-btn-pause-on" href="{% url 'bot-command' bot.db_object.id 'pause/off' %}">Pause off</a>
+                                    <a class="bot-btn-delete" href="{% url 'bot-command' bot.db_object.id 'delete' %}">Delete</a>
                                     <a class="bot-about-toggler" title="More information"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
                                 </div>
                             </div>

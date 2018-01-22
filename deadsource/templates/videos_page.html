@@ -37,7 +37,7 @@
                         <!--admin special video buttons-->
                     </div>
                     <div class="file-info clearfix">
-                        <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i><span class="file-views-number">{{ video.get_views }}</span></span>
+                        <span class="file-views"><i class="fa fa-eye" aria-hidden="true"></i><span class="file-views-number">{{ video.video_views }}</span></span>
                         <span class="file-like">
 
                             {% if video.is_liked  %}
@@ -48,7 +48,7 @@
                                 <i class="fa fa-heart-o " aria-hidden="true"></i>
                             </span> {% endif %}
 
-                        <span class="file-likes-number">{{video.get_likes}}</span>
+                        <span class="file-likes-number">{{video.video_likes}}</span>
                         </span>
 
                         <!-- like

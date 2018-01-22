@@ -37,72 +37,57 @@ from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
 
 
+def show_videos(request,
+                category='webm',
+                sort='date',
+                order='ordered'):
+    videos_filters = {'video_status': Video.STATUS_DOWNLOADED}
+    page_content = {'is_authenticated': request.user.is_authenticated()}
+    sort_revert = True if order == 'reversed' else False
 
-def main_page(request):
-    videos = Video.objects.all().order_by('added_date')
-    return render(request,
-                  'main.html',
-                  {
-                      'videos': videos,
-                      'count': videos.__len__(),
-                  })
+    if category == 'webm':
+        videos_filters['is_webm'] = True
+        page_content['category_name'] = 'webm'
+        page_content['hide_videos_link'] = 'category-hide-webm'
+        page_content['delete_videos_link'] = 'category-delete-webm'
 
+    elif category == 'mp4':
+        videos_filters['is_mp4'] = True
+        page_content['category_name'] = 'mp4'
+        page_content['hide_videos_link'] = 'category-hide-mp4'
+        page_content['delete_videos_link'] = 'category-delete-mp4'
 
-def show_webm(request):
-    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_webm': True})
+    elif category == 'adult':
+        videos_filters['is_adult'] = True
+        page_content['category_name'] = 'adult'
+        page_content['hide_videos_link'] = 'category-hide-adult'
+        page_content['delete_videos_link'] = 'category-delete-adult'
 
-    return render(request,
-                  'videos_page.html',
-                  {
-                      'category_name': 'webm',
-                      'videos': videos,
-                      'is_authenticated': request.user.is_authenticated(),
-                      'hide_videos_link': 'category-hide-webm',
-                      'delete_videos_link': 'category-delete-webm',
-                  })
+    elif category == 'hot':
+        videos_filters['is_hot'] = True
+        page_content['category_name'] = 'hot'
+        page_content['hide_videos_link'] = 'category-hide-hot'
+        page_content['delete_videos_link'] = 'category-delete-hot'
 
+    else:
+        return redirect('error404-page')
 
-def show_adult(request):
+    if sort == 'date':
+        videos_order = '-added_date' if sort_revert else 'added_date'
 
-    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_adult': True})
+    elif sort == 'likes':
+        videos_order = '-video_likes' if sort_revert else 'video_likes'
 
-    return render(request,
-                  'videos_page.html',
-                  {
-                      'category_name': 'adult',
-                      'videos': videos,
-                      'is_authenticated': request.user.is_authenticated(),
-                      'hide_videos_link': 'category-hide-adult',
-                      'delete_videos_link': 'category-delete-adult',
-                  })
+    elif sort == 'views':
+        videos_order = '-video_views' if sort_revert else 'video_views'
 
+    else:
+        return redirect('error404-page')
 
-def show_hot(request):
-    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_hot': True})
+    videos = paginator_module.get_filtered_and_sorted_videos_page(request, videos_filters, videos_order)
 
-    return render(request,
-                  'videos_page.html',
-                  {
-                      'category_name': 'hot',
-                      'videos': videos,
-                      'is_authenticated': request.user.is_authenticated(),
-                      'hide_videos_link': 'category-hide-hot',
-                      'delete_videos_link': 'category-delete-hot',
-                  })
-
-
-def show_mp4(request):
-    videos = paginator_module.get_videos_page(request, {'video_status': Video.STATUS_DOWNLOADED, 'is_mp4': True})
-
-    return render(request,
-                  'videos_page.html',
-                  {
-                      'category_name': 'mp4',
-                      'videos': videos,
-                      'is_authenticated': request.user.is_authenticated(),
-                      'hide_videos_link': 'category-hide-mp4',
-                      'delete_videos_link': 'category-delete-mp4',
-                  })
+    page_content['videos'] = videos
+    return render(request, 'videos_page.html', page_content)
 
 
 def show_faq(request):
@@ -139,31 +124,6 @@ def show_all(request):
 
 
 @login_required
-def show_hidden(request):
-    list_of_grouped_videos = zip(
-        *[iter(
-            Video.objects.all().filter(video_status=Video.STATUS_HIDDEN).order_by('-added_date'))] * 4)
-
-    page = request.GET.get('page', 1)
-    paginator = Paginator(list_of_grouped_videos, 1)
-
-    try:
-        videos = paginator.page(page)
-    except PageNotAnInteger:
-        videos = paginator.page(1)
-    except EmptyPage:
-        videos = paginator.page(paginator.num_pages)
-    return render(request,
-                  'videos_page.html',
-                  {
-                      'category_name': 'hidden',
-                      'videos': videos,
-                      'is_authenticated': request.user.is_authenticated(),
-                  })
-
-
-
-@login_required
 def show_admin_page(request):
     bot_downloader = ThreadDownloader()
     bot_remover = VideoRemover()
@@ -197,7 +157,7 @@ def show_reported(request):
          logging.error('error!{} '.format(e))
          page = -1
 
-     all_videos = Video.objects.all().filter(is_reported=True).order_by('-added_date')
+     all_videos = Video.objects.all().filter(is_reported=True, video_status=Video.STATUS_DOWNLOADED).order_by('-added_date')
      sorted_videos = sorted(all_videos, key=lambda y: y.get_reports, reverse=True)
      videos = sorted_videos
 
@@ -215,8 +175,6 @@ def delete_all_videos(request):
 
     for video in videos:
         delete_video_by_db_object(video)
-
-
 
     return redirect('page-admin-new')
 
@@ -365,7 +323,7 @@ def create_bot_downloader_view(request):
             bot.task_data = json.dumps(form.cleaned_data)
 
             bot.save()
-            return redirect('webm-page')
+            return redirect('main-page')
 
     else:
         form = BotTaskForm()
@@ -384,7 +342,7 @@ def create_bot_remover_view(request):
             bot.task_data = json.dumps(form.cleaned_data)
 
             bot.save()
-            return redirect('webm-page')
+            return redirect('main-page')
 
     else:
         form = BotTaskForm()
@@ -403,13 +361,12 @@ def create_bot_inspector_view(request):
             bot.task_data = json.dumps(form.cleaned_data)
 
             bot.save()
-            return redirect('webm-page')
+            return redirect('main-page')
 
     else:
         form = BotTaskForm()
 
     return render(request, 'create_inspect_bot.html', {'form': form, 'messages': messages.get_messages(request)})
-
 
 
 @login_required
@@ -427,210 +384,113 @@ def bot_status_view(request):
 
 
 @login_required
-def bot_delete_id(request, pk):
+def bot_commands(request, pk, command):
     bot = get_object_or_404(BotTask, pk=pk)
-    bot.delete()
-    return redirect('status-bot')
 
+    if command == 'start':
+        bot.start_bot()
 
-@login_required
-def bot_start_id(request, pk):
-    bot = get_object_or_404(BotTask, pk=pk)
-    bot.start_bot()
-    return redirect('status-bot')
+    elif command == 'stop':
+        bot.stop_bot()
 
+    elif command == 'delete':
+        bot.delete()
 
-@login_required
-def bot_stop_id(request, pk):
-    bot = get_object_or_404(BotTask, pk=pk)
-    bot.stop_bot()
-    return redirect('status-bot')
+    elif command == 'pause/on':
+        bot.pause_on()
 
+    elif command == 'pause/off':
+        bot.pause_off()
 
-@login_required
-def bot_pause_off(request, pk):
-    bot = get_object_or_404(BotTask, pk=pk)
-    bot.pause_off()
-    return redirect('status-bot')
-
-
-@login_required
-def bot_pause_on(request, pk):
-    bot = get_object_or_404(BotTask, pk=pk)
-    bot.pause_on()
-    return redirect('status-bot')
-
-
-@login_required
-def delete_video_id_view(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    delete_video_by_db_object(video, remove_from_db=False)
-    return redirect('webm-page')
-
-@login_required
-def hide_video_id_view(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    video.video_status = Video.STATUS_HIDDEN
-    video.save()
-    return redirect('webm-page')
-
-
-
-@login_required
-def webm_category_hide(request):
-    remove_all_videos_from_category('is_webm')
-    return redirect('webm-page')
-
-@login_required
-def mp4_category_hide(request):
-    remove_all_videos_from_category('is_mp4')
-    return redirect('mp4-page')
-
-@login_required
-def adult_category_hide(request):
-    remove_all_videos_from_category('is_adult')
-    return redirect('adult-page')
-
-@login_required
-def hot_category_hide(request):
-    remove_all_videos_from_category('is_hot')
-    return redirect('hot-page')
-
-@login_required
-def webm_category_delete(request):
-    remove_all_videos_from_category('is_webm')
-    return redirect('webm-page')
-
-@login_required
-def mp4_category_delete(request):
-    remove_all_videos_from_category('is_mp4')
-    return redirect('mp4-page')
-
-@login_required
-def adult_category_delete(request):
-    remove_all_videos_from_category('is_adult')
-    return redirect('adult-page')
-
-@login_required
-def hot_category_delete(request):
-    remove_all_videos_from_category('is_hot')
-    return redirect('hot-page')
-
-@login_required
-def video_move_webm_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    video.is_webm = True
-    video.is_adult = False
-    video.is_mp4 = False
-    video.is_hot = False
-    video.save()
-    return redirect('webm-page')
-
-@login_required
-def video_move_adult_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    video.is_webm = False
-    video.is_adult = True
-    video.is_mp4 = False
-    video.is_hot = False
-    video.save()
-    return redirect('adult-page')
-
-@login_required
-def video_move_mp4_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    video.is_webm = False
-    video.is_adult = False
-    video.is_mp4 = True
-    video.is_hot = False
-    video.save()
-    return redirect('mp4-page')
-
-
-@login_required
-def video_move_hot_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    video.is_webm = False
-    video.is_adult = False
-    video.is_mp4 = False
-    video.is_hot = True
-    video.save()
-    return redirect('hot-page')
-
-
-@login_required
-def video_reports_reset_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    video.reset_reports()
-    return redirect('webm-page')
-
-
-def hit_video_view(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    hit_count = HitCount.objects.get_for_object(video)
-    hit_count_before = hit_count.hits
-    hit_count_response = HitCountMixin.hit_count(request, hit_count)
-    hit_count_after = hit_count.hits
-
-    if type(hit_count_after) is not int:
-        hit_count_after = hit_count_before + 1
     else:
-        hit_count_after = -1
+        return redirect('error404-page')
 
-    print(type(HttpResponse(hit_count_after)))
-    return HttpResponse(hit_count_after)
-
-
-def view_video_by_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    views = video.view_video(request)
-    return HttpResponse(views)
-
-
-def like_video_by_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    likes = video.like_video(request)
-    return HttpResponse(likes)
-
-
-def report_video_by_id(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    reports = video.report_video(request)
-    return HttpResponse(reports)
+    return redirect('status-bot')
 
 
 @login_required
-def delete_category(request, pk):
-    if pk == 'adult':
-        videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_adult=True)
-        for video in videos:
-            video.is_adult = False
+def category_delete(request, category):
+    if category == 'hot':
+        category_filter = 'is_hot'
+
+    elif category == 'adult':
+        category_filter = 'is_adult'
+
+    elif category == 'webm':
+        category_filter = 'is_webm'
+
+    elif category == 'mp4':
+        category_filter = 'is_mp4'
+
+    else:
+        return redirect('error404-page')
+
+    remove_all_videos_from_category(category_filter)
+
+    return redirect('videos-page', category=category)
+
+
+@login_required
+def admin_video_commands(request, pk, command):
+    video = get_object_or_404(Video, pk=pk)
+
+    if command.startswith('move/'):
+        video.is_hot = False
+        video.is_adult = False
+        video.is_webm = False
+        video.is_mp4 = False
+
+        if command == 'move/hot':
+            video.is_hot = True
+
+        elif command == 'move/adult':
+            video.is_adult = True
+
+        elif command == 'move/webm':
+            video.is_webm = True
+
+        elif command == 'move/mp4':
+            video.is_mp4 = True
+
+        else:
+            return redirect('error404-page')
+
+        video.save()
+
+    else:
+        if command == 'delete':
+            delete_video_by_db_object(video, remove_from_db=False, remove_from_drive=True)
+
+        elif command == 'hide':
+            video.video_status = Video.STATUS_HIDDEN
             video.save()
-    elif pk == 'mp4':
-        videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_mp4=True)
-        for video in videos:
-            video.is_mp4 = False
-            video.save()
-    elif pk == 'webm':
-        videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=True)
-        for video in videos:
-            video.is_webm = False
-            video.save()
+
+        elif command == 'reports/reset':
+            video.reset_reports()
+
+    return HttpResponse(True)
+
+
+def user_video_commands(request, pk, command):
+    video = get_object_or_404(Video, pk=pk)
+
+    if command == 'view':
+        result = video.view_video(request)
+
+    elif command == 'like':
+        result = video.like_video(request)
+
+    elif command == 'report':
+        result = video.report_video(request)
+
     else:
         return redirect('error404')
 
-    return redirect('page-admin-new')
+    return HttpResponse(result)
 
 
 #@login_required
 def test(request):
-    #video = get_object_or_404(Video, pk=1)
-    #return HttpResponse(video.check_if_video_been_viewed(request))
-    #videos = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED, is_webm=False, is_adult=False, is_mp4=False, is_hot=False)
-    #for video in videos:
-    #    video.is_webm = False
-    #    video.save()
-
     for x in range(100):
         model = Video.objects.create_video()
         model.video_status = Video.STATUS_DOWNLOADED
@@ -641,22 +501,7 @@ def test(request):
         model.save()
         model.report_video(request)
 
-
-
-
-
-    #print('HTTP_USER_AGENT:{}'.format(request.META['HTTP_USER_AGENT']))
-    #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
-    #print('HTTP_COOKIE:{}'.format(request.META['HTTP_COOKIE']))
-    #print('REMOTE_ADDR:{}'.format(request.META['REMOTE_ADDR']))
-
-    #video = get_object_or_404(Video, pk=7)
-    #print('liked:{}'.format(video.is_liked(request)))
-
-    #print('ip:{}'.format(get_client_ip(request)))
-    #print('request: {}'.format(request.META.keys()))
-    #fined_banned_videos_and_delete_them()
-    return redirect('webm-page')
+    return redirect('main-page')
 
 
 def get_client_ip(request):

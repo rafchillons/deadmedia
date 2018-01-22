@@ -2,7 +2,7 @@
 <!--admin special menu -->
 {% if is_authenticated %}
 <ul class="admin-special-menu clearfix">
-    <li><a href="{% url 'webm-page' %}">Home</a></li>
+    <li><a href="{% url 'main-page' %}">Home</a></li>
     <li><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
     <li><a href="{% url 'status-bot' %}">Status</a></li>
     <li><a href="{% url 'reported-page' %}">Report</a></li>
@@ -18,7 +18,7 @@
         <!--admin sign out-->
         {% if is_authenticated %}
         <hr>
-        <li class="mobile-only"><a href="{% url 'webm-page' %}">Home</a></li>
+        <li class="mobile-only"><a href="{% url 'main-page' %}">Home</a></li>
         <li class="mobile-only"><a href="{% url 'page-admin-new' %}">ControlPanel</a></li>
         <li class="mobile-only"><a href="{% url 'status-bot' %}">Status</a></li>
         <li class="mobile-only"><a href="{% url 'reported-page' %}">Report</a></li>

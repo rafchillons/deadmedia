@@ -22,15 +22,36 @@ from django.conf.urls.static import static
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
 
-    url(r'^$', views.show_webm, name='webm-page'),
-    url(r'^adult/$', views.show_adult, name='adult-page'),
-    url(r'^faq/$', views.show_faq, name='faq-page'),
-    url(r'^hot/$', views.show_hot, name='hot-page'),
-    url(r'^mp4/$', views.show_mp4, name='mp4-page'),
-    url(r'^all/$', views.show_all, name='all-page'),
-    url(r'^hidden/$', views.show_hidden, name='hidden-page'),
-    url(r'^reports/$', views.show_reported, name='reported-page'),
+    url(r'^$', views.show_videos, name='main-page'),
 
+    url(r'^(?P<category>(hot|adult|webm|mp4|all|hidden))/$',
+        views.show_videos,
+        {'sort': 'date', 'order': 'ordered'},
+        name='videos-page'),
+
+    url(r'^video/(?P<pk>[0-9]+)/(?P<command>(view|like|report))/$',
+        views.user_video_commands,
+        name='video-user-command'),
+
+    url(r'^(?P<category>(hot|adult|webm|mp4|all|hidden))/sort/(?P<sort>(date|likes|views))/'
+        r'(?P<order>(ordered|reversed))/$',
+        views.show_videos,
+        name='videos-page-sort'),
+
+    url(r'^video/(?P<pk>[0-9]+)/(?P<command>(move/(hot|adult|webm|mp4))|delete|hide|reports/reset)/$',
+        views.admin_video_commands,
+        name='video-move-category'),
+
+    url(r'^(?P<category>(hot|adult|webm|mp4|all|hidden))/category/delete$',
+        views.category_delete,
+        name='category-delete'),
+
+    url(r'^bot/(?P<pk>[0-9]+)/(?P<command>(start|stop|delete|pause/(on|off)))/$',
+        views.bot_commands,
+        name='bot-command'),
+
+    url(r'^reports/$', views.show_reported, name='reported-page'),
+    url(r'^faq/$', views.show_faq, name='faq-page'),
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^login/$', views.login_view, name='login-page'),
     url(r'^accounts/login/$', views.login_view, name='login-page'),
@@ -42,15 +63,6 @@ urlpatterns = [
 
     url(r'^bot/create/remover$', views.create_bot_remover_view, name='create-bot-remover'),
 
-    url(r'^bot/(?P<pk>[0-9]+)/start/$', views.bot_start_id, name='start-bot-id'),
-    url(r'^bot/(?P<pk>[0-9]+)/stop/$', views.bot_stop_id, name='stop-bot-id'),
-    url(r'^bot/(?P<pk>[0-9]+)/delete/$', views.bot_delete_id, name='delete-bot-id'),
-    url(r'^bot/(?P<pk>[0-9]+)/pause/on/$', views.bot_pause_on, name='pause-on-bot-id'),
-    url(r'^bot/(?P<pk>[0-9]+)/pause/off/$', views.bot_pause_off, name='pause-off-bot-id'),
-
-    url(r'^video/(?P<pk>[0-9]+)/delete/$', views.delete_video_id_view, name='video-delete-id'),
-    url(r'^video/(?P<pk>[0-9]+)/hide/$', views.hide_video_id_view, name='video-hide-id'),
-
     #url(r'^page/admin/$', views.show_admin_page, name='page-admin'),
     url(r'^delete/$', views.delete_all_videos, name='delete-all'),
 
@@ -61,32 +73,17 @@ urlpatterns = [
 
     url(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
 
-    url(r'^video/(?P<pk>[0-9]+)/view/$', views.view_video_by_id, name='video-view'),
-
-    url(r'^video/(?P<pk>[0-9]+)/like/$', views.like_video_by_id, name='video-like'),
-
-    url(r'^video/(?P<pk>[0-9]+)/report/$', views.report_video_by_id, name='video-report'),
-
-    url(r'^category/hide$', views.webm_category_hide, name='category-hide-webm'),
-    url(r'^adult/category/hide$', views.adult_category_hide, name='category-hide-adult'),
-    url(r'^hot/category/hide$', views.hot_category_hide, name='category-hide-hot'),
-    url(r'^mp4/category/hide$', views.mp4_category_hide, name='category-hide-mp4'),
-
-    url(r'^category/delete$', views.webm_category_delete, name='category-delete-webm'),
-    url(r'^adult/category/delete$', views.adult_category_delete, name='category-delete-adult'),
-    url(r'^hot/category/delete$', views.hot_category_delete, name='category-delete-hot'),
-    url(r'^mp4/category/delete$', views.mp4_category_delete, name='category-delete-mp4'),
-
-    url(r'^video/(?P<pk>[0-9]+)/move/mp4/$', views.video_move_mp4_id, name='video-move-mp4'),
-    url(r'^video/(?P<pk>[0-9]+)/move/adult/$', views.video_move_adult_id, name='video-move-adult'),
-    url(r'^video/(?P<pk>[0-9]+)/move/webm/$', views.video_move_webm_id, name='video-move-webm'),
-    url(r'^video/(?P<pk>[0-9]+)/move/hot/$', views.video_move_hot_id, name='video-move-hot'),
-
-    url(r'^video/(?P<pk>[0-9]+)/reports/reset/$', views.video_reports_reset_id, name='video-reports-reset'),
-
     url(r'^test$', views.test, name='test'),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'webms.views.handler404'
+
+"""url(r'^adult/$', views.show_adult, name='adult-page'),
+    url(r'^faq/$', views.show_faq, name='faq-page'),
+    url(r'^hot/$', views.show_hot, name='hot-page'),
+    url(r'^mp4/$', views.show_mp4, name='mp4-page'),
+    url(r'^all/$', views.show_all, name='all-page'),
+    url(r'^hidden/$', views.show_hidden, name='hidden-page'),"""
