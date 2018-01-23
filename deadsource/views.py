@@ -43,7 +43,7 @@ def show_videos(request,
                 order='ordered'):
     videos_filters = {'video_status': Video.STATUS_DOWNLOADED}
     page_content = {'is_authenticated': request.user.is_authenticated()}
-    sort_revert = True if order == 'reversed' else False
+    sort_revert = not order == 'reversed'
 
     if category == 'webm':
         videos_filters['is_webm'] = True
