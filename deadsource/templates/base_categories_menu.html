@@ -24,10 +24,10 @@
             </a>
     <ul>
         <!--menu elements-->
-        <li><a href="{% url 'videos-page' category='hot' %}"><i class="fa fa-bolt" aria-hidden="true"></i>Hot</a></li>
+        <li><a href="{% url 'videos-page' category='hot' %}"><i class="fa fa-rocket" aria-hidden="true"></i>Hot</a></li>
         <li><a href="{% url 'videos-page' category='adult' %}"><i class="fa fa-smile-o" aria-hidden="true"></i>Adult</a></li>
-        <li><a href="{% url 'videos-page' category='webm' %}" class="active"><i class="fa fa-wheelchair-alt" aria-hidden="true"></i>Random</a></li>
-        <li><a href="{% url 'videos-page' category='mp4' %}"><i class="fa fa-mobile" aria-hidden="true"></i>Mp4</a></li>
+        <li><a href="{% url 'videos-page' category='webm' %}" class="active"><i class="fa fa-globe" aria-hidden="true"></i>Random</a></li>
+        <li><a href="{% url 'videos-page' category='mp4' %}"><i class="fa fa-mobile" aria-hidden="true"></i>.mp4</a></li>
         <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
         <!--menu elements end-->
         <!--admin sign out-->
@@ -45,20 +45,6 @@
 <!--    menu ending-->
 <div class="container">
     <div class="menu-special-border"></div>
-</div>
-
-<div class="container">
-    <div class="filters-menu">
-        <div class="filters-selected">
-            <span class="filters-current">Newest</span>
-            <i class="filters-arrow fa fa-caret-down" aria-hidden="true"></i>
-        </div>
-        <ul class="filters-menu-list clearfix">
-            <li><a href="{% url 'videos-page-sort' category_name 'date' 'ordered' %}">Newest</a></li>
-            <li><a href="{% url 'videos-page-sort' category_name 'views' 'ordered' %}">Most Viewed</a></li>
-            <li><a href="{% url 'videos-page-sort' category_name 'likes' 'ordered' %}">Hottest</a></li>
-        </ul>
-    </div>
 </div>
 
 {% block script_content %} {% endblock %} {% block content %} {% endblock %} {% endblock %}

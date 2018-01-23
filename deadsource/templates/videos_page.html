@@ -1,4 +1,17 @@
  {% extends 'base_categories_menu.html' %} {% block content %} {% load hitcount_tags %}
+<div class="container">
+    <div class="filters-menu">
+        <div class="filters-selected">
+            <span class="filters-current">Newest</span>
+            <i class="filters-arrow fa fa-caret-down" aria-hidden="true"></i>
+        </div>
+        <ul class="filters-menu-list clearfix">
+            <li><a href="{% url 'videos-page-sort' category_name 'date' 'ordered' %}">Newest</a></li>
+            <li><a href="{% url 'videos-page-sort' category_name 'views' 'ordered' %}">Most Viewed</a></li>
+            <li><a href="{% url 'videos-page-sort' category_name 'likes' 'ordered' %}">Hottest</a></li>
+        </ul>
+    </div>
+</div>
 <div class="infinite-container container">
     {% for videos_row in videos %}
     <div class="infinite-item row images">
