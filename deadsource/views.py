@@ -74,12 +74,16 @@ def show_videos(request,
 
     if sort == 'date':
         videos_order = '-added_date' if sort_revert else 'added_date'
+        page_content['current_filter_name'] = 'Newest'
 
     elif sort == 'likes':
         videos_order = '-video_likes' if sort_revert else 'video_likes'
+        page_content['current_filter_name'] = 'Hottest'
 
     elif sort == 'views':
         videos_order = '-video_views' if sort_revert else 'video_views'
+        page_content['current_filter_name'] = 'Most Viewed'
+
 
     else:
         return redirect('error404-page')
