@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 import deadmedia.settings
 from .forms import VideoDeleteForm, BotTaskForm, BotTaskRemoveForm, BotTaskInspectForm
-from .models import Video, BotTask, PaginatorModel, VideoView
+from .models import Video, BotTask, PaginatorModel
 from .utils.bot_module import (
     ThreadDownloader,
     VideoRemover,
