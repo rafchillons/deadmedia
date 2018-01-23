@@ -1,6 +1,6 @@
  {% extends 'base_categories_menu.html' %} {% block content %} {% load hitcount_tags %}
 <div class="infinite-container container">
-    {% for videos_row in videos %}
+    {% for videos_row in videos.videos %}
     <div class="infinite-item row images">
         {% for video in videos_row %}
         <div id="{{video.id}}" class="col-md-6 col-lg-3 image">
@@ -65,7 +65,7 @@
     {% endfor %}
 </div>
 {% if videos.has_next %}
-<a class="infinite-more-link" href="?page={{ videos.next_page_number }}"></a> {% endif %}
+<a class="infinite-more-link" href="?page={{ videos.next_page_number }}&first={{ videos.first_page_element }}&last={{ videos.last_page_element }}"></a> {% endif %}
 <div class="loading">
     <div class="loading-image">
         <span><i class="fa fa-spinner fa-spin"></i></span>
