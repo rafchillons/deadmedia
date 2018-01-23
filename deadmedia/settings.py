@@ -27,7 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     #'37.187.116.151',
+    'www.deadmedia.ru',
     'deadmedia.ru',
+    '37.187.116.151',
+    u'37.187.116.151',
     '127.0.0.1',
     u'localhost',
 ]
@@ -85,9 +88,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dead_db',
-        'USER': 'dbuser',
-        'PASSWORD': 'abacaba',
-
+	'USER': 'dbuser',
+        'PASSWORD': 'Rafchillons_db@@@%%^&*)$&',
         #'HOST': 'dbprod01ned.mycompany.com',
         #'PORT': '1540',
     }

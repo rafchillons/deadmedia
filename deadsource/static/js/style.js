@@ -92,7 +92,13 @@
             }
         }, ".image-link");
 
-
+        //filters-menu 
+        $('.filters-selected').on('click', function dropdown() {
+            $(".filters-menu-list").toggle();
+            $(".filters-arrow").toggleClass('fa-caret-down fa-caret-up');
+        });
+        
+        
         //report btn 
         $('body').on('click', '.file-report', function () {
             $(this).css('cursor', 'default').css('text-decoration', 'none').css('font-style', 'italic');
