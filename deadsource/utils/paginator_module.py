@@ -96,14 +96,17 @@ def get_videos_page(request, filter_dict, order_by='added_date'):
     return videos
 
 
-def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_date'):
-    try:
-        page = int(request.GET.get('page', -1))
-    except Exception as e:
-        logging.error('error!{} '.format(e))
-        page = -1
+def get_filtered_and_sorted_videos_page_old2(request, filter_dict, order_by='added_date'):
 
     all_videos = Video.objects.all().filter(**filter_dict).order_by(order_by)
+
+    try:
+        print('first:{}'.format(request.GET.get('first', -1)))
+        page = int(request.GET.get('page', -1))
+    except Exception as e:
+        raise
+        logging.error('error!{} '.format(e))
+        page = -1
 
     if page == -1:
         page = all_videos.__len__() / 24
@@ -128,6 +131,7 @@ def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_da
         videos = paginator.page(paginator.num_pages)
 
     return videos
+
 
 def get_filtered_and_sorted_videos_page_old(request, filter_dict, order_by='added_date'):
     try:
@@ -166,5 +170,74 @@ def get_filtered_and_sorted_videos_page_old(request, filter_dict, order_by='adde
         videos.next_page_number = next_page
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
+
+    return videos
+
+
+def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_date'):
+
+    all_videos = Video.objects.all().filter(**filter_dict).order_by(order_by)
+    all_videos_count = all_videos.__len__()
+
+    if all_videos_count < 24:
+        return []
+
+    try:
+        page = int(request.GET.get('page', -1))
+        first = int(request.GET.get('first', -1))
+        last = int(request.GET.get('last', -1))
+        const = int(request.GET.get('const', 0))
+    except Exception as e:
+        logging.error('error!{} '.format(e))
+        page, last, first = -1, -1, -1
+        const = 0
+
+    if page < 0 or first < 0 or last < 0:
+        page = 0
+        page_const = 0
+        first_page_element = all_videos[0].id
+
+    elif first != all_videos[0].id:
+        first_page_element = all_videos[0].id
+
+        for i, video in enumerate(all_videos):
+            if video.id == last:
+                first_page_element = i + 1
+                page_const = i + const
+                break
+        else:
+            page_const = 0
+
+    else:
+        first_page_element = first
+        page_const = const
+
+    first_element_number = 24 * page
+    last_element_number = 24 + 24 * page
+
+    last_page_element = all_videos[last_element_number - 1].id
+
+    try:
+        videos_to_show = all_videos[first_element_number:last_element_number]
+    except IndexError as e:
+        logging.error(e)
+        return []
+
+    for video in videos_to_show:
+        video.is_liked = video.check_if_liked(request)
+
+    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
+
+    videos = {
+        'videos': list_of_grouped_videos,
+        'next_page_number': page + 1,
+        'first_page_element': first_page_element,
+        'last_page_element': last_page_element,
+        'page_const': page_const,
+        'number': page,
+        'num_pages': all_videos_count / 24 - 1,
+    }
+
+    videos['has_next'] = videos['number'] < videos['num_pages']
 
     return videos

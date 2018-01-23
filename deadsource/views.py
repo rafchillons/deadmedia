@@ -491,6 +491,7 @@ def user_video_commands(request, pk, command):
 
 #@login_required
 def test(request):
+
     for x in range(100):
         model = Video.objects.create_video()
         model.video_status = Video.STATUS_DOWNLOADED
@@ -499,7 +500,8 @@ def test(request):
         model.is_mp4 = True
         model.title = 'test{}'.format(x)
         model.save()
-        model.report_video(request)
+
+
 
     return redirect('main-page')
 
