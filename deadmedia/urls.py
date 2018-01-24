@@ -75,6 +75,8 @@ urlpatterns = [
 
     url(r'^test$', views.test, name='test'),
 
+    url(r'^.*$', views.handler404),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
