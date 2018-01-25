@@ -95,13 +95,11 @@
         //filters-menu 
         $('.filters-selected').on('click', function dropdown() {
             $(".filters-menu-list").toggle();
-            $(".filters-arrow").toggleClass('fa-caret-down fa-caret-up');
         });
         $(document).mouseup(function (e) {
             var container = $('.filters-selected');
             if (!container.is(e.target) && container.has(e.target).length === 0) {
                 $(".filters-menu-list").hide();
-                $(".filters-arrow").toggleClass('fa-caret-up fa-caret-down');
             }
         });
 
