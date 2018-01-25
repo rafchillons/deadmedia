@@ -192,28 +192,46 @@ def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_da
         page, last, first = -1, -1, -1
         const = 0
 
-    if page < 0 or first < 0 or last < 0:
+    print('start: page:{}, first:{}, last:{}, const:{}'.format(
+        page,
+        first,
+        last,
+        const
+    ))
+
+    if page < 0 or first < 0:
+        print('!111111111111!!!!!!!!!!!!!!!!!!!!!!!!!!')
         page = 0
         page_const = 0
         first_page_element = all_videos[0].id
 
     elif first != all_videos[0].id:
+
+        print('!2222222222!!!!!!!!!!!!!!!!!!!!!!!!!!')
         first_page_element = all_videos[0].id
 
         for i, video in enumerate(all_videos):
-            if video.id == last:
-                first_page_element = i
+            if video.id == first:
                 page_const = i + const
                 break
         else:
-            page_const = 0
+            page_const = const
 
     else:
+
+        print('!3333333333!!!!!!!!!!!!!!!!!!!!!!!!!!')
         first_page_element = first
         page_const = const
 
-    first_element_number = 24 * page
-    last_element_number = 24 + 24 * page
+    all_videos_count = all_videos_count - page_const
+
+    first_element_number = 24 * page + page_const
+    last_element_number = 24 + 24 * page + page_const
+
+    print('mid: first_element_number:{}, last_element_number:{}, const:{}'.format(
+        first_element_number,
+        last_element_number,
+        page_const))
 
     last_page_element = all_videos[last_element_number - 1].id
 
@@ -228,6 +246,7 @@ def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_da
         videos_to_show_dict.append(
             {
                 'views': video.video_views,
+                'likes': video.video_likes,
                 'status': video.video_status,
                 'source_thread_number': video.source_thread_number,
                 'source_thread_path': video.source_thread_path,
@@ -246,7 +265,7 @@ def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_da
             }
         )
 
-    list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
+    list_of_grouped_videos = zip(*[iter(videos_to_show_dict)] * 4)
 
     videos = {
         'videos': list_of_grouped_videos,
@@ -259,5 +278,13 @@ def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_da
     }
 
     videos['has_next'] = videos['number'] < videos['num_pages']
-
+    print('end: next_page_number:{}, first_page_element:{}, last_page_element:{}, page_const:{}, number:{}, num_pages:{}, has_next:{}'.format(
+        videos['next_page_number'],
+        videos['first_page_element'],
+        videos['last_page_element'],
+        videos['page_const'],
+        videos['number'],
+        videos['num_pages'],
+        videos['has_next'],
+    ))
     return videos
