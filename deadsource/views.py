@@ -493,7 +493,7 @@ def user_video_commands(request, pk, command):
     return HttpResponse(result)
 
 
-#@login_required
+@login_required
 def test(request):
 
     for x in range(100):
@@ -507,7 +507,7 @@ def test(request):
 
 
 
-    return redirect('main-page')
+    return HttpResponse()
 
 
 def get_client_ip(request):
