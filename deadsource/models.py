@@ -185,8 +185,6 @@ class Video(models.Model):
         hit_count_response = hitcount_module.is_hit(request, hit_count)
         return not hit_count_response.hit_counted
 
-    is_liked = models.BooleanField(max_length=1, default=False)
-
     def report_video(self, request):
         result = False
         reports = get_object_or_404(VideoReports, pk=self.video_reports_id)

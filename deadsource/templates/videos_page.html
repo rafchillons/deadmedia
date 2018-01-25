@@ -18,9 +18,9 @@
         {% for video in videos_row %}
         <div id="{{video.id}}" class="col-md-6 col-lg-3 image">
             <figure>
-                <div class="image-link" onclick="expand(1488, '{{video.storage_path_url}}', {{video.video_width}}, {{video.video_height}}, 0, {{video.id}})" style="background-image: url({{video.preview_storage_path_url}})">
+                <div class="image-link" onclick="expand(1488, '{{video.storage_path_url}}', {{video.width}}, {{video.height}}, 0, {{video.id}})" style="background-image: url({{video.preview_storage_path_url}})">
                     <span class="file-size">
-                        {{video.video_size_str}}, {{video.video_duration_str}}, {{video.video_width}}x{{video.video_height}}
+                        {{video.size}}, {{video.duration}}, {{video.width}}x{{video.height}}
                     </span>
                 </div>
                 <figcaption class="file-attr">
@@ -44,7 +44,7 @@
                             <span><i>download time:</i> {{video.added_date}}</span>
                             <span><i>database id:</i> {{video.id}}</span>
                             <span><i>thread({% if video.is_thread_alive %}alive{% else %}dead{% endif %}):</i><a href="{{video.source_thread_path}}"> {{video.source_thread_number}}</a></span>
-                            <span><i>status:</i> {{video.video_status}}</span>
+                            <span><i>status:</i> {{video.status}}</span>
                         </div>
                         {% endif %}
                         <!--admin special video buttons-->
@@ -56,17 +56,26 @@
                             {% if video.is_liked  %}
                             <span class="file-like-area">
                                 <i class="fa fa-heart active" aria-hidden="true"></i>
-                            </span> {% else %}
-                        <span class="file-like-area">
+                            </span>
+                            {% else %}
+                            <span class="file-like-area">
                                 <i class="fa fa-heart-o " aria-hidden="true"></i>
-                            </span> {% endif %}
+                            </span>
+                            {% endif %}
+                            <!-- Reports!!!!!!!!!!!!
+                            {% if video.is_reported  %}
+                            <span class="file-like-area">
+                                <i class="fa fa-heart active" aria-hidden="true"></i>
+                            </span>
+                            {% else %}
+                            <span class="file-like-area">
+                                <i class="fa fa-heart-o " aria-hidden="true"></i>
+                            </span>
+                            {% endif %}-->
 
                         <span class="file-likes-number">{{video.video_likes}}</span>
                         </span>
 
-                        <!-- like
-                         <span class="file-like"><i class="fa fa-heart active" aria-hidden="true"></i>0</span>
-                                -->
                         <a class="external-link" target="_blank" href="{{video.storage_path_url}}" title="{{video.title}}"><i class="fa fa-external-link"></i></a>
                         <a class="file-report"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></a>
                     </div>
