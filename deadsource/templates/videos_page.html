@@ -62,22 +62,16 @@
                                 <i class="fa fa-heart-o " aria-hidden="true"></i>
                             </span>
                             {% endif %}
-                            <!-- Reports!!!!!!!!!!!!
-                            {% if video.is_reported  %}
-                            <span class="file-like-area">
-                                <i class="fa fa-heart active" aria-hidden="true"></i>
-                            </span>
-                            {% else %}
-                            <span class="file-like-area">
-                                <i class="fa fa-heart-o " aria-hidden="true"></i>
-                            </span>
-                            {% endif %}-->
 
                         <span class="file-likes-number">{{video.likes}}</span>
                         </span>
 
                         <a class="external-link" target="_blank" href="{{video.storage_path_url}}" title="{{video.title}}"><i class="fa fa-external-link"></i></a>
-                        <a class="file-report"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></a>
+                        {% if video.is_reported  %}
+                        <a class="file-report reported"><i class="fa fa-meh-o" aria-hidden="true"></i></a>
+                        {% else %}
+                        <a class="file-report unreported"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></a>
+                        {% endif %}
                     </div>
                 </figcaption>
             </figure>
