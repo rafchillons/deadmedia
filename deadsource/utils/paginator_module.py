@@ -202,7 +202,7 @@ def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_da
 
         for i, video in enumerate(all_videos):
             if video.id == last:
-                first_page_element = i + 1
+                first_page_element = i
                 page_const = i + const
                 break
         else:
@@ -223,8 +223,28 @@ def get_filtered_and_sorted_videos_page(request, filter_dict, order_by='added_da
         logging.error(e)
         return []
 
+    videos_to_show_dict = []
     for video in videos_to_show:
-        video.is_liked = video.check_if_liked(request)
+        videos_to_show_dict.append(
+            {
+                'views': video.video_views,
+                'status': video.video_status,
+                'source_thread_number': video.source_thread_number,
+                'source_thread_path': video.source_thread_path,
+                'is_thread_alive': video.is_thread_alive,
+                'added_date': video.added_date,
+                'storage_path_url': video.storage_path_url,
+                'preview_storage_path_url': video.preview_storage_path_url,
+                'id': video.id,
+                'title': video.title,
+                'height': video.video_height,
+                'width': video.video_width,
+                'duration': video.video_duration_str,
+                'size': video.video_size_str,
+                'is_reported': video.check_if_reported(request),
+                'is_liked': video.check_if_liked(request),
+            }
+        )
 
     list_of_grouped_videos = zip(*[iter(videos_to_show)] * 4)
 
