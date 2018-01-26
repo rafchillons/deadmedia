@@ -105,9 +105,10 @@
 
 
         //report btn 
-        $('body').on('click', '.file-report', function () {
-            $(this).css('cursor', 'default').css('text-decoration', 'none').css('font-style', 'italic');
-            $(this).text("Reported");
+        $('body').on('click', '.file-report.unreported', function () {
+            $(this).toggleClass('unreported reported');
+            reported = $('<i class="fa fa-meh-o" aria-hidden="true"></i>');
+            $(this).html(reported);
             image = $(this).parent().parent().parent().parent();
             imageId = image.attr('id');
             jQuery.getJSON("/video/" + imageId + "/report/");
