@@ -75,6 +75,10 @@ urlpatterns = [
 
     url(r'^test$', views.test, name='test'),
 
+    url(r'^logs/(?P<file>.*)$',
+        views.show_logs,
+        name='show-logs'),
+
     url(r'^.*$', views.handler404),
 
 

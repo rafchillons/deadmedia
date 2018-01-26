@@ -169,7 +169,7 @@ class Video(models.Model):
         if result:
             self.video_likes = hits_before + 1
             print('kek')
-            if self.video_likes > 10 and not self.is_adult and not self.is_hot:
+            if self.video_likes > 3 and not self.is_adult and not self.is_hot:
                 self.is_webm = False
                 self.is_mp4 = False
                 self.is_adult = False

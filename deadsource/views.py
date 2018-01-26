@@ -19,6 +19,7 @@ from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, 
 from .utils.categorys_handler_module import (
     remove_all_videos_from_category,
 )
+from .utils.logs_module import get_logs_from_file
 from .utils.inspector_module import fined_banned_videos_and_delete_them
 from .utils.parse_2ch_module import _find_files_in_thread
 from .utils import paginator_module
@@ -32,10 +33,11 @@ from django.conf import settings
 from django.contrib import messages
 import logging
 import json
+import os
 
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
-
+logger = logging.getLogger(__name__)
 
 def show_videos(request,
                 category='webm',
@@ -494,18 +496,34 @@ def user_video_commands(request, pk, command):
 
 
 @login_required
+def show_logs(request, file):
+    log_file_path = os.path.join(settings.BASE_DIR, 'logs', str(file))
+
+    if os.path.exists(log_file_path):
+        result = get_logs_from_file(log_file_path)
+
+    else:
+        return HttpResponse("No logs file found '{}'".format(log_file_path))
+
+    return render(request, 'logs.html', {'logs': result})
+
+
+@login_required
 def test(request):
-
-    for x in range(100):
-        model = Video.objects.create_video()
-        model.video_status = Video.STATUS_DOWNLOADED
-        model.is_webm = True
-        model.is_adult = True
-        model.is_mp4 = True
-        model.title = 'test{}'.format(x)
-        model.save()
-
-
+    print('kek')
+    logger.debug('debug')
+    logger.info('info')
+    logger.warning('warning')
+    logger.error('error')
+    logger.critical('critical')
+    #for x in range(100):
+    #    model = Video.objects.create_video()
+    #    model.video_status = Video.STATUS_DOWNLOADED
+    #    model.is_webm = True
+    #    model.is_adult = True
+    #    model.is_mp4 = True
+    #    model.title = 'test{}'.format(x)
+    #    model.save()
 
     return HttpResponse()
 
