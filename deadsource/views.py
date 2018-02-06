@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import requests
 from requests.exceptions import ConnectionError
 from functools import wraps
+from django.db import connection
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -43,30 +44,30 @@ def show_videos(request,
                 category='webm',
                 sort='date',
                 order='ordered'):
-    videos_filters = {'video_status': Video.STATUS_DOWNLOADED}
+    videos_filters = "video_status = 'Video is downloaded'"
     page_content = {'is_authenticated': request.user.is_authenticated()}
     sort_revert = not order == 'reversed'
 
     if category == 'webm':
-        videos_filters['is_webm'] = True
+        videos_filters += " and is_webm = 1"
         page_content['category_name'] = 'webm'
         page_content['hide_videos_link'] = 'category-hide-webm'
         page_content['delete_videos_link'] = 'category-delete-webm'
 
     elif category == 'mp4':
-        videos_filters['is_mp4'] = True
+        videos_filters += " and is_mp4 = 1"
         page_content['category_name'] = 'mp4'
         page_content['hide_videos_link'] = 'category-hide-mp4'
         page_content['delete_videos_link'] = 'category-delete-mp4'
 
     elif category == 'adult':
-        videos_filters['is_adult'] = True
+        videos_filters += " and is_adult = 1"
         page_content['category_name'] = 'adult'
         page_content['hide_videos_link'] = 'category-hide-adult'
         page_content['delete_videos_link'] = 'category-delete-adult'
 
     elif category == 'hot':
-        videos_filters['is_hot'] = True
+        videos_filters += " and is_hot = 1"
         page_content['category_name'] = 'hot'
         page_content['hide_videos_link'] = 'category-hide-hot'
         page_content['delete_videos_link'] = 'category-delete-hot'
@@ -75,15 +76,15 @@ def show_videos(request,
         return redirect('error404-page')
 
     if sort == 'date':
-        videos_order = '-added_date' if sort_revert else 'added_date'
+        videos_order = 'added_date DESC' if sort_revert else 'added_date ASC'
         page_content['current_filter_name'] = 'Newest'
 
     elif sort == 'likes':
-        videos_order = '-video_likes' if sort_revert else 'video_likes'
+        videos_order = 'video_likes DESC' if sort_revert else 'video_likes ASC'
         page_content['current_filter_name'] = 'Hottest'
 
     elif sort == 'views':
-        videos_order = '-video_views' if sort_revert else 'video_views'
+        videos_order = 'video_views DESC' if sort_revert else 'video_views ASC'
         page_content['current_filter_name'] = 'Most Viewed'
 
 
@@ -510,12 +511,12 @@ def show_logs(request, file):
 
 @login_required
 def test(request):
-    print('kek')
-    logger.debug('debug')
-    logger.info('info')
-    logger.warning('warning')
-    logger.error('error')
-    logger.critical('critical')
+    #print('kek')
+    #logger.debug('debug')
+    #logger.info('info')
+    #logger.warning('warning')
+    #logger.error('error')
+    #logger.critical('critical')
     #for x in range(100):
     #    model = Video.objects.create_video()
     #    model.video_status = Video.STATUS_DOWNLOADED
@@ -524,6 +525,7 @@ def test(request):
     #    model.is_mp4 = True
     #    model.title = 'test{}'.format(x)
     #    model.save()
+    print(Video.objects.get_sorted_ids())
 
     return HttpResponse()
 
