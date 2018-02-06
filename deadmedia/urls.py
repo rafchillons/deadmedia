@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
 
-    url(r'^$', views.show_videos, name='main-page'),
+    url(r'^$', views.show_videos, {'category': 'hot'}, name='main-page'),
 
     url(r'^(?P<category>(hot|adult|webm|mp4|all|hidden))/$',
         views.show_videos,
