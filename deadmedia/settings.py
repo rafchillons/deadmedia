@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wmps@aythrk(_&@uhoq%c+@udd#35y!d8tajog$jv3icp0bk_7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     #'37.187.116.151',
@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
     u'37.187.116.151',
     '127.0.0.1',
     u'localhost',
+    '*',
 ]
 
 
@@ -121,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
@@ -141,3 +142,57 @@ MEDIA_ROOT = '/home/rafchillons/deadmedia/storage'#os.path.join(BASE_DIR, 'stora
 
 RECAPTCHA_PUBLIC_KEY = '6LdsEDcUAAAAALXj0Pevj6wg8vFDMCWQZ54FqlUa'
 RECAPTCHA_PRIVATE_KEY = '6LdsEDcUAAAAAKbOXsvJ7vO2az8QhKH__9nKPPlY'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s - %(asctime)s - %(module)s - (%(process)d/%(thread)d) - %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+        'verbose2': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        },
+    },
+    'handlers': {
+        'view_file_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/debug_view.log'),
+            'formatter': 'verbose',
+        },
+        'view_file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/error_view.log'),
+            'formatter': 'verbose2',
+        },
+        'utils_file_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/debug_utils.log'),
+            'formatter': 'verbose',
+        },
+        'utils_file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/error_utils.log'),
+            'formatter': 'verbose2',
+        },
+    },
+    'loggers': {
+        'deadsource.views': {
+            'handlers': ['view_file_debug', 'view_file_error'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'deadsource.utils': {
+            'handlers': ['utils_file_debug', 'utils_file_error'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
