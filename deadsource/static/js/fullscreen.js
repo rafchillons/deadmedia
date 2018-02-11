@@ -250,13 +250,13 @@ function webmVolumeChanged(el) {
     if (video.muted) localStorage.setItem('vol', 0);
 }
 
-function controls {
-    if (!active) return;
-    var win = $(window);
-
-    win.keydown(function (e) {
-        var code = e.keyCode || e.which;
-        if (code == 37) console.log('left');
-        if (code == 39) console.log('right');
-    });
-}
+//function controls {
+//    if (!active) return;
+//    var win = $(window);
+//
+//    win.keydown(function (e) {
+//        var code = e.keyCode || e.which;
+//        if (code == 37) console.log('left');
+//        if (code == 39) console.log('right');
+//    });
+//}
