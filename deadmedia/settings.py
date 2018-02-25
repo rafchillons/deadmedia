@@ -21,13 +21,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wmps@aythrk(_&@uhoq%c+@udd#35y!d8tajog$jv3icp0bk_7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     # '37.187.116.151',
     'deadmedia.ru',
     '127.0.0.1',
     u'localhost',
+    '*',
 ]
 
 # Application definition
@@ -173,6 +174,7 @@ LOGGING = {
             'filename': os.path.join(BASE_DIR, 'logs/error_view.log'),
             'formatter': 'verbose2',
         },
+
         'utils_file_error': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',

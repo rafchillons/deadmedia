@@ -180,7 +180,7 @@ draggable($container, {
     },
     mousedown: function (e_x, e_y) {
         console.log(webm + '-' + mp4);
-        if (!video) return; //@todo упаковать типы
+        if (!video) return; 
         console.log('after');
         var container_top = parseInt($container.css('top'));
         var container_height = $container.height();
@@ -249,4 +249,14 @@ function webmVolumeChanged(el) {
     localStorage.setItem('vol', video.volume);
     if (video.muted) localStorage.setItem('vol', 0);
 }
-//});
+
+//function controls {
+//    if (!active) return;
+//    var win = $(window);
+//
+//    win.keydown(function (e) {
+//        var code = e.keyCode || e.which;
+//        if (code == 37) console.log('left');
+//        if (code == 39) console.log('right');
+//    });
+//}
