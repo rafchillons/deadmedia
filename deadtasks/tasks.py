@@ -22,8 +22,7 @@ def do_2ch_download_tasks():
                                                    is_webm=task.video_category == task.CATEGORY_WEBM,
                                                    is_hot=task.video_category == task.CATEGORY_HOT,
                                                    is_mp4=task.video_category == task.CATEGORY_MP4,
-                                                   video_formats=task.get_formats_to_download_list,
-                                                   max_videos_count=1)
+                                                   video_formats=task.get_formats_to_download_list)
     except Exception as e:
         logger.critical(e)
         logger.info("do_2ch_download_tasks(): finished with error.")
@@ -41,7 +40,6 @@ def do_remove_old_tasks():
             task.update_last_launch_date()
 
             delete_all_videos_by_added_date(ignore_time=task.video_age,
-                                            max_videos_count=50,
                                             is_adult=task.video_category == task.CATEGORY_ADULT,
                                             is_webm=task.video_category == task.CATEGORY_WEBM,
                                             is_hot=task.video_category == task.CATEGORY_HOT,
