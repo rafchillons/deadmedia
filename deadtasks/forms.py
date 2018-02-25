@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 
 from deadtasks.models import DownloadDvachTask, RemoveOldTask
@@ -30,10 +31,10 @@ class DvachDownloadTaskForm(forms.ModelForm):
         return int(data)
 
     def clean_required_words(self):
-        return self.cleaned_data["required_words"].encode()
+        return self.cleaned_data["required_words"].encode("utf8")
 
     def clean_banned_words(self):
-        return self.cleaned_data["banned_words"].encode()
+        return self.cleaned_data["banned_words"].encode("utf8")
 
     def clean(self):
         if not (self.cleaned_data["download_format_webm"] or self.cleaned_data["download_format_mp4"]):

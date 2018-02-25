@@ -14,8 +14,8 @@ class DownloadDvachTask(models.Model):
     download_format_webm = models.BooleanField(default=True)
     download_format_mp4 = models.BooleanField(default=False)
 
-    required_words = models.CharField(max_length=50, default=u"")
-    banned_words = models.CharField(max_length=50, default=u"")
+    required_words = models.CharField(max_length=50, default="".encode("utf8"))
+    banned_words = models.CharField(max_length=50, default=u"".encode("utf8"))
 
     CATEGORY_HOT = 0
     CATEGORY_WEBM = 1
@@ -23,10 +23,10 @@ class DownloadDvachTask(models.Model):
     CATEGORY_ADULT = 3
 
     VIDEO_CATEGORIES = (
-        (CATEGORY_HOT, 'hot'),
-        (CATEGORY_WEBM, 'webm'),
-        (CATEGORY_MP4, 'mp4'),
-        (CATEGORY_ADULT, 'adult'),
+        (CATEGORY_HOT, "hot"),
+        (CATEGORY_WEBM, "webm"),
+        (CATEGORY_MP4, "mp4"),
+        (CATEGORY_ADULT, "adult"),
     )
 
     video_category = models.IntegerField(choices=VIDEO_CATEGORIES)
@@ -44,9 +44,9 @@ class DownloadDvachTask(models.Model):
         result = []
 
         if self.download_format_webm:
-            result.append('.webm')
+            result.append(".webm")
         if self.download_format_mp4:
-            result.append('.mp4')
+            result.append(".mp4")
 
         return result
 
@@ -67,7 +67,7 @@ class DownloadDvachTask(models.Model):
             self.save()
 
     def update_last_launch_date(self):
-        self.last_launch_date = str(timezone.now()).encode()
+        self.last_launch_date = str(timezone.now()).encode("utf8")
         self.save()
 
 
@@ -88,10 +88,10 @@ class RemoveOldTask(models.Model):
     CATEGORY_ADULT = 3
 
     VIDEO_CATEGORIES = (
-        (CATEGORY_HOT, 'hot'),
-        (CATEGORY_WEBM, 'webm'),
-        (CATEGORY_MP4, 'mp4'),
-        (CATEGORY_ADULT, 'adult'),
+        (CATEGORY_HOT, "hot"),
+        (CATEGORY_WEBM, "webm"),
+        (CATEGORY_MP4, "mp4"),
+        (CATEGORY_ADULT, "adult"),
     )
 
     video_category = models.IntegerField(choices=VIDEO_CATEGORIES)
@@ -101,9 +101,9 @@ class RemoveOldTask(models.Model):
         result = []
 
         if self.remove_format_webm:
-            result.append('.webm')
+            result.append(".webm")
         if self.remove_format_mp4:
-            result.append('.mp4')
+            result.append(".mp4")
 
         return result
 
@@ -124,5 +124,5 @@ class RemoveOldTask(models.Model):
             self.save()
 
     def update_last_launch_date(self):
-        self.last_launch_date = str(timezone.now())
+        self.last_launch_date = str(timezone.now()).encode("utf8")
         self.save()
