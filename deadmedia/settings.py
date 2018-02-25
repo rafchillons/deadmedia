@@ -87,6 +87,19 @@ DATABASES = {
         'PASSWORD': 'abacaba',
     }
 }
+"""
+#server
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dead_db',
+        'USER': 'dbuser',
+        'PASSWORD': 'Rafchillons_db@@@%%^&*)$&',
+    }
+}
+"""
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -127,6 +140,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/storage/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage')
+"""
+# Server
+MEDIA_URL = '/storage/'
+MEDIA_ROOT = '/home/rafchillons/deadmedia/storage'#os.path.join(BASE_DIR, 'stor$
+
+"""
+
+
 
 RECAPTCHA_PUBLIC_KEY = '6LdsEDcUAAAAALXj0Pevj6wg8vFDMCWQZ54FqlUa'
 RECAPTCHA_PRIVATE_KEY = '6LdsEDcUAAAAAKbOXsvJ7vO2az8QhKH__9nKPPlY'
