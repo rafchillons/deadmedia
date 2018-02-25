@@ -40,6 +40,7 @@ from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
 logger = logging.getLogger(__name__)
 
+
 def show_videos(request,
                 category='webm',
                 sort='date',
@@ -377,45 +378,6 @@ def create_bot_inspector_view(request):
 
 
 @login_required
-def bot_status_view(request):
-    bots = BotTask.objects.all()
-
-    bots_list = []
-    for bot in bots:
-        bots_list.append({
-            'db_object': bot,
-            'data_dict': json.loads(str(bot.task_data)),
-        })
-
-    return render(request, 'botstatus.html', {'bots': bots_list, 'is_authenticated': request.user.is_authenticated()})
-
-
-@login_required
-def bot_commands(request, pk, command):
-    bot = get_object_or_404(BotTask, pk=pk)
-
-    if command == 'start':
-        bot.start_bot()
-
-    elif command == 'stop':
-        bot.stop_bot()
-
-    elif command == 'delete':
-        bot.delete()
-
-    elif command == 'pause/on':
-        bot.pause_on()
-
-    elif command == 'pause/off':
-        bot.pause_off()
-
-    else:
-        return redirect('error404-page')
-
-    return redirect('status-bot')
-
-
-@login_required
 def category_delete(request, category):
     if category == 'hot':
         category_filter = 'is_hot'
@@ -512,11 +474,11 @@ def show_logs(request, file):
 @login_required
 def test(request):
     #print('kek')
-    #logger.debug('debug')
-    #logger.info('info')
-    #logger.warning('warning')
-    #logger.error('error')
-    #logger.critical('critical')
+    logger.debug('debug')
+    logger.info('info')
+    logger.warning('warning')
+    logger.error('error')
+    logger.critical('critical')
     #for x in range(100):
     #    model = Video.objects.create_video()
     #    model.video_status = Video.STATUS_DOWNLOADED
@@ -525,8 +487,8 @@ def test(request):
     #    model.is_mp4 = True
     #    model.title = 'test{}'.format(x)
     #    model.save()
-    print(Video.objects.get_sorted_ids())
-
+    #print(Video.objects.get_sorted_ids())
+    #logging.error('new error')
     return HttpResponse()
 
 

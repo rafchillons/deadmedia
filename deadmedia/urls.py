@@ -46,10 +46,6 @@ urlpatterns = [
         views.category_delete,
         name='category-delete'),
 
-    url(r'^bot/(?P<pk>[0-9]+)/(?P<command>(start|stop|delete|pause/(on|off)))/$',
-        views.bot_commands,
-        name='bot-command'),
-
     url(r'^reports/$', views.show_reported, name='reported-page'),
     url(r'^faq/$', views.show_faq, name='faq-page'),
     url(r'^logout/$', views.logout_view, name='logout'),
@@ -59,7 +55,6 @@ urlpatterns = [
 
     url(r'^bot/downloader/create/$', views.create_bot_downloader_view, name='create-downloader-bot'),
     url(r'^bot/inspector/create/$', views.create_bot_inspector_view, name='create-inspector-bot'),
-    url(r'^status/$', views.bot_status_view, name='status-bot'),
 
     url(r'^bot/create/remover$', views.create_bot_remover_view, name='create-bot-remover'),
 
@@ -79,6 +74,9 @@ urlpatterns = [
         views.show_logs,
         name='show-logs'),
 
+
+    #url(r'^tasks/', include('taskmanager.urls')),
+    url(r'^tasks/', include('deadtasks.urls', namespace='tasks')),
     url(r'^.*$', views.handler404),
 
 
@@ -86,10 +84,3 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'webms.views.handler404'
-
-"""url(r'^adult/$', views.show_adult, name='adult-page'),
-    url(r'^faq/$', views.show_faq, name='faq-page'),
-    url(r'^hot/$', views.show_hot, name='hot-page'),
-    url(r'^mp4/$', views.show_mp4, name='mp4-page'),
-    url(r'^all/$', views.show_all, name='all-page'),
-    url(r'^hidden/$', views.show_hidden, name='hidden-page'),"""

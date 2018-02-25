@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <p>Find threads required_words: <input name="required_words" type="text"></p>
+        {% for error in  form.required_words.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+
+        <p>Ignore threads banned_words: <input name="banned_words" type="text"></p>
+        {% for error in  form.banned_words.errors %}
+            <h1>error</h1>
+        {% endfor %}
+
+
+        <p>Set webm format: <input name="download_format_webm" type="checkbox"></p>
+        {% for error in  form.download_format_webm.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        <p>Set mp4 format: <input name="download_format_mp4" type="checkbox"></p>
+        {% for error in  form.download_format_mp4.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+        {% for error in  form.non_field_errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+
+
+        <p>Formats to download:
+            <select name="video_category">
+                {% for choice in form.fields.video_category.choices%}
+                <option value="{{choice.0}}">{{choice.1}}</option>
+                {% endfor %}
+            </select>
+        </p>
+
+        {% for error in  form.video_category.errors %}
+            <h1>{{error}}</h1>
+        {% endfor %}
+
+
+
+
+
+
+        <button class="btn btn-sm btn-default btn-block" type="submit">Create bot</button>
+    </form>
+</body>
+</html>

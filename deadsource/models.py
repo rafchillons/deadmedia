@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models
+from django.db import models, connection
 from django.utils import timezone
 
 import threading
@@ -37,6 +37,7 @@ class VideoManager(models.Manager):
                             video_views_id=video_views.id,
                             video_reports_id=video_reports.id)
         return video
+
 
 
 class Video(models.Model):

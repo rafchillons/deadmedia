@@ -1,0 +1,341 @@
+{% extends 'base_special_admin_menu.html' %}
+{% block admin_menu_content %}
+{% load static %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <div class="bots clearfix">
+                    <img src="{% static 'img/shtein.png' %}" width="100%">
+                    <span class="bot-console-log"><span class="console-arrow">></span>
+                    <!-- сюда выводятся все ошибки-->
+                    </span>
+                    <div class="bot-create-btns">
+
+                        <a href="{% url 'tasks:create-remove' %}" class="bot-create-btn eraser">create eraser</a>
+                        <a href="{% url 'tasks:create-download' %}" class="bot-create-btn downloader">create downloader</a>
+
+                        <a class="bot-create-btn bot-create-btn-eraser">create eraser</a>
+                        <a class="bot-create-btn bot-create-btn-downloader">create downloader</a>
+                    </div>
+                    <div class="bot-create-forms clearfix">
+                        <div class="bot-create-eraser">
+                            <form method="POST" class="text-left">
+                                <input type='hidden' name='csrfmiddlewaretoken' value='qPURWlwXjeuFwOBEMzzZPOFiKD57hiXfk1o1zxT64WqsHFetSPYk9l25PTRUALbE' />
+                                <div class="form-group">
+                                    <label for="ignore_time">ignore time</label>
+                                    <input name="ignore_time" type="number" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_adult">adult</label>
+                                    <input name="is_adult" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_music">music</label>
+                                    <input name="is_music" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_webm">webm</label>
+                                    <input name="is_webm" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_hot">hot</label>
+                                    <input name="is_hot" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_mp4">mp4</label>
+                                    <input name="is_mp4" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="interval">iters interval</label>
+                                    <input name="interval" type="number" value="0" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_time">enable lifetime</label>
+                                    <input name="is_max_time" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="working_time">lifetime</label>
+                                    <input name="working_time" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_iter">enable max iter</label>
+                                    <input name="is_max_iter" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="iters_to_do">max iters number</label>
+                                    <input name="iters_to_do" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="max_videos_count">videos per iter</label>
+                                    <input name="max_videos_count" type="number" class="input-xs">
+                                </div>
+
+                                <button class="bot-create-submit-btn" type="submit">create bot</button>
+                            </form>
+                        </div>
+                        <div class="bot-create-downloader">
+                            <form method="POST" class="text-left">
+                                <input type='hidden' name='csrfmiddlewaretoken' value='ZjdVl0vsc6MPqUc4N6kjLg2cWOnztdJYTvH5YcSBXOICBLPTTmJE5NpZ149mMGXn' />
+                                <div class="form-group">
+                                    <label for="with_words">search words</label>
+                                    <input name="with_words" type="text" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="without_words">ignore words</label>
+                                    <input name="without_words" type="text" class="input-xs"></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_adult">adult</label>
+                                    <input name="is_adult" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_music">music</label>
+                                    <input name="is_music" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_webm">webm</label>
+                                    <input name="is_webm" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_hot">hot</label>
+                                    <input name="is_hot" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_mp4">mp4</label>
+                                    <input name="is_mp4" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="interval">iters interval</label>
+                                    <input name="interval" type="number" value="0" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_time">enable lifetime</label>
+                                    <input name="is_max_time" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="working_time">lifetime</label>
+                                    <input name="working_time" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="is_max_iter">enable max iter</label>
+                                    <input name="is_max_iter" type="checkbox">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="iters_to_do">max ites number</label>
+                                    <input name="iters_to_do" type="number" value="1" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="max_videos_count">videos per iter</label>
+                                    <input name="max_videos_count" type="number" class="input-xs">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="video_formats">download formats</label>
+                                    <input name="video_formats" type="text" class="input-xs">
+                                </div>
+
+                                <button class="bot-create-submit-btn" type="submit">create bot</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="bot-list">
+                        <!-- bot template -->
+                        {% for task in tasks_download %}
+                        <div class="bot">
+                            <div class="bot-preview">
+                                <div class="bot-id">
+                                    <span><b>Bot #{{task.id}}</b></span>
+                                    <!-- статус бота в зависимости от условия -->
+                                    {% if task.is_active  %}
+                                    <span class="badge badge-fine">Active</span>
+                                    {% else %}
+                                    <span class="badge badge-error">Deactivated</span>
+                                    {% endif %}
+                                </div>
+                                <div class="bot-controls clearfix">
+                                    <a class="btn-bot-run" href="{% url 'tasks:commands' 'd' task.id 'activate' %}">Run</a>
+                                    <a class="bot-btn-stop" href="{% url 'tasks:commands' 'd' task.id 'deactivate' %}">Stop</a>
+                                    <a class="bot-btn-delete" href="{% url 'tasks:commands' 'd' task.id 'delete' %}">Delete</a>
+                                    <a class="bot-about-toggler" title="More information"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                            <div class="bot-about">
+                                <table class="table table-sm table-bordered table-striped table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <td>categories</td>
+                                            <!-- в зависимости от того для каких категорий работает -->
+                                            <td>
+                                                <span class="badge badge-{{bot.get_video_category}}">{{task.get_video_category}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>task</td>
+                                            <td>Download from 2ch/b</td>
+                                        </tr>
+                                        <tr>
+                                            <td>with words</td>
+
+                                            <td>
+                                                {% for word in task.get_required_words_list%}
+                                                <span class="badge">{{word}}</span>
+                                                {% empty %}
+                                                <span>Words are not set.</span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>without words</td>
+                                            <td>
+                                                {% for word in task.get_banned_words_list%}
+                                                <span class="badge">{{word}}</span>
+                                                {% empty %}
+                                                <span>Words are not set.</span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>interval</td>
+                                            <td><span class="badge">30 min</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>last launch</td>
+                                            <td><span class="badge">{{task.last_launch_date}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>file formats</td>
+                                            <td>
+                                                {% for format in task.get_formats_to_download_list%}
+                                                <span class="badge">{{format}}</span>
+                                                {% empty %}
+                                                <span>Formats are not set(<strong>this might cause problems!</strong>)</span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% for task in tasks_remove %}
+                        <div class="bot">
+                            <div class="bot-preview">
+                                <div class="bot-id">
+                                    <span><b>Bot #{{task.id}}</b></span>
+                                    <!-- статус бота в зависимости от условия -->
+                                    {% if task.is_active  %}
+                                    <span class="badge badge-fine">Active</span>
+                                    {% else %}
+                                    <span class="badge badge-error">Deactivated</span>
+                                    {% endif %}
+                                </div>
+                                <div class="bot-controls clearfix">
+                                    <a class="btn-bot-run" href="{% url 'tasks:commands' 'r' task.id 'activate' %}">Run</a>
+                                    <a class="bot-btn-stop" href="{% url 'tasks:commands' 'r' task.id 'deactivate' %}">Stop</a>
+                                    <a class="bot-btn-delete" href="{% url 'tasks:commands' 'r' task.id 'delete' %}">Delete</a>
+                                    <a class="bot-about-toggler" title="More information"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                            <div class="bot-about">
+                                <table class="table table-sm table-bordered table-striped table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <td>categories</td>
+                                            <!-- в зависимости от того для каких категорий работает -->
+                                            <td>
+                                                <span class="badge badge-{{bot.get_video_category}}">{{task.get_video_category}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>task</td>
+                                            <td>Remove old videos</td>
+                                        </tr>
+                                        <tr>
+                                            <td>video age</td>
+                                            <td><span class="badge">{{task.video_age}}<span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>interval</td>
+                                            <td><span class="badge">3 hour</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>last launch</td>
+                                            <td><span class="badge">{{task.last_launch_date}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>file formats</td>
+                                            <td>
+                                                {% for format in task.get_formats_to_remove_list%}
+                                                <span class="badge">{{format}}</span>
+                                                {% empty %}
+                                                <span>Formats are not set(<strong>this might cause problems!</strong>)</span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- bot template ending -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script>
+        $('body').on('click', '.bot-about-toggler', function() {
+            $(this).parent().parent().parent().find('.bot-about').slideToggle("fast");
+        });
+
+        $('body').on('click', '.bot-create-btn-eraser', function() {
+            $('.bot-create-btn-downloader').removeClass('selected');
+            $(this).parent().parent().find('.bot-create-downloader').slideUp('fast');
+            $(this).parent().parent().find('.bot-create-eraser').toggle('fast');
+            $('.bot-create-btn-eraser').toggleClass('selected');
+        });
+
+        $('body').on('click', '.bot-create-btn-downloader', function() {
+            $('.bot-create-btn-eraser').removeClass('selected');
+            $(this).parent().parent().find('.bot-create-eraser').slideUp('fast');
+            $(this).parent().parent().find('.bot-create-downloader').toggle('fast');
+            $('.bot-create-btn-downloader').toggleClass('selected');
+        });
+
+        function blink() {
+            $('.console-arrow')
+                .fadeOut('fast')
+                .fadeIn('fast');
+
+            setTimeout(blink, 800);
+        }
+        blink();
+
+    </script>
+{% endblock %}

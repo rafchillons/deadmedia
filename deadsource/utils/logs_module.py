@@ -7,6 +7,4 @@ def get_logs_from_file(file):
     for line in lines:
         result = result + str(line) + '\n'
 
-
-    print('result: {}'.format(lines))
     return lines

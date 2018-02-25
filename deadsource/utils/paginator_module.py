@@ -96,6 +96,7 @@ def get_videos_page(request, filter_dict, order_by='added_date'):
 
     return videos
 
+
 def get_filtered_and_sorted_videos_page(request, filter_string, order_string='added_date'):
     cursor = connection.cursor()
 

@@ -11,10 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -26,15 +24,11 @@ SECRET_KEY = 'wmps@aythrk(_&@uhoq%c+@udd#35y!d8tajog$jv3icp0bk_7'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    #'37.187.116.151',
-    'www.deadmedia.ru',
+    # '37.187.116.151',
     'deadmedia.ru',
-    '37.187.116.151',
-    u'37.187.116.151',
     '127.0.0.1',
     u'localhost',
 ]
-
 
 # Application definition
 
@@ -45,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'mod_wsgi.server',
+    # 'mod_wsgi.server',
     'deadsource',
+    'deadtasks',
+    'taskmanager',
     'hitcount',
 ]
 
@@ -80,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'deadmedia.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -88,13 +83,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dead_db',
-	'USER': 'dbuser',
-        'PASSWORD': 'Rafchillons_db@@@%%^&*)$&',
-        #'HOST': 'dbprod01ned.mycompany.com',
-        #'PORT': '1540',
+        'USER': 'dbuser',
+        'PASSWORD': 'abacaba',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -114,21 +106,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-    
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -137,7 +126,68 @@ STATIC_URL = '/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/storage/'
-MEDIA_ROOT = '/home/rafchillons/deadmedia/storage'#os.path.join(BASE_DIR, 'storage')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'storage')
 
 RECAPTCHA_PUBLIC_KEY = '6LdsEDcUAAAAALXj0Pevj6wg8vFDMCWQZ54FqlUa'
 RECAPTCHA_PRIVATE_KEY = '6LdsEDcUAAAAAKbOXsvJ7vO2az8QhKH__9nKPPlY'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s - %(asctime)s - %(name)s(%(module)s) - (%(process)d/%(thread)d) - %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s - %(message)s'
+        },
+        'verbose2': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        },
+    },
+    'handlers': {
+        'view_file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/error_view.log'),
+            'formatter': 'verbose2',
+        },
+        'utils_file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/error_utils.log'),
+            'formatter': 'verbose2',
+        },
+        'deadtasks_file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/error_deadtasks.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'deadsource.views': {
+            'handlers': ['view_file_error'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'deadsource.utils': {
+            'handlers': ['utils_file_error'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'deadtasks': {
+            'handlers': ['deadtasks_file_error'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+
+    },
+}
+
+# REDIS related settings
+REDIS_HOST = 'localhost'
+REDIS_PORT = '6379'
+BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
