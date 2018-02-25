@@ -14,8 +14,8 @@ class DownloadDvachTask(models.Model):
     download_format_webm = models.BooleanField(default=True)
     download_format_mp4 = models.BooleanField(default=False)
 
-    required_words = models.CharField(max_length=50, default="")
-    banned_words = models.CharField(max_length=50, default="")
+    required_words = models.CharField(max_length=50, default=u"")
+    banned_words = models.CharField(max_length=50, default=u"")
 
     CATEGORY_HOT = 0
     CATEGORY_WEBM = 1
@@ -67,7 +67,7 @@ class DownloadDvachTask(models.Model):
             self.save()
 
     def update_last_launch_date(self):
-        self.last_launch_date = str(timezone.now())
+        self.last_launch_date = str(timezone.now()).encode()
         self.save()
 
 
