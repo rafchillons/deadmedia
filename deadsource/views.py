@@ -1,46 +1,39 @@
 from __future__ import unicode_literals
-import requests
-from requests.exceptions import ConnectionError
+
+import json
+import logging
+import os
 from functools import wraps
-from django.db import connection
-from django.contrib.auth import logout
+
+import requests
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect, get_object_or_404
-import deadmedia.settings
+from django.http import *
+from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404
+from requests.exceptions import ConnectionError
+
+from deadsource.utils.logs_module import log_critical_decorator
 from .forms import VideoDeleteForm, BotTaskForm, BotTaskRemoveForm, BotTaskInspectForm
-from .models import Video, BotTask, PaginatorModel
+from .models import Video, BotTask
+from .utils import paginator_module
 from .utils.bot_module import (
     ThreadDownloader,
     VideoRemover,
 )
-from .utils.video_handler_module import download_and_save_all_new_videos_2ch_b, delete_all_videos_by_added_date, \
-    delete_video_by_db_object
 from .utils.categorys_handler_module import (
     remove_all_videos_from_category,
 )
 from .utils.logs_module import get_logs_from_file
-from .utils.inspector_module import fined_banned_videos_and_delete_them
-from .utils.parse_2ch_module import _find_files_in_thread
-from .utils import paginator_module
-from django.http import *
-from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import LoginView
-from django.conf import settings
-from django.contrib import messages
-import logging
-import json
-import os
+from .utils.video_handler_module import delete_video_by_db_object
 
-from hitcount.models import HitCount
-from hitcount.views import HitCountMixin
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("deadsource")
 
 
+@log_critical_decorator(logger)
 def show_videos(request,
                 category='webm',
                 sort='date',
@@ -97,7 +90,7 @@ def show_videos(request,
     page_content['videos'] = videos
     return render(request, 'videos_page.html', page_content)
 
-
+@log_critical_decorator(logger)
 def show_faq(request):
     return render(request,
                   'faq_page.html',
@@ -106,7 +99,7 @@ def show_faq(request):
                       'is_authenticated': request.user.is_authenticated(),
                   })
 
-
+@log_critical_decorator(logger)
 @login_required
 def show_all(request):
     list_of_grouped_videos = zip(
@@ -130,7 +123,7 @@ def show_all(request):
                       'is_authenticated': request.user.is_authenticated(),
                   })
 
-
+@log_critical_decorator(logger)
 @login_required
 def show_admin_page(request):
     bot_downloader = ThreadDownloader()
@@ -155,7 +148,7 @@ def show_admin_page(request):
                       'bot_remover': bot_remover.instance,
                   })
 
-
+@log_critical_decorator(logger)
 @login_required
 def show_reported(request):
 
@@ -176,7 +169,7 @@ def show_reported(request):
                        'videos': videos,
                    })
 
-
+@log_critical_decorator(logger)
 @login_required
 def delete_all_videos(request):
     videos = Video.objects.all()
@@ -186,16 +179,16 @@ def delete_all_videos(request):
 
     return redirect('page-admin-new')
 
-
+@log_critical_decorator(logger)
 @login_required
 def new_admin(request):
     return render(request, 'admin.html')
 
-
+@log_critical_decorator(logger)
 def new_error(request):
     return render(request, 'error404_page.html')
 
-
+@log_critical_decorator(logger)
 @login_required
 def new_admin(request):
     bot_downloader = ThreadDownloader()
@@ -226,7 +219,7 @@ def new_admin(request):
 
                   })
 
-
+@log_critical_decorator(logger)
 @login_required
 def get_videos_size_in_db(request):
     all_videos_weight = 0
@@ -250,23 +243,23 @@ def get_videos_size_in_db(request):
 
     return HttpResponse(size)
 
-
+@log_critical_decorator(logger)
 @login_required
 def get_videos_count_in_db(request):
     all_videos_in_db = Video.objects.all().filter(video_status=Video.STATUS_DOWNLOADED)
     all_videos_count = all_videos_in_db.__len__()
     return HttpResponse(all_videos_count)
 
-
+@log_critical_decorator(logger)
 def handler404(request):
     return render(request, 'error404_page.html')
 
-
+@log_critical_decorator(logger)
 def logout_view(request):
     logout(request)
     return redirect('webm-page')
 
-
+@log_critical_decorator(logger)
 def check_recaptcha(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
@@ -299,7 +292,7 @@ def check_recaptcha(view_func):
 
     return _wrapped_view
 
-
+@log_critical_decorator(logger)
 @check_recaptcha
 def login_view(request):
     logout(request)
@@ -318,7 +311,7 @@ def login_view(request):
 
     return render(request, 'sign.html', {'messages': messages.get_messages(request)})
 
-
+@log_critical_decorator(logger)
 @login_required
 def create_bot_downloader_view(request):
     if request.method == 'POST':
@@ -338,7 +331,7 @@ def create_bot_downloader_view(request):
 
     return render(request, 'create_bot.html', {'form': form, 'messages': messages.get_messages(request)})
 
-
+@log_critical_decorator(logger)
 @login_required
 def create_bot_remover_view(request):
     if request.method == 'POST':
@@ -357,7 +350,7 @@ def create_bot_remover_view(request):
 
     return render(request, 'create_remove_bot.html', {'form': form, 'messages': messages.get_messages(request)})
 
-
+@log_critical_decorator(logger)
 @login_required
 def create_bot_inspector_view(request):
     if request.method == 'POST':
@@ -376,7 +369,7 @@ def create_bot_inspector_view(request):
 
     return render(request, 'create_inspect_bot.html', {'form': form, 'messages': messages.get_messages(request)})
 
-
+@log_critical_decorator(logger)
 @login_required
 def category_delete(request, category):
     if category == 'hot':
@@ -398,7 +391,7 @@ def category_delete(request, category):
 
     return redirect('videos-page', category=category)
 
-
+@log_critical_decorator(logger)
 @login_required
 def admin_video_commands(request, pk, command):
     video = get_object_or_404(Video, pk=pk)
@@ -457,7 +450,7 @@ def user_video_commands(request, pk, command):
 
     return HttpResponse(result)
 
-
+@log_critical_decorator(logger)
 @login_required
 def show_logs(request, file):
     log_file_path = os.path.join(settings.BASE_DIR, 'logs', str(file))
@@ -470,7 +463,7 @@ def show_logs(request, file):
 
     return render(request, 'logs.html', {'logs': result})
 
-
+@log_critical_decorator(logger)
 @login_required
 def test(request):
     #print('kek')
@@ -491,7 +484,7 @@ def test(request):
     #logging.error('new error')
     return HttpResponse()
 
-
+@log_critical_decorator(logger)
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:

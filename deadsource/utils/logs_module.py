@@ -1,3 +1,5 @@
+from django.shortcuts import render_to_response, redirect
+from django.http import HttpResponse
 def get_logs_from_file(file):
     with open(file, 'r') as f:
         r = f.read()
@@ -8,3 +10,20 @@ def get_logs_from_file(file):
         result = result + str(line) + '\n'
 
     return lines
+
+
+def log_critical_decorator(logger):
+
+    def inner_decorator(function_to_decorate):
+
+        def wrapped(*args, **kwargs):
+            try:
+                return function_to_decorate(*args, **kwargs)
+
+            except Exception as e:
+                logger.critical(e)
+                return redirect('error500-page')
+
+        return wrapped
+
+    return inner_decorator

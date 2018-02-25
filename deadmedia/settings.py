@@ -148,8 +148,6 @@ MEDIA_ROOT = '/home/rafchillons/deadmedia/storage'#os.path.join(BASE_DIR, 'stor$
 
 """
 
-
-
 RECAPTCHA_PUBLIC_KEY = '6LdsEDcUAAAAALXj0Pevj6wg8vFDMCWQZ54FqlUa'
 RECAPTCHA_PRIVATE_KEY = '6LdsEDcUAAAAAKbOXsvJ7vO2az8QhKH__9nKPPlY'
 
@@ -168,18 +166,11 @@ LOGGING = {
         },
     },
     'handlers': {
-        'view_file_error': {
+        'deadsource_file_error': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/error_view.log'),
-            'formatter': 'verbose2',
-        },
-
-        'utils_file_error': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/error_utils.log'),
-            'formatter': 'verbose2',
+            'filename': os.path.join(BASE_DIR, 'logs/error_deadsource.log'),
+            'formatter': 'verbose',
         },
         'deadtasks_file_error': {
             'level': 'ERROR',
@@ -189,13 +180,8 @@ LOGGING = {
         },
     },
     'loggers': {
-        'deadsource.views': {
-            'handlers': ['view_file_error'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'deadsource.utils': {
-            'handlers': ['utils_file_error'],
+        'deadsource': {
+            'handlers': ['deadsource_file_error'],
             'level': 'INFO',
             'propagate': True,
         },
@@ -214,3 +200,4 @@ REDIS_PORT = '6379'
 BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+

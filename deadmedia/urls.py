@@ -65,6 +65,7 @@ urlpatterns = [
     url(r'^videos/size$', views.get_videos_size_in_db, name='page-admin-videos-size'),
     url(r'^videos/count$', views.get_videos_count_in_db, name='page-admin-videos-count'),
     url(r'^error404$', views.handler404, name='error404-page'),
+    url(r'^error500$', views.handler404, name='error500-page'),
 
     url(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
 
