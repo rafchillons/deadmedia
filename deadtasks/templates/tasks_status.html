@@ -14,9 +14,12 @@
                         <a href="{% url 'tasks:create-remove' %}" class="bot-create-btn eraser">create eraser</a>
                         <a href="{% url 'tasks:create-download' %}" class="bot-create-btn downloader">create downloader</a>
 
+<!--
                         <a class="bot-create-btn bot-create-btn-eraser">create eraser</a>
                         <a class="bot-create-btn bot-create-btn-downloader">create downloader</a>
+-->
                     </div>
+<!--
                     <div class="bot-create-forms clearfix">
                         <div class="bot-create-eraser">
                             <form method="POST" class="text-left">
@@ -161,6 +164,7 @@
                             </form>
                         </div>
                     </div>
+-->
                     <div class="bot-list">
                         <!-- bot template -->
                         {% for task in tasks_download %}
