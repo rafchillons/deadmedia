@@ -1,0 +1,11 @@
+CELERY_BIN="/usr/local/bin/celery"
+
+CELERY_APP="deadmedia"
+
+export DJANGO_SETTINGS_MODULE="deadmedia.settings"
+
+CELERYBEAT_CHDIR="/home/rafchillons/deadmedia/deadmedia"
+
+CELERYBEAT_PID_FILE="/home/rafchillons/deadmedia/celery_logs/celerybeat/celerybeat.pid"
+CELERYBEAT_LOG_FILE="/home/rafchillons/deadmedia/celery_logs/celerybeat/celerybeat.log"
+CELERY_CREATE_LOGDIR="/home/rafchillons/deadmedia/celery_logs/celerybeat"
