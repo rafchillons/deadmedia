@@ -1,5 +1,8 @@
 from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse
+import traceback
+
+
 def get_logs_from_file(file):
     with open(file, 'r') as f:
         r = f.read()
@@ -21,7 +24,7 @@ def log_critical_decorator(logger):
                 return function_to_decorate(*args, **kwargs)
 
             except Exception as e:
-                logger.critical(e)
+                logger.critical(traceback.format_exc())
                 return redirect('error500-page')
 
         return wrapped
