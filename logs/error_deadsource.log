@@ -1,4 +1,0 @@
-CRITICAL - 2018-02-25 20:19:16,978 - deadsource(logs_module) - (20262/140275860498176) - (1146, "Table 'dead_db.deadsource_video' doesn't exist")
-CRITICAL - 2018-02-25 20:21:31,329 - deadsource(logs_module) - (20444/140301616281344) - (1146, "Table 'dead_db.deadsource_video' doesn't exist")
-CRITICAL - 2018-02-25 20:27:42,512 - deadsource(logs_module) - (20444/140301582710528) - (1146, "Table 'dead_db.deadsource_video' doesn't exist")
-CRITICAL - 2018-02-25 22:03:52,851 - deadsource(logs_module) - (25460/140570991261440) - (1146, "Table 'dead_db.deadsource_video' doesn't exist")
