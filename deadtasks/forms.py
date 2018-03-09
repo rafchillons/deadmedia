@@ -31,10 +31,10 @@ class DvachDownloadTaskForm(forms.ModelForm):
         return int(data)
 
     def clean_required_words(self):
-        return self.cleaned_data["required_words"].encode("utf8")
+        return self.cleaned_data["required_words"]
 
     def clean_banned_words(self):
-        return self.cleaned_data["banned_words"].encode("utf8")
+        return self.cleaned_data["banned_words"]
 
     def clean(self):
         if not (self.cleaned_data["download_format_webm"] or self.cleaned_data["download_format_mp4"]):

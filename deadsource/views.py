@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 import json
@@ -472,17 +473,10 @@ def test(request):
     logger.warning('warning')
     logger.error('error')
     logger.critical('critical')
-    #for x in range(100):
-    #    model = Video.objects.create_video()
-    #    model.video_status = Video.STATUS_DOWNLOADED
-    #    model.is_webm = True
-    #    model.is_adult = True
-    #    model.is_mp4 = True
-    #    model.title = 'test{}'.format(x)
-    #    model.save()
-    #print(Video.objects.get_sorted_ids())
-    #logging.error('new error')
-    return HttpResponse()
+
+    raise Exception('FUCK')
+
+    return HttpResponse(0)
 
 @log_critical_decorator(logger)
 def get_client_ip(request):
