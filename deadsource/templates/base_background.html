@@ -79,19 +79,6 @@
 
 </script>
 <script src="/assets/js/jquery.jrumble.min.js"></script>
-<script>
-    $('.logo').jrumble({
-        x: 2,
-        y: 2,
-        rotation: 1,
-        opacity: true
-    });
-    $('.logo').hover(function() {
-        $('.logo').trigger('startRumble');
-    }, function() {
-        $('.logo').trigger('stopRumble');
-    });
-</script>
 <script src="{% static 'js/style.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 {% block script_content %} {% endblock %}
