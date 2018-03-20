@@ -3,7 +3,7 @@
 
 <head lang="en">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">   
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="keywords" content="webm thread, webm catalog, вебм, webm, цуиь, webm archive">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="DeadMedia is a simple WebM catalog where you can discover funny and unique WEBMs.">
@@ -77,6 +77,20 @@
         }
     });
 
+</script>
+<script src="/assets/js/jquery.jrumble.min.js"></script>
+<script>
+    $('.logo').jrumble({
+        x: 2,
+        y: 2,
+        rotation: 1,
+        opacity: true
+    });
+    $('.logo').hover(function() {
+        $('.logo').trigger('startRumble');
+    }, function() {
+        $('.logo').trigger('stopRumble');
+    });
 </script>
 <script src="{% static 'js/style.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
