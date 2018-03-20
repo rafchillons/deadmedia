@@ -25,7 +25,9 @@
     <ul>
         <!--menu elements-->
         <li><a href="{% url 'videos-page' category='hot' %}"><i class="fa fa-rocket" aria-hidden="true"></i>Hot</a></li>
+        {% if is_authenticated %}
         <li><a href="{% url 'videos-page' category='adult' %}"><i class="fa fa-smile-o" aria-hidden="true"></i>Adult</a></li>
+        {% endif %}
         <li><a href="{% url 'videos-page' category='webm' %}" class="active"><i class="fa fa-globe" aria-hidden="true"></i>Random</a></li>
         <li><a href="{% url 'videos-page' category='mp4' %}"><i class="fa fa-mobile" aria-hidden="true"></i>.mp4</a></li>
         <li><a href="{% url 'faq-page' %}"><i class="fa fa-info" aria-hidden="true"></i>FAQ</a></li>
