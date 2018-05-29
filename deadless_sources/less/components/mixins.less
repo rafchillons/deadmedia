@@ -1,0 +1,50 @@
+//use http://www.font2web.com to generate all font formats
+.add-font(@font-url, @font-name, @font-weight: normal, @font-style: normal) {
+    font-family: @font-name;
+    src: url('@{font-folder}@{font-url}.eot'); // IE9 Compat Modes 
+    src: url('@{font-folder}@{font-url}.eot?#iefix') format('embedded-opentype'), // IE6-IE8 
+    url('@{font-folder}@{font-url}.woff') format('woff'), // Pretty Modern Browsers 
+    url('@{font-folder}@{font-url}.ttf') format('truetype'), // Safari, Android, iOS 
+    url('@{font-folder}@{font-url}.svg#@{font-name}') format('svg'); // Legacy iOS  
+    font-weight: @font-weight;
+    font-style: @font-style;
+}
+
+.transition(@prop: all,
+@time: 0.3s,
+@ease: ease-in-out) {
+    transition: @prop @time @ease;
+}
+
+.bg-img(@img,
+@pos: center center) {
+    background-image: url('@{img-folder}@{img}');
+    background-position: @pos;
+    background-repeat: no-repeat;
+}
+
+.vertical-align() {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.vertical-align-div() {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.gradient-border() {
+    border: 1px dashed transparent;
+    -moz-border-image: -moz-linear-gradient(top, #3acfd5 0%, #3a4ed5 100%);
+    -webkit-border-image: -webkit-linear-gradient(top, #3acfd5 0%, #3a4ed5 100%);
+    border-image: linear-gradient(to bottom, #3acfd5 0%, #3a4ed5 100%);
+    border-image-slice: 1;
+}

@@ -1,0 +1,85 @@
+//basic tags and general rules
+* {
+    box-sizing: border-box;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+}
+
+body {
+    //margin bottom tby footer height
+    margin-bottom: 45px !important;
+}
+
+body,
+html {
+    background-color: @base-background-color;
+    font-family: 'Muli', sans-serif !important;
+}
+
+.footer {
+    &:extend(.text-center);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 12px;
+    color: #333;
+    height: 45px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    .copyright {
+        padding-top: 17px;
+        display: inline-block;
+        color: rgba(38, 42, 46, 0.4);
+    }
+}
+
+a:hover,
+a:visited,
+a:link,
+a:active,
+a {
+    //clear links styles
+    text-decoration: none;
+    color: inherit;
+}
+
+active {
+    opacity: 1;
+}
+
+#fullscreen-container {
+    position: fixed;
+    display: none;
+    box-sizing: content-box;
+    padding: 3px; //fullscreen frame
+    background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+    background-size: 400% 400%;
+    -webkit-animation: gradient 7s ease infinite;
+    -moz-animation: gradient 7s ease infinite;
+    animation: gradient 7s ease infinite;
+}
+
+.arrow-scroll {
+    display: none;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    border: @hr-style-border;
+    border-radius: 1.5px;
+    padding: 0px 8px;
+    font-size: 16px;
+    z-index: 1000;
+    background-color: @base-background-color;
+} 
+
+@media @mobile {
+    .arrow-scroll {
+        font-size: 26px;
+        padding: 0px 14px;
+    }
+}

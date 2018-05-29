@@ -1,0 +1,117 @@
+//admin control page
+.admin-header {
+    width: auto;
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    white-space: nowrap;
+    .logo {}
+    .title {
+        font-size: 18px;
+        font-weight: 600;
+    }
+}
+
+.system {
+    .delete-download-empty {
+        margin-top: 25px;
+        margin-bottom: 20px;
+    }
+    #btn-download-all,
+    #btn-delete-all {
+        margin: 3px 0;
+    }
+    .badge {
+        font-size: 12px;
+    }
+}
+
+.admin-special-menu {
+    list-style: none;
+    text-align: center;
+    display: block;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    width: 100%;
+    padding: 10px;
+    a {
+        text-decoration: none;
+        font-weight: 500;
+        opacity: .7;
+        font-size: 15px;
+    }
+    a:active,
+    a:hover {
+        opacity: 1;
+    }
+    li {
+        padding: 0 3.5px;
+        float: left;
+    }
+    .admin-sign-out {
+        float: right;
+    }
+}
+
+.mobile-only {
+    display: none;
+}
+
+.file-admin-panel {
+    box-sizing: border-box;
+    .file-admin-btn {
+        opacity: .8;
+    }
+    .file-admin-btn:hover {
+        opacity: 1;
+    }
+    .file-delete-btn,
+    .file-praise-btn {
+        margin-right: 2.5px;
+        cursor: pointer;
+    }
+    .file-admin-information-btn {
+        float: right;
+        padding-left: 2px;
+        cursor: pointer;
+    }
+    .file-admin-information {
+        border: 1px dashed darkgrey;
+        margin: 3px 0;
+        display: none;
+        span {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+.file-change-category {
+    select {
+        border-radius: 5px;
+        padding: .5px;
+        padding-right: 10px;
+        padding-left: 10px;
+        border: .5px dashed #333;
+    }
+    select::-ms-expand {
+        display: none;
+    }
+    .file-category-change-btn {
+        margin-right: 2.5px;
+        cursor: pointer;
+    }
+}
+
+@media @mobile {
+    .admin-special-menu {
+        display: none;
+    }
+    .mobile-only {
+        display: block;
+    }
+}

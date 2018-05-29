@@ -1,0 +1,147 @@
+.bots {
+    margin-top: 45px;
+    a,
+    a:hover,
+    a:visited,
+    a:link,
+    a:active {
+        text-decoration: underline;
+        cursor: pointer;
+        color: inherit;
+    }
+    .bot-list {
+        overflow: scroll;
+        margin-bottom: 50px;
+    }
+    .bot-create-btns {
+        margin-top: 15px;
+        display: inline-block;
+        width: 100%;
+    }
+    .bot-create-btn {
+        width: 50%;
+        text-decoration: none !important;
+        display: block;
+        box-sizing: border-box;
+        border: 1px solid darkgrey;
+        padding: 1px;
+        float: right;
+        opacity: .5;
+        cursor: pointer;
+    }
+    .bot-create-btn:hover,
+    .selected {
+        border: 1px solid grey;
+        opacity: 1;
+    }
+    .bot-create-submit-btn {
+        width: 100%;
+        cursor: pointer;
+        border: 1px solid green;
+        text-decoration: none !important;
+        display: block;
+        box-sizing: border-box;
+        padding: 1px;
+        margin: 0;
+        border-radius: 0;
+        background-color: transparent;
+    }
+    .bot-create-downloader,
+    .bot-create-eraser {
+        display: none;
+        width: 100%;
+        padding-top: 5px;
+        border: 1px solid grey;
+        border-bottom: none;
+    }
+
+    .input-xs {
+        height: 18px;
+        line-height: 18px;
+        padding: 0;
+        border: 1px dashed #CECECE;
+        box-shadow: none;
+        background-color: #fafafa;
+        border-radius: 1;
+        color: inherit;
+        padding-left: 2px;
+    }
+
+    label {
+        font-size: 14px;
+        color: inherit;
+        font-weight: 300;
+        padding-left: 4px;
+    }
+
+    .form-group {
+        margin-bottom: 1px;
+        text-align: left;
+    }
+}
+
+.bot-console-log {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+    word-wrap: break-word;
+    font-size: 15px;
+    font-family: 'Inconsolata', monospace;
+}
+
+.bot {
+    position: relative;
+    margin-top: 15px;
+    .bot-preview {
+        border-bottom: 1px solid #ddd;
+        .bot-id {
+            width: 100%;
+            text-align: left;
+        }
+        .bot-controls {
+            text-align: left;
+            position: relative;
+            margin-bottom: 5px;
+            margin-top: 2px;
+            a:not(:first-of-type) {
+                padding: 0 2.5px;
+            }
+            a {
+                text-decoration: none;
+                opacity: .7;
+                font-weight: 600;
+            }
+            a:active,
+            a:hover {
+                opacity: 1;
+            }
+            .bot-about-toggler {
+                position: absolute;
+                bottom: -1px;
+                right: 0;
+                cursor: pointer;
+            }
+        }
+    }
+    .bot-about {
+        display: none;
+        width: 100%;
+        table {
+            padding: 0;
+            margin: 0;
+            border-width: 0;
+        }
+        table tr:first-of-type td {
+            border-top-width: 0;
+        }
+        table tr td {
+            padding: 3px 3.5px;
+        }
+        table tr td:first-of-type {
+            text-align: left;
+        }
+        .bot-about table tr td:nth-child(2n) {
+            text-align: center;
+        }
+    }
+}
